@@ -121,7 +121,7 @@
 				<version>0.8.5</version>
 				<configuration>
 					<excludes>
-						<exclude>**/model/*</exclude>
+						<exclude>**/src/main/java/miw_padel_back/infraestructure/mongodb/entities/UserEntity.*</exclude>
 						<exclude>**/entities/*</exclude>
 					</excludes>
 				</configuration>
