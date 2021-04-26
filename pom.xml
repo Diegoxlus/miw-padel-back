@@ -15,6 +15,9 @@
 	<description>Backend of padel application </description>
 	<properties>
 		<java.version>11</java.version>
+		<sonar.projectKey>Diegoxlus_miw-padel-back</sonar.projectKey>
+		<sonar.organization>diegoxlus</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
