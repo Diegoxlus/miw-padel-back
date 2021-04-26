@@ -129,8 +129,8 @@
 				<version> 0.8.5</version>
 				<configuration>
 					<excludes>
-						<exclude>src/main/java/miw_padel_back/domain/model/*.java</exclude>
-						<exclude>src/main/java/miw_padel_back/infraestructure/mongodb/entities/*.java</exclude>
+						<exclude>src/main/java/miw_padel_back/domain/model/*</exclude>
+						<exclude>src/main/java/miw_padel_back/infraestructure/mongodb/entities/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
