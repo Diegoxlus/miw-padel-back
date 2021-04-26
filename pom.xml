@@ -127,6 +127,12 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version> 0.8.5</version>
+				<configuration>
+					<excludes>
+						<exclude>src/main/java/miw_padel_back/domain/model/*.java</exclude>
+						<exclude>src/main/java/miw_padel_back/infraestructure/mongodb/entities/*.java</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
