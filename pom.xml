@@ -24,10 +24,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+		<!-- DEPENDENCIA QUE PIDE LOGIN, PREGUNTAR A JESUS
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		-->
 		<!-- Web Asynchronous -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
