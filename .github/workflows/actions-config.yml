@@ -20,13 +20,38 @@ jobs:
           java-version: 11
       - name: Run Compilation and Test
         run: mvn -B verify
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B -DskipTests verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v13
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: miw-padel-back
-          environment_name: Miwpadelback-env-1
+          environment_name: Miwpadelback-env
           version_label: ${{github.SHA}}
           region: eu-west-3
           deployment_package: target/miw-padel-back-0.0.1-SNAPSHOT.jar
+      - name: Notification Slack
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_USERNAME: Nemo
+          SLACK_ICON: 'https://image.freepik.com/vector-gratis/ilustracion-dibujos-animados-perro-feliz-humor_11460-3669.jpg'
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
+        if: always()
