@@ -22,7 +22,7 @@ public class UserPersistenceMDBIT {
                 .email("aa")
                 .mobile("123123123")
                 .firstName("Diego")
-                .familyName("LUS")
+                .familyName("LUSlkj")
                 .build();
 
         StepVerifier
