@@ -121,6 +121,9 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
 				<configuration>
+					<includes>
+						<include>**/miw_padel_back/*</include>
+					</includes>
 					<excludes>
 						<exclude>*</exclude>
 					</excludes>
