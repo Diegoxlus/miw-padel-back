@@ -4,11 +4,12 @@ import miw_padel_back.TestConfig;
 import miw_padel_back.domain.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestConfig
+@SpringBootTest
 public class UserPersistenceMDBIT {
     @Autowired
     private UserPersistenceMDB userPersistenceMDB;
