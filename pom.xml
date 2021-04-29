@@ -124,16 +124,13 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
-				<configuration>
-					<excludes>
-						<exclude>**/miw_padel_back/domain/model/*</exclude>
-						<exclude>**/util</exclude>
-					</excludes>
-				</configuration>
 				<executions>
 					<execution>
 						<id>default-report</id>
 						<phase>post-integration-test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
