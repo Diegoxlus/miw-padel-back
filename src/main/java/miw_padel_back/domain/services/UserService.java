@@ -2,6 +2,7 @@ package miw_padel_back.domain.services;
 
 import miw_padel_back.domain.model.User;
 import miw_padel_back.domain.persistence.UserPersistence;
+import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -16,7 +17,7 @@ public class UserService {
         this.userPersistence = userPersistence;
     }
 
-    public Mono<User> create(User user){
+    public Mono<UserEntity> create(User user){
         return this.userPersistence.create(user);
     }
 }

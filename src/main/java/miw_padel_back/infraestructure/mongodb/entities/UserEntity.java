@@ -1,6 +1,5 @@
 package miw_padel_back.infraestructure.mongodb.entities;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@Document
+@Document(collection = "users")
 public class UserEntity {
     @Id
     private String id;

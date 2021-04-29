@@ -1,12 +1,12 @@
 package miw_padel_back.infraestructure.mongodb.persistence;
 
 import miw_padel_back.domain.model.User;
+import miw_padel_back.domain.persistence.UserPersistence;
 import miw_padel_back.infraestructure.mongodb.daos.UserReactive;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
-import miw_padel_back.domain.persistence.UserPersistence;
 
 @Repository
 public class UserPersistenceMDB implements UserPersistence {
@@ -18,10 +18,9 @@ public class UserPersistenceMDB implements UserPersistence {
     }
 
     @Override
-    public Mono<User> create(User user) {
+    public Mono<UserEntity> create(User user) {
         UserEntity userEntity = new UserEntity(user);
         return this.userReactive
-                .save(userEntity)
-                .map(UserEntity::toUser);
+                .save(userEntity);
     }
 }
