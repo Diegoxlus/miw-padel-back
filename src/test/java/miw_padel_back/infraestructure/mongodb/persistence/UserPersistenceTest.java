@@ -10,7 +10,7 @@ import reactor.test.StepVerifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class UserPersistenceMDBIT {
+public class UserPersistenceTest {
     @Autowired
     private UserPersistenceMDB userPersistenceMDB;
 
