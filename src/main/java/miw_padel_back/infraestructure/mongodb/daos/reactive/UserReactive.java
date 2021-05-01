@@ -1,4 +1,4 @@
-package miw_padel_back.infraestructure.mongodb.daos;
+package miw_padel_back.infraestructure.mongodb.daos.reactive;
 
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.context.annotation.Configuration;

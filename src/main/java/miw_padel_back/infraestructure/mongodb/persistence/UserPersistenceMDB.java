@@ -2,7 +2,7 @@ package miw_padel_back.infraestructure.mongodb.persistence;
 
 import miw_padel_back.domain.model.User;
 import miw_padel_back.domain.persistence.UserPersistence;
-import miw_padel_back.infraestructure.mongodb.daos.UserReactive;
+import miw_padel_back.infraestructure.mongodb.daos.reactive.UserReactive;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
