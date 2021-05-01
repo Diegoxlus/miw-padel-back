@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.constraints.NotBlank;
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -14,15 +17,12 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
-    @NotBlank
-    private String mobile;
     private String firstName;
     private String familyName;
+    @Indexed(unique=true)
     private String email;
-    private String dni;
-    private String address;
-    public User(String mobile) {
-        this.mobile = mobile;
-    }
+    private String password;
+    private Gender gender;
+    private LocalDateTime birthDate;
 
 }

@@ -2,6 +2,7 @@ package miw_padel_back.infraestructure.api.resources;
 
 import miw_padel_back.domain.model.User;
 import miw_padel_back.domain.services.UserService;
+import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,16 +19,10 @@ public class TestController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/create")
     public String welcome(){
-        User user = User.builder()
-                .address("kejwhflkewhfnkewjfbhkjwefewf")
-                .dni("fewfewfewfewf1")
-                .email("aa221dfews")
-                .mobile("1231123wedf2312322")
-                .firstName("Di12weqdsego22")
-                .familyName("LUSlk12ewqdsj22")
-                .build();
-        return Objects.requireNonNull(this.userService.create(user).block()).getDni();
+        this.userService.create(User.builder().firstName("Diego").familyName("Lusqui").email("aa")
+                .password("123123").build());
+        return "INTENTO";
     }
 }

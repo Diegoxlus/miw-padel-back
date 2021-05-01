@@ -1,11 +1,15 @@
 package miw_padel_back.infraestructure.mongodb.persistence;
 
 import miw_padel_back.TestConfig;
+import miw_padel_back.domain.model.Gender;
 import miw_padel_back.domain.model.User;
+import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,14 +20,8 @@ public class UserPersistenceTest {
 
     @Test
     void testGivenUserWhenCreateThenReturnUser() {
-        User user = User.builder()
-                .address("aa")
-                .dni("123123")
-                .email("aa")
-                .mobile("123123123")
-                .firstName("Diego")
-                .familyName("LUSlkj")
-                .build();
+        User user = User.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
+                .password("123123").gender(Gender.MALE).birthDate(LocalDateTime.now()).build();
 
         StepVerifier
                 .create(this.userPersistenceMDB.create(user))

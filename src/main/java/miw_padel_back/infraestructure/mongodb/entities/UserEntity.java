@@ -4,11 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import miw_padel_back.domain.model.Gender;
 import miw_padel_back.domain.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -18,14 +22,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class UserEntity {
     @Id
     private String id;
-    private String mobile;
     private String firstName;
     private String familyName;
     @Indexed(unique=true)
     private String email;
-    @Indexed(unique=true)
-    private String dni;
-    private String address;
+    private String password;
+    private Gender gender;
+    private LocalDateTime birthDate;
 
     public UserEntity(User user){
         BeanUtils.copyProperties(user,this);
