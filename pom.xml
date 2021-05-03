@@ -14,7 +14,6 @@
 	<name>miw_padel_back</name>
 	<description>Backend of padel application </description>
 	<properties>
-		<java.version>11</java.version>
 		<!-- Sonar properties -->
 		<sonar.projectKey>Diegoxlus_miw-padel-back</sonar.projectKey>
 		<sonar.organization>diegoxlus</sonar.organization>
