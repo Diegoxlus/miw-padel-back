@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 @RestController
-@RequestMapping(UserResource.USER)
+//@RequestMapping(UserResource.USER)
 public class UserResource {
     public static final String USER = "/user";
     private final UserService userService;
@@ -26,5 +26,9 @@ public class UserResource {
         this.userService.create(User.builder().firstName("Diego").familyName("Lusqui").email("aa")
                 .password("123123").build());
         return "INTENTO";
+    }
+    @GetMapping("/")
+    public String welcome(){
+        return "HOLA";
     }
 }
