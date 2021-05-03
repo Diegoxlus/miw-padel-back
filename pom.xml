@@ -14,6 +14,11 @@
 	<name>miw_padel_back</name>
 	<description>Backend of padel application </description>
 	<properties>
+		<java.version>11</java.version>
+		<encoding>UTF-8</encoding>
+		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 		<!-- Sonar properties -->
 		<sonar.projectKey>Diegoxlus_miw-padel-back</sonar.projectKey>
 		<sonar.organization>diegoxlus</sonar.organization>
@@ -74,7 +79,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
 		</dependency>
 		<!-- End Lombok -->
 		<!-- ==================================TEST========================== -->
@@ -183,14 +187,7 @@
 				</executions>
 			</plugin>
 			<!--End Analyze reports for SonarCloud-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+
 		</plugins>
 	</build>
 
