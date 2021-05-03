@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public class UserPersistenceMDB implements UserPersistence {
-    UserReactive userReactive;
+    private UserReactive userReactive;
 
     @Autowired
     public UserPersistenceMDB(UserReactive userReactive) {

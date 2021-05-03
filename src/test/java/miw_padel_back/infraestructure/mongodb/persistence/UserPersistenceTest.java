@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@TestConfig
 public class UserPersistenceTest {
     @Autowired
     private UserPersistenceMDB userPersistenceMDB;
