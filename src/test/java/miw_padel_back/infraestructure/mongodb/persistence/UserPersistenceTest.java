@@ -20,13 +20,13 @@ public class UserPersistenceTest {
 
     @Test
     void testGivenUserWhenCreateThenReturnUser() {
-        User user = User.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
-                .password("123123").gender(Gender.MALE).birthDate(LocalDateTime.now()).build();
+        User user = User.builder().firstName("Diego22").familyName("Lusqui22").email("lusky191296@gmail.com")
+                .password("12312123").gender(Gender.MALE).birthDate(LocalDateTime.now()).build();
 
         StepVerifier
                 .create(this.userPersistenceMDB.create(user))
                 .expectNextMatches(saveUser -> {
-                    assertEquals("Diego",saveUser.getFirstName());
+                    assertEquals("Diego22",saveUser.getFirstName());
                     return true;
                 })
                 .expectComplete()

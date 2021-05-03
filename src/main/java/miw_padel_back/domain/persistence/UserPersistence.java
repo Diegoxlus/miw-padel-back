@@ -8,4 +8,5 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface UserPersistence {
     Mono<UserEntity> create(User user);
+    Mono<User> findByEmail(String email);
 }

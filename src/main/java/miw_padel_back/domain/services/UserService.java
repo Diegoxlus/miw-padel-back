@@ -20,4 +20,10 @@ public class UserService {
     public Mono<UserEntity> create(User user){
         return this.userPersistence.create(user);
     }
+    /*
+    private Mono<UserEntity> findUserByEmail(String email){
+        return this.userPersistence.find
+    }
+    */
+
 }
