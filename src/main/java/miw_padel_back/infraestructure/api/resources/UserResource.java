@@ -23,11 +23,10 @@ public class UserResource {
 
     @GetMapping("/create")
     public String create(){
-        this.userService.create(User.builder().firstName("Diego").familyName("Lusqui").email("aa")
-                .password("123123").build()).block();
-        return "INTENTO";
+       // this.userService.create()
+        return "TODO";
     }
-    @GetMapping("/")
+    @GetMapping("/login")
     public String welcome(){
         return "HOLA";
     }

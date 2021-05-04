@@ -4,6 +4,8 @@ import miw_padel_back.domain.model.User;
 import miw_padel_back.domain.persistence.UserPersistence;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -20,10 +22,8 @@ public class UserService {
     public Mono<UserEntity> create(User user){
         return this.userPersistence.create(user);
     }
-    /*
-    private Mono<UserEntity> findUserByEmail(String email){
-        return this.userPersistence.find
-    }
-    */
 
+    public Mono<User> findByUsername(String s) {
+        return this.userPersistence.findByEmail(s);
+    }
 }
