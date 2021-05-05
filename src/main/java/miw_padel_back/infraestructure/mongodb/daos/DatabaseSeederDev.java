@@ -7,7 +7,6 @@ import miw_padel_back.infraestructure.mongodb.daos.synchronous.UserDao;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,29 +15,29 @@ import java.util.List;
 
 @Service
 public class DatabaseSeederDev {
-    private UserDao userDao;
-    private PBKDF2Encoder passwordEncoder;
+    private final UserDao userDao;
+    private final PBKDF2Encoder passwordEncoder;
 
     @Autowired
-    public DatabaseSeederDev(UserDao userDao, PBKDF2Encoder passwordEncoder ) {
+    public DatabaseSeederDev(UserDao userDao, PBKDF2Encoder passwordEncoder) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.seedDataBase();
     }
 
-    private void seedDataBase(){
-        List<Role> roles = new ArrayList<Role>();
+    private void seedDataBase() {
+        List<Role> roles = new ArrayList<>();
         roles.add(Role.ADMIN);
         roles.add(Role.PLAYER);
         this.userDao.deleteAll();
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         UserEntity[] userEntities = {
                 UserEntity.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
-                        .password("123123").matchingPassword("123123").gender(Gender.MALE).role(roles.subList(0,1)).enabled(true).birthDate(LocalDateTime.now()).build(),
+                        .password("123123").matchingPassword("123123").gender(Gender.MALE).role(roles.subList(0, 1)).enabled(true).birthDate(LocalDateTime.now()).build(),
                 UserEntity.builder().firstName("Andrea").familyName("Álvarez").email("aamarinho@gmail.com")
-                        .password("123123").matchingPassword("123123").gender(Gender.FEMALE).role(roles.subList(1,2)).enabled(true).birthDate(LocalDateTime.now()).build()
+                        .password("123123").matchingPassword("123123").gender(Gender.FEMALE).role(roles.subList(1, 2)).enabled(true).birthDate(LocalDateTime.now()).build()
         };
-        for (UserEntity userEntitie : userEntities){
+        for (UserEntity userEntitie : userEntities) {
             userEntitie.setPassword(passwordEncoder.encode(userEntitie.getPassword()));
         }
         LogManager.getLogger(this.getClass()).warn(this.userDao.saveAll(List.of(userEntities)));

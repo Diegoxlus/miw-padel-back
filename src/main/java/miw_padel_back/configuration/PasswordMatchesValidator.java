@@ -9,10 +9,12 @@ public class PasswordMatchesValidator
         implements ConstraintValidator<PasswordMatches, Object> {
 
     @Override
+    //Empty for implements
     public void initialize(PasswordMatches constraintAnnotation) {
     }
+
     @Override
-    public boolean isValid(Object obj, ConstraintValidatorContext context){
+    public boolean isValid(Object obj, ConstraintValidatorContext context) {
         UserEntity user = (UserEntity) obj;
         return user.getPassword().equals(user.getMatchingPassword());
     }

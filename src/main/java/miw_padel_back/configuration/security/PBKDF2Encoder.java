@@ -11,41 +11,35 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 /**
- *
  * @author ard333
  */
 @Component
-public class PBKDF2Encoder implements PasswordEncoder{
-	
-	@Value("${miwpadelback.password.encoder.secret}")
-	private String secret;
+public class PBKDF2Encoder implements PasswordEncoder {
 
-	@Value("${miwpadelback.password.encoder.iteration}")
-	private Integer iteration;
+    @Value("${miwpadelback.password.encoder.secret}")
+    private String secret;
 
-	@Value("${miwpadelback.password.encoder.keylength}")
-	private Integer keylength;
-	
-	/**
-	 * More info (https://www.owasp.org/index.php/Hashing_Java) 404 :(
-	 * @param cs password
-	 * @return encoded password
-	 */
-	@Override
-	public String encode(CharSequence cs) {
-		try {
-			byte[] result = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
-											.generateSecret(new PBEKeySpec(cs.toString().toCharArray(), secret.getBytes(), iteration, keylength))
-											.getEncoded();
-			return Base64.getEncoder().encodeToString(result);
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
+    @Value("${miwpadelback.password.encoder.iteration}")
+    private Integer iteration;
 
-	@Override
-	public boolean matches(CharSequence cs, String string) {
-		return encode(cs).equals(string);
-	}
-	
+    @Value("${miwpadelback.password.encoder.keylength}")
+    private Integer keyLength;
+
+    @Override
+    public String encode(CharSequence password) {
+        try {
+            byte[] encodedPassword = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
+                    .generateSecret(new PBEKeySpec(password.toString().toCharArray(), this.secret.getBytes(), this.iteration, this.keyLength))
+                    .getEncoded();
+            return Base64.getEncoder().encodeToString(encodedPassword);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public boolean matches(CharSequence password, String possiblePassword) {
+        return encode(password).equals(possiblePassword);
+    }
+
 }

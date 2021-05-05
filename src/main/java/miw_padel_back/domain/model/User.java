@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     private String firstName;
     private String familyName;
-    @Indexed(unique=true)
+    @Indexed(unique = true)
     private String email;
     private List<Role> roles;
     private String password;

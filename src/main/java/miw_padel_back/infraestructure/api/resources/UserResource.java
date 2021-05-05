@@ -1,14 +1,10 @@
 package miw_padel_back.infraestructure.api.resources;
 
-import miw_padel_back.domain.model.User;
 import miw_padel_back.domain.services.UserService;
-import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
 
 @RestController
 @RequestMapping(UserResource.USER)
@@ -22,12 +18,13 @@ public class UserResource {
     }
 
     @GetMapping("/create")
-    public String create(){
-       // this.userService.create()
+    public String create() {
+        // this.userService.create()
         return "TODO";
     }
+
     @GetMapping("/login")
-    public String welcome(){
+    public String welcome() {
         return "HOLA";
     }
 }

@@ -31,7 +31,7 @@ public class UserEntity {
     private String firstName;
     @NotEmpty
     private String familyName;
-    @Indexed(unique=true)
+    @Indexed(unique = true)
     @Email
     private String email;
     @NotEmpty
@@ -46,13 +46,13 @@ public class UserEntity {
     @NotEmpty
     private LocalDateTime birthDate;
 
-    public UserEntity(User user){
-        BeanUtils.copyProperties(user,this);
+    public UserEntity(User user) {
+        BeanUtils.copyProperties(user, this);
     }
 
-    public User toUser(){
+    public User toUser() {
         User user = new User();
-        BeanUtils.copyProperties(this,user);
+        BeanUtils.copyProperties(this, user);
         return user;
     }
 }

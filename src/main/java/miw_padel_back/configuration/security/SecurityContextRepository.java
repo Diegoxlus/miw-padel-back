@@ -12,35 +12,34 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-/**
- *
- * @author ard333
- */
 @Component
-public class SecurityContextRepository implements ServerSecurityContextRepository{
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
+public class SecurityContextRepository implements ServerSecurityContextRepository {
+    private static final int NUMBER_CHARS_BEARER = 7;
+    private static final String BEARER = "Bearer ";
+    private final AuthenticationManager authenticationManager;
 
-	@Override
-	public Mono<Void> save(ServerWebExchange swe, SecurityContext sc) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
+    @Autowired
+    public SecurityContextRepository(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
-	@Override
-	public Mono<SecurityContext> load(ServerWebExchange swe) {
-		ServerHttpRequest request = swe.getRequest();
-		String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+    @Override
+    public Mono<Void> save(ServerWebExchange swe, SecurityContext sc) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-		if (authHeader != null && authHeader.startsWith("Bearer ")) {
-			String authToken = authHeader.substring(7);
-			Authentication auth = new UsernamePasswordAuthenticationToken(authToken, authToken);
-			return this.authenticationManager.authenticate(auth).map((authentication) -> {
-				return new SecurityContextImpl(authentication);
-			});
-		} else {
-			return Mono.empty();
-		}
-	}
-	
+    @Override
+    public Mono<SecurityContext> load(ServerWebExchange serverWebExchange) {
+        ServerHttpRequest serverHttpRequest = serverWebExchange.getRequest();
+        String authenticationHeader = serverHttpRequest.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+        if (authenticationHeader != null && authenticationHeader.startsWith(BEARER)) {
+            String authToken = authenticationHeader.substring(NUMBER_CHARS_BEARER);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(authToken, authToken);
+            return this.authenticationManager.authenticate(authentication).map(SecurityContextImpl::new);
+        } else {
+            return Mono.empty();
+        }
+    }
+
 }
