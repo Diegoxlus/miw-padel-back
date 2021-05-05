@@ -1,4 +1,4 @@
-package miw_padel_back.domain.exceptions;
+package miw_padel_back.infraestructure.api.http_errors;
 
 import lombok.Getter;
 import lombok.ToString;

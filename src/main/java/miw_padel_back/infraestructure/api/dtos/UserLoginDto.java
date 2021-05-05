@@ -1,4 +1,4 @@
-package miw_padel_back.domain.model;
+package miw_padel_back.infraestructure.api.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AuthRequest {
+public class UserLoginDto {
     private String email;
     private String password;
 }

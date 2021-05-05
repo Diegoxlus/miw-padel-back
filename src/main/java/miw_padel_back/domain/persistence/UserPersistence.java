@@ -1,9 +1,8 @@
 package miw_padel_back.domain.persistence;
 
-import miw_padel_back.domain.model.AuthRequest;
-import miw_padel_back.domain.model.TokenDto;
+import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
+import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.model.User;
-import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
@@ -13,5 +12,5 @@ public interface UserPersistence {
 
     Mono<User> findByEmail(String email);
 
-    Mono<TokenDto> login(AuthRequest authRequest);
+    Mono<TokenDto> login(UserLoginDto userLoginDto);
 }
