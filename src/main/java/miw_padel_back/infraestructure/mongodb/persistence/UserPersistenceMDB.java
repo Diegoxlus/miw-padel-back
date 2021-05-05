@@ -4,8 +4,8 @@ import miw_padel_back.configuration.security.JWTUtil;
 import miw_padel_back.configuration.security.PBKDF2Encoder;
 import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.exceptions.NotFoundException;
-import miw_padel_back.domain.model.AuthRequest;
-import miw_padel_back.domain.model.TokenDto;
+import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
+import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.model.User;
 import miw_padel_back.domain.persistence.UserPersistence;
 import miw_padel_back.infraestructure.mongodb.daos.reactive.UserReactive;
@@ -52,9 +52,9 @@ public class UserPersistenceMDB implements UserPersistence {
     }
 
     @Override
-    public Mono<TokenDto> login(AuthRequest authRequest) {
-        return this.findByEmail(authRequest.getEmail()).flatMap((userDetails) -> {
-            if (this.passwordEncoder.encode(authRequest.getPassword()).equals(userDetails.getPassword())) {
+    public Mono<TokenDto> login(UserLoginDto userLoginDto) {
+        return this.findByEmail(userLoginDto.getEmail()).flatMap((userDetails) -> {
+            if (this.passwordEncoder.encode(userLoginDto.getPassword()).equals(userDetails.getPassword())) {
                 return Mono.just(new TokenDto(this.jwtUtil.generateToken(userDetails)));
             } else {
                 return Mono.error(new ConflictException("Incorrect password"));

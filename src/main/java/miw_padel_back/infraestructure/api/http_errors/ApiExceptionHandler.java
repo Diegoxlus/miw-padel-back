@@ -1,6 +1,7 @@
-package miw_padel_back.domain.exceptions;
+package miw_padel_back.infraestructure.api.http_errors;
 
 
+import miw_padel_back.domain.exceptions.*;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

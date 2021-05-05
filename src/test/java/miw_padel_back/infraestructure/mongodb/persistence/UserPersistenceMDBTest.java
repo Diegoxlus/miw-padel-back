@@ -5,7 +5,7 @@ import miw_padel_back.TestConfig;
 import miw_padel_back.configuration.security.JWTUtil;
 import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.exceptions.NotFoundException;
-import miw_padel_back.domain.model.AuthRequest;
+import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.domain.model.Gender;
 import miw_padel_back.domain.model.Role;
 import miw_padel_back.domain.model.User;
@@ -79,7 +79,7 @@ public class UserPersistenceMDBTest {
     @Order(2)
     void testGivenEmailAndPasswordWhenLoginThenReturnCorrectJWT() {
         StepVerifier
-                .create(this.userPersistenceMDB.login(new AuthRequest(EMAIL,PASSWORD)))
+                .create(this.userPersistenceMDB.login(new UserLoginDto(EMAIL,PASSWORD)))
                 .expectNextMatches(tokenDto -> {
                     var roleStringList = this.jwtUtil.getAllClaimsFromToken(tokenDto.getToken()).get("role", List.class);
                     String jwtToken = tokenDto.getToken();
@@ -98,7 +98,7 @@ public class UserPersistenceMDBTest {
     void testGivenInvalidEmailAndValidPasswordWhenLoginThenReturnNotFoundException() {
         String invalidEmail = "invalid@invalid.invalid";
         StepVerifier
-                .create(this.userPersistenceMDB.login(new AuthRequest(invalidEmail,PASSWORD)))
+                .create(this.userPersistenceMDB.login(new UserLoginDto(invalidEmail,PASSWORD)))
                 .expectErrorMatches(throwable -> throwable instanceof NotFoundException &&
                         throwable.getMessage().equals("Not Found Exception: Not existent email "+ invalidEmail ))
                 .verify();
@@ -108,7 +108,7 @@ public class UserPersistenceMDBTest {
     @Order(3)
     void testGivenValidEmailAndInvalidPasswordWhenLoginThenReturnConflictException() {
         StepVerifier
-                .create(this.userPersistenceMDB.login(new AuthRequest(EMAIL,"invalidPassword")))
+                .create(this.userPersistenceMDB.login(new UserLoginDto(EMAIL,"invalidPassword")))
                 .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
                         throwable.getMessage().equals("Conflict Exception: Incorrect password"))
                 .verify();
