@@ -33,9 +33,9 @@ public class DatabaseSeederDev {
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         UserEntity[] userEntities = {
                 UserEntity.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
-                        .password("123123").matchingPassword("123123").gender(Gender.MALE).role(roles.subList(0, 1)).enabled(true).birthDate(LocalDateTime.now()).build(),
+                        .password("123123").matchingPassword("123123").gender(Gender.MALE).roles(roles.subList(0, 1)).enabled(true).birthDate(LocalDateTime.now()).build(),
                 UserEntity.builder().firstName("Andrea").familyName("Álvarez").email("aamarinho@gmail.com")
-                        .password("123123").matchingPassword("123123").gender(Gender.FEMALE).role(roles.subList(1, 2)).enabled(true).birthDate(LocalDateTime.now()).build()
+                        .password("123123").matchingPassword("123123").gender(Gender.FEMALE).roles(roles.subList(1, 2)).enabled(true).birthDate(LocalDateTime.now()).build()
         };
         for (UserEntity userEntitie : userEntities) {
             userEntitie.setPassword(passwordEncoder.encode(userEntitie.getPassword()));

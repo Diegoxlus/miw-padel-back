@@ -1,5 +1,6 @@
 package miw_padel_back.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,6 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     private String firstName;
     private String familyName;
-    @Indexed(unique = true)
     private String email;
     private List<Role> roles;
     private String password;

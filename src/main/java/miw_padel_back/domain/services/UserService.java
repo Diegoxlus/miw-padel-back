@@ -19,7 +19,7 @@ public class UserService {
         this.userPersistence = userPersistence;
     }
 
-    public Mono<UserEntity> create(User user) {
+    public Mono<User> create(User user) {
         return this.userPersistence.create(user);
     }
 

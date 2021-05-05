@@ -1,5 +1,6 @@
 package miw_padel_back.infraestructure.mongodb.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import miw_padel_back.configuration.PasswordMatches;
 import miw_padel_back.domain.model.Gender;
@@ -13,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,23 +25,25 @@ import java.util.List;
 public class UserEntity {
     @Id
     private String id;
-    @NotNull
+    @NonNull
     private String firstName;
-    @NotNull
+    @NonNull
     private String familyName;
     @Indexed(unique = true)
     @Email
     private String email;
-    @NotNull
+    @NonNull
     private String password;
     @Transient
     private String matchingPassword;
-    private List<Role> role;
+    @NonNull
+    private List<Role> roles;
     @NonNull
     private Gender gender;
-    @NotNull
+    @NonNull
     private Boolean enabled;
-    @NotNull
+    @NonNull
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime birthDate;
 
     public UserEntity(User user) {
@@ -53,5 +55,15 @@ public class UserEntity {
         BeanUtils.copyProperties(this, user);
         return user;
     }
+
+    public User toUserWithoutPassword() {
+        User user = new User();
+        BeanUtils.copyProperties(this, user);
+        user.setPassword("");
+        return user;
+    }
+
+
+
 }
 
