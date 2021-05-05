@@ -37,7 +37,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
             for (String rolemap : rolesMap) {
                 authorities.add(new SimpleGrantedAuthority(rolemap));
             }
-            return Mono.just(new UsernamePasswordAuthenticationToken(username, null, authorities));
+            return Mono.just(new UsernamePasswordAuthenticationToken(username, authorities));
         } catch (Exception e) {
             return Mono.empty();
         }

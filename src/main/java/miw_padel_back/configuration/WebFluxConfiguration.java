@@ -20,14 +20,5 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
                 .allowedOrigins("*")
                 .maxAge(3600);
     }
-    @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean() {
-        return new LocalValidatorFactoryBean();
-    }
-
-    @Bean
-    public ValidatingMongoEventListener validatingMongoEventListener(LocalValidatorFactoryBean lfb) {
-        return new ValidatingMongoEventListener(lfb);
-    }
 
 }
