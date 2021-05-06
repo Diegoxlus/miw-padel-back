@@ -29,7 +29,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
         try {
             String username = jwtUtil.getUsernameFromToken(authToken);
-            if (jwtUtil.isTokenExpired(authToken)) {
+            if (Boolean.TRUE.equals(jwtUtil.isTokenExpired(authToken))) {
                 return Mono.empty();
             }
             List<String> rolesMap = jwtUtil.getAllClaimsFromToken(authToken).get("role", List.class);

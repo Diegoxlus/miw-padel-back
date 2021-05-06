@@ -13,10 +13,10 @@ import static miw_padel_back.infraestructure.api.resources.UserResource.USER;
  * @author ard333
  */
 @RestController
-@RequestMapping(USER)
+@RequestMapping(UserResource.USER)
 public class UserResource {
     public static final String USER = "/user";
-    public static final String LOGIN = "/login";
+    public static final String AUTH = "/login";
 
     private final UserService userService;
 
@@ -25,7 +25,7 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @PostMapping(value = LOGIN)
+    @PostMapping(value = AUTH)
     public Mono<TokenDto> login(@RequestBody UserLoginDto userLoginDto) {
         return userService.login(userLoginDto);
     }

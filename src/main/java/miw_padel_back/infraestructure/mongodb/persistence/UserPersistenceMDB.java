@@ -31,9 +31,9 @@ public class UserPersistenceMDB implements UserPersistence {
     @Override
     public Mono<User> create(User user) {
         UserEntity userEntity;
-        try{
-             userEntity = new UserEntity(user);
-        } catch (FatalBeanException fatalBeanException){
+        try {
+            userEntity = new UserEntity(user);
+        } catch (FatalBeanException fatalBeanException) {
             return Mono.error(new ConflictException("Empty fields"));
         }
         userEntity.setPassword(this.passwordEncoder.encode(userEntity.getPassword()));
@@ -53,13 +53,14 @@ public class UserPersistenceMDB implements UserPersistence {
 
     @Override
     public Mono<TokenDto> login(UserLoginDto userLoginDto) {
-        return this.findByEmail(userLoginDto.getEmail()).flatMap((userDetails) -> {
-            if (this.passwordEncoder.encode(userLoginDto.getPassword()).equals(userDetails.getPassword())) {
-                return Mono.just(new TokenDto(this.jwtUtil.generateToken(userDetails)));
-            } else {
-                return Mono.error(new ConflictException("Incorrect password"));
-            }
-        });
+        return this.findByEmail(userLoginDto.getEmail())
+                .flatMap(userDetails -> {
+                    if (this.passwordEncoder.encode(userLoginDto.getPassword()).equals(userDetails.getPassword())) {
+                        return Mono.just(new TokenDto(this.jwtUtil.generateToken(userDetails)));
+                    } else {
+                        return Mono.error(new ConflictException("Incorrect password"));
+                    }
+                });
     }
 
     public Mono<Void> assertEmailNotExists(String email) {

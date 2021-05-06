@@ -49,7 +49,7 @@ public class JWTUtil {
     }
 
     public Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
+        final var expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
 
@@ -60,8 +60,8 @@ public class JWTUtil {
     }
 
     private String doGenerateToken(Map<String, Object> claims, String username) {
-        final Date createdDate = new Date();
-        final Date expirationDate = new Date(createdDate.getTime()
+        final var createdDate = new Date();
+        final var expirationDate = new Date(createdDate.getTime()
                 + Long.parseLong(this.expirationTime) * 1000);
 
         return Jwts.builder()

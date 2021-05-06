@@ -2,7 +2,6 @@ package miw_padel_back.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -30,11 +29,11 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
 
     @Override
     public Mono<SecurityContext> load(ServerWebExchange serverWebExchange) {
-        ServerHttpRequest serverHttpRequest = serverWebExchange.getRequest();
+        var serverHttpRequest = serverWebExchange.getRequest();
         String authenticationHeader = serverHttpRequest.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         if (authenticationHeader != null && authenticationHeader.startsWith(BEARER)) {
-            String authToken = authenticationHeader.substring(NUMBER_CHARS_BEARER);
+            var authToken = authenticationHeader.substring(NUMBER_CHARS_BEARER);
             Authentication authentication = new UsernamePasswordAuthenticationToken(authToken, authToken);
             return this.authenticationManager.authenticate(authentication).map(SecurityContextImpl::new);
         } else {

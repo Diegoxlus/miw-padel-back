@@ -1,5 +1,6 @@
 package miw_padel_back.configuration.security;
 
+import miw_padel_back.domain.exceptions.PasswordEncodeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class PBKDF2Encoder implements PasswordEncoder {
                     .getEncoded();
             return Base64.getEncoder().encodeToString(encodedPassword);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
-            throw new RuntimeException(ex);
+            throw new PasswordEncodeException();
         }
     }
 
