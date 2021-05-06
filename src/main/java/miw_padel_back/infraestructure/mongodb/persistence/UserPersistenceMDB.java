@@ -6,7 +6,7 @@ import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.exceptions.NotFoundException;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
-import miw_padel_back.domain.model.User;
+import miw_padel_back.domain.models.User;
 import miw_padel_back.domain.persistence.UserPersistence;
 import miw_padel_back.infraestructure.mongodb.daos.reactive.UserReactive;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;

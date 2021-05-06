@@ -2,9 +2,9 @@ package miw_padel_back.infraestructure.mongodb.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import miw_padel_back.domain.model.Gender;
-import miw_padel_back.domain.model.Role;
-import miw_padel_back.domain.model.User;
+import miw_padel_back.domain.models.Gender;
+import miw_padel_back.domain.models.Role;
+import miw_padel_back.domain.models.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.data.annotation.Id;

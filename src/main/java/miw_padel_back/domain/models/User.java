@@ -1,4 +1,4 @@
-package miw_padel_back.domain.model;
+package miw_padel_back.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

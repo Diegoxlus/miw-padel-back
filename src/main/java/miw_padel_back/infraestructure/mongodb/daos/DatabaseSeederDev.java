@@ -1,8 +1,8 @@
 package miw_padel_back.infraestructure.mongodb.daos;
 
 import miw_padel_back.configuration.security.PBKDF2Encoder;
-import miw_padel_back.domain.model.Gender;
-import miw_padel_back.domain.model.Role;
+import miw_padel_back.domain.models.Gender;
+import miw_padel_back.domain.models.Role;
 import miw_padel_back.infraestructure.mongodb.daos.synchronous.UserDao;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.apache.logging.log4j.LogManager;

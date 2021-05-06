@@ -2,7 +2,7 @@ package miw_padel_back.domain.persistence;
 
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
-import miw_padel_back.domain.model.User;
+import miw_padel_back.domain.models.User;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 

@@ -188,6 +188,7 @@
 				<configuration>
 					<excludes>
 						<exclude>**/models/*</exclude>
+						<exclude>**/dtos/*</exclude>
 						<exclude>**/entities/*</exclude>
 					</excludes>
 				</configuration>

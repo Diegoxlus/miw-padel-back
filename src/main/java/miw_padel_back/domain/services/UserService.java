@@ -2,7 +2,7 @@ package miw_padel_back.domain.services;
 
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
-import miw_padel_back.domain.model.User;
+import miw_padel_back.domain.models.User;
 import miw_padel_back.domain.persistence.UserPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

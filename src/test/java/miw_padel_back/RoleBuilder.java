@@ -1,6 +1,6 @@
 package miw_padel_back;
 
-import miw_padel_back.domain.model.Role;
+import miw_padel_back.domain.models.Role;
 
 import java.util.ArrayList;
 import java.util.List;
