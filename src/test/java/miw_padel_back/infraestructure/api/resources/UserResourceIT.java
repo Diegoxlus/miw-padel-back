@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
     @Test
-    void test(){
+    void testGivenEmailAndPasswordWhenLoginThenReturnCorrectJWT(){
         this.webTestClient
                 .post()
                 .uri(USER+AUTH)
-                .body(Mono.just(new UserLoginDto("lusky1996@gmail.com","123123")), UserLoginDto.class)
+                .body(Mono.just(new UserLoginDto("lusky1996@gmail.com","11111")), UserLoginDto.class)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(TokenDto.class)
