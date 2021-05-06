@@ -5,6 +5,7 @@ import lombok.*;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
 import miw_padel_back.domain.models.User;
+import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.data.annotation.Id;
@@ -28,6 +29,7 @@ public class UserEntity {
     private String firstName;
     @NonNull
     private String familyName;
+    @NonNull
     @Indexed(unique = true)
     @Email
     private String email;
@@ -48,8 +50,8 @@ public class UserEntity {
     /*
     This constructor generate FatalBeanException when some field is null
      */
-    public UserEntity(User user) throws FatalBeanException {
-        BeanUtils.copyProperties(user, this);
+    public UserEntity(UserRegisterDto userRegisterDto) throws FatalBeanException {
+        BeanUtils.copyProperties(userRegisterDto, this);
     }
 
     public User toUser() {
@@ -58,14 +60,11 @@ public class UserEntity {
         return user;
     }
 
-    public User toUserWithoutPassword() {
-        var user = new User();
+    public UserRegisterDto toUserRegisterDtoWithoutPassword() {
+        var user = new UserRegisterDto();
         BeanUtils.copyProperties(this, user);
         user.setPassword("");
         return user;
     }
-
-
-
 }
 

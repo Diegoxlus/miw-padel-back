@@ -9,6 +9,7 @@ import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
 import miw_padel_back.domain.models.User;
+import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
@@ -26,7 +27,7 @@ public class UserPersistenceMDBTest {
     private static final String EMAIL = "test@test.test";
     private static final String PASSWORD = "testPassword";
 
-    private static User user;
+    private static UserRegisterDto user;
 
     @Autowired
     private UserPersistenceMDB userPersistenceMDB;
@@ -37,7 +38,7 @@ public class UserPersistenceMDBTest {
     @BeforeAll
     public static void setUp(){
         LocalDateTime localDateTime = LocalDateTime.of(1996,11,11,0,0,0);
-         user = User.builder()
+         user = UserRegisterDto.builder()
                  .firstName(FIRST_NAME)
                  .familyName(FAMILY_NAME)
                  .email(EMAIL)
@@ -69,7 +70,7 @@ public class UserPersistenceMDBTest {
     @Test
     void testGivenInvalidUserWhenCreateThenReturnError() {
         StepVerifier
-                .create(this.userPersistenceMDB.create(User.builder().build()))
+                .create(this.userPersistenceMDB.create(UserRegisterDto.builder().build()))
                 .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
                 throwable.getMessage().equals("Conflict Exception: Empty fields"))
                 .verify();

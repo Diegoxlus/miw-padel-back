@@ -1,19 +1,33 @@
 package miw_padel_back.infraestructure.api.resources;
 
 import miw_padel_back.RestTestConfig;
+import miw_padel_back.RoleBuilder;
+import miw_padel_back.domain.models.Gender;
+import miw_padel_back.domain.models.Role;
+import miw_padel_back.domain.models.User;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
+import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
+import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import static miw_padel_back.infraestructure.api.resources.UserResource.AUTH;
-import static miw_padel_back.infraestructure.api.resources.UserResource.USER;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.time.LocalDateTime;
+
+import static miw_padel_back.infraestructure.api.resources.UserResource.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RestTestConfig
  class UserResourceIT {
+
+    private static final String FIRST_NAME = "testNameIT";
+    private static final String FAMILY_NAME = "testFamilyNameIT";
+    private static final String EMAIL = "testIT@test.test";
+    private static final String PASSWORD = "testPasswordIT";
 
     @Autowired
     private WebTestClient webTestClient;
@@ -28,9 +42,56 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(TokenDto.class)
-                .value(tokenDto -> {
-                    assertNotNull(tokenDto.getToken());
+                .value(tokenDto -> assertNotNull(tokenDto.getToken()));
+    }
+
+    @Test
+    void testGivenUserWhenRegisterThenReturnUser(){
+        LocalDateTime localDateTime = LocalDateTime.of(1996,11,20,0,0,0);
+        UserRegisterDto user = UserRegisterDto.builder()
+                .firstName(FIRST_NAME)
+                .familyName(FAMILY_NAME)
+                .email(EMAIL)
+                .password(PASSWORD)
+                .gender(Gender.MALE)
+                .roles(new RoleBuilder().addAdminRole().addPlayerRole().build())
+                .birthDate(localDateTime).build();
+
+        this.webTestClient
+                .post()
+                .uri(USER+REGISTER)
+                .body(Mono.just(user), UserRegisterDto.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserRegisterDto.class)
+                .value(saveUser -> {
+                    assertEquals(FIRST_NAME,saveUser.getFirstName());
+                    assertEquals(FAMILY_NAME,saveUser.getFamilyName());
+                    assertEquals(EMAIL,saveUser.getEmail());
+                    assertEquals("",saveUser.getPassword());
+                    assertEquals(Gender.MALE,saveUser.getGender());
+                    assertTrue(saveUser.getRoles().contains(Role.ADMIN));
+                    assertTrue(saveUser.getRoles().contains(Role.PLAYER));
                 });
+    }
+
+    @Test
+    void testGivenUserWithoutEmailWhenRegisterThenReturnError(){
+        LocalDateTime localDateTime = LocalDateTime.of(1996,11,20,0,0,0);
+        UserRegisterDto user = UserRegisterDto.builder()
+                .firstName(FIRST_NAME)
+                .familyName(FAMILY_NAME)
+                .password(PASSWORD)
+                .gender(Gender.MALE)
+                .roles(new RoleBuilder().addAdminRole().addPlayerRole().build())
+                .birthDate(localDateTime).build();
+
+        this.webTestClient
+                .post()
+                .uri(USER+REGISTER)
+                .body(Mono.just(user), UserRegisterDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.CONFLICT);
     }
 
 

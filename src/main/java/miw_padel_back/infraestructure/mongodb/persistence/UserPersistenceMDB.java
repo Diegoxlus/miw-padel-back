@@ -8,6 +8,7 @@ import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.models.User;
 import miw_padel_back.domain.persistence.UserPersistence;
+import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import miw_padel_back.infraestructure.mongodb.daos.reactive.UserReactive;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.FatalBeanException;
@@ -29,17 +30,17 @@ public class UserPersistenceMDB implements UserPersistence {
     }
 
     @Override
-    public Mono<User> create(User user) {
+    public Mono<UserRegisterDto> create(UserRegisterDto userRegisterDto) {
         UserEntity userEntity;
         try {
-            userEntity = new UserEntity(user);
+            userEntity = new UserEntity(userRegisterDto);
         } catch (FatalBeanException fatalBeanException) {
             return Mono.error(new ConflictException("Empty fields"));
         }
         userEntity.setPassword(this.passwordEncoder.encode(userEntity.getPassword()));
-        return this.assertEmailNotExists(user.getEmail())
+        return this.assertEmailNotExists(userRegisterDto.getEmail())
                 .then(this.userReactive.save(userEntity))
-                .map(UserEntity::toUserWithoutPassword);
+                .map(UserEntity::toUserRegisterDtoWithoutPassword);
     }
 
     @Override
