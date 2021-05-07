@@ -15,6 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static miw_padel_back.infraestructure.api.resources.UserResource.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,8 +46,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
                 .expectStatus().isOk()
                 .expectBody(TokenDto.class)
                 .value(tokenDto -> {
-                    assertEquals("ADMIN",jwtUtil.getAllClaimsFromToken(tokenDto.getToken()));
+                    var roleStringList = this.jwtUtil.getAllClaimsFromToken(tokenDto.getToken()).get("role", List.class);
+                    String jwtToken = tokenDto.getToken();
 
+                    assertEquals("lusky1996@gmail.com", this.jwtUtil.getUsernameFromToken(jwtToken));
+                    assertTrue(roleStringList.contains(Role.ROLE_ADMIN.name()));
+                    assertFalse(jwtUtil.isTokenExpired(jwtToken));
                 });
     }
 

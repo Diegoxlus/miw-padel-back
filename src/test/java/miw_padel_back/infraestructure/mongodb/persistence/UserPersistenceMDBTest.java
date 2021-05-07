@@ -86,7 +86,6 @@ public class UserPersistenceMDBTest {
 
                     assertEquals(EMAIL, this.jwtUtil.getUsernameFromToken(jwtToken));
                     assertTrue(roleStringList.contains(Role.ROLE_ADMIN.name()));
-                    assertTrue(roleStringList.contains(Role.ROLE_PLAYER.name()));
                     assertFalse(jwtUtil.isTokenExpired(jwtToken));
                     return true;
                 })
