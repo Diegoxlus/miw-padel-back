@@ -28,9 +28,6 @@ public class DatabaseSeederDev {
     }
 
     private void seedDataBase() {
-        List<Role> roles = new ArrayList<>();
-        roles.add(Role.ROLE_ADMIN);
-        roles.add(Role.ROLE_PLAYER);
         this.userDao.deleteAll();
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         var userEntities = new UserEntity[] {
@@ -42,7 +39,7 @@ public class DatabaseSeederDev {
         for (UserEntity userEntity : userEntities) {
             userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         }
-        LogManager.getLogger(this.getClass()).warn(this.userDao.saveAll(List.of(userEntities)));
+        this.userDao.saveAll(List.of(userEntities));
         LogManager.getLogger(this.getClass()).warn("------- Finish Load from JAVA -----------");
 
     }
