@@ -13,9 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author ard333
- */
 @Component
 public class JWTUtil {
 

@@ -2,13 +2,12 @@ package miw_padel_back.infraestructure.api.resources;
 
 import miw_padel_back.RestTestConfig;
 import miw_padel_back.RoleBuilder;
+import miw_padel_back.configuration.security.JWTUtil;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
-import miw_padel_back.domain.models.User;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
-import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     @Autowired
     private WebTestClient webTestClient;
 
+    @Autowired
+    private JWTUtil jwtUtil;
+
 
     @Test
     void testGivenEmailAndPasswordWhenLoginThenReturnCorrectJWT(){
@@ -42,7 +44,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(TokenDto.class)
-                .value(tokenDto -> assertNotNull(tokenDto.getToken()));
+                .value(tokenDto -> {
+                    assertEquals("ADMIN",jwtUtil.getAllClaimsFromToken(tokenDto.getToken()));
+
+                });
     }
 
     @Test
@@ -70,8 +75,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
                     assertEquals(EMAIL,saveUser.getEmail());
                     assertEquals("",saveUser.getPassword());
                     assertEquals(Gender.MALE,saveUser.getGender());
-                    assertTrue(saveUser.getRoles().contains(Role.ADMIN));
-                    assertTrue(saveUser.getRoles().contains(Role.PLAYER));
+                    assertTrue(saveUser.getRoles().contains(Role.ROLE_ADMIN));
+                    assertTrue(saveUser.getRoles().contains(Role.ROLE_PLAYER));
                 });
     }
 

@@ -11,9 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-/**
- * @author ard333
- */
 @Component
 public class PBKDF2Encoder implements PasswordEncoder {
 

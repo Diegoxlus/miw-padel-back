@@ -8,7 +8,6 @@ import miw_padel_back.domain.exceptions.NotFoundException;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
-import miw_padel_back.domain.models.User;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +58,8 @@ public class UserPersistenceMDBTest {
                     assertEquals(EMAIL,saveUser.getEmail());
                     assertEquals("",saveUser.getPassword());
                     assertEquals(Gender.MALE,saveUser.getGender());
-                    assertTrue(saveUser.getRoles().contains(Role.ADMIN));
-                    assertTrue(saveUser.getRoles().contains(Role.PLAYER));
+                    assertTrue(saveUser.getRoles().contains(Role.ROLE_ADMIN));
+                    assertTrue(saveUser.getRoles().contains(Role.ROLE_PLAYER));
                     return true;
                 })
                 .expectComplete()
@@ -86,8 +85,8 @@ public class UserPersistenceMDBTest {
                     String jwtToken = tokenDto.getToken();
 
                     assertEquals(EMAIL, this.jwtUtil.getUsernameFromToken(jwtToken));
-                    assertTrue(roleStringList.contains(Role.ADMIN.name()));
-                    assertTrue(roleStringList.contains(Role.PLAYER.name()));
+                    assertTrue(roleStringList.contains(Role.ROLE_ADMIN.name()));
+                    assertTrue(roleStringList.contains(Role.ROLE_PLAYER.name()));
                     assertFalse(jwtUtil.isTokenExpired(jwtToken));
                     return true;
                 })

@@ -13,12 +13,12 @@ public class RoleBuilder {
     }
 
     public RoleBuilder addAdminRole() {
-        this.roleList.add(Role.ADMIN);
+        this.roleList.add(Role.ROLE_ADMIN);
         return this;
     }
 
     public RoleBuilder addPlayerRole() {
-        this.roleList.add(Role.PLAYER);
+        this.roleList.add(Role.ROLE_PLAYER);
         return this;
     }
 

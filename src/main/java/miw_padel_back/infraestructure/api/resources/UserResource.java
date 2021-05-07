@@ -1,20 +1,18 @@
 package miw_padel_back.infraestructure.api.resources;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import miw_padel_back.domain.models.Role;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.services.UserService;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
-import static miw_padel_back.infraestructure.api.resources.UserResource.USER;
-
-/**
- * @author ard333
- */
 @RestController
 @RequestMapping(UserResource.USER)
 public class UserResource {
@@ -38,6 +36,12 @@ public class UserResource {
     @PostMapping(value = REGISTER)
     public Mono<UserRegisterDto> create(@RequestBody @Valid UserRegisterDto userRegisterDto) {
         return userService.create(userRegisterDto);
+    }
+
+    @GetMapping(value = "/prueba")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Mono<TokenDto> test(){
+        return Mono.just(new TokenDto("PRUEBA"));
     }
 
 }

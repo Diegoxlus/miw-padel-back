@@ -12,12 +12,12 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
  * @author ard333
  */
 @EnableWebFluxSecurity
-@EnableReactiveMethodSecurity
+@EnableReactiveMethodSecurity()
 public class WebSecurityConfig {
 
-    private final AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
-    private final SecurityContextRepository securityContextRepository;
+    private SecurityContextRepository securityContextRepository;
 
     @Autowired
     public WebSecurityConfig(AuthenticationManager authenticationManager, SecurityContextRepository securityContextRepository) {
@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                .pathMatchers("/user/*").permitAll()
+                .pathMatchers("/user/login","/user/register").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }
