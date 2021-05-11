@@ -1,7 +1,5 @@
 package miw_padel_back.infraestructure.api.resources;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import miw_padel_back.domain.models.Role;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.services.UserService;
@@ -29,7 +27,7 @@ public class UserResource {
     }
 
     @PostMapping(value = AUTH)
-    public Mono<TokenDto> login(@RequestBody UserLoginDto userLoginDto) {
+    public Mono<TokenDto> login(@RequestBody @Valid UserLoginDto userLoginDto) {
         return userService.login(userLoginDto);
     }
 

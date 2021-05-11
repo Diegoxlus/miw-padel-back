@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestConfig
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserPersistenceMDBTest {
+class UserPersistenceMDBTest {
     private static final String FIRST_NAME = "testName";
     private static final String FAMILY_NAME = "testFamilyName";
     private static final String EMAIL = "test@test.test";
@@ -63,14 +63,6 @@ public class UserPersistenceMDBTest {
                 .verify();
     }
 
-    @Test
-    void testGivenInvalidUserWhenCreateThenReturnError() {
-        StepVerifier
-                .create(this.userPersistenceMDB.create(UserRegisterDto.builder().build()))
-                .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
-                throwable.getMessage().equals("Conflict Exception: Empty fields"))
-                .verify();
-    }
 
     @Test
     @Order(2)

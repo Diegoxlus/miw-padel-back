@@ -1,15 +1,14 @@
 package miw_padel_back.infraestructure.api.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class UserLoginDto {
+    @NonNull
     private String email;
+    @NonNull
     private String password;
 }

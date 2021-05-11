@@ -7,7 +7,6 @@ import miw_padel_back.domain.models.Role;
 import miw_padel_back.domain.models.User;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.FatalBeanException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -46,13 +45,6 @@ public class UserEntity {
     @NonNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime birthDate;
-
-    /*
-    This constructor generate FatalBeanException when some field is null
-     */
-    public UserEntity(UserRegisterDto userRegisterDto) throws FatalBeanException {
-        BeanUtils.copyProperties(userRegisterDto, this);
-    }
 
     public User toUser() {
         var user = new User();
