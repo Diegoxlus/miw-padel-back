@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class UserEntity {
     private Boolean enabled;
     @NonNull
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     public User toUser() {
         var user = new User();

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -57,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
     @Test
     void testGivenUserWhenRegisterThenReturnUser(){
-        LocalDateTime localDateTime = LocalDateTime.of(1996,11,20,0,0,0);
+        LocalDate localDate = LocalDate.of(1996,11,11);
         UserRegisterDto user = UserRegisterDto.builder()
                 .firstName(FIRST_NAME)
                 .familyName(FAMILY_NAME)
@@ -65,7 +66,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
                 .password(PASSWORD)
                 .gender(Gender.MALE)
                 .roles(new RoleBuilder().addAdminRole().addPlayerRole().build())
-                .birthDate(localDateTime).build();
+                .birthDate(localDate)
+                .build();
 
         this.webTestClient
                 .post()
@@ -80,6 +82,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
                     assertEquals(EMAIL,saveUser.getEmail());
                     assertEquals("",saveUser.getPassword());
                     assertEquals(Gender.MALE,saveUser.getGender());
+                    assertEquals(localDate,saveUser.getBirthDate());
                     assertTrue(saveUser.getRoles().contains(Role.ROLE_ADMIN));
                     assertTrue(saveUser.getRoles().contains(Role.ROLE_PLAYER));
                 });

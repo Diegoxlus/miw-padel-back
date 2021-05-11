@@ -13,6 +13,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +34,7 @@ class UserPersistenceMDBTest {
 
     @BeforeAll
     public static void setUp(){
-        LocalDateTime localDateTime = LocalDateTime.of(1996,11,11,0,0,0);
+        LocalDate localDate = LocalDate.of(1996,11,11);
          user = UserRegisterDto.builder()
                  .firstName(FIRST_NAME)
                  .familyName(FAMILY_NAME)
@@ -41,7 +42,7 @@ class UserPersistenceMDBTest {
                  .password(PASSWORD)
                  .gender(Gender.MALE)
                  .roles(new RoleBuilder().addAdminRole().addPlayerRole().build())
-                 .birthDate(localDateTime).build();
+                 .birthDate(localDate).build();
     }
 
     @Test
