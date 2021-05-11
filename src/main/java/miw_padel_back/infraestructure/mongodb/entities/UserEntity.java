@@ -43,7 +43,7 @@ public class UserEntity {
     @NonNull
     private Boolean enabled;
     @NonNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime birthDate;
 
     public User toUser() {

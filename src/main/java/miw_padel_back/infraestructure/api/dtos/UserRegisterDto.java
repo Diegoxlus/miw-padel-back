@@ -1,5 +1,6 @@
 package miw_padel_back.infraestructure.api.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
@@ -23,6 +24,7 @@ public class UserRegisterDto  {
     @NonNull
     private Gender gender;
     private boolean enabled;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @NonNull
     private LocalDateTime birthDate;
 }
