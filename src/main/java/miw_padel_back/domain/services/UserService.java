@@ -1,5 +1,6 @@
 package miw_padel_back.domain.services;
 
+import miw_padel_back.configuration.security.JWTUtil;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.persistence.UserPersistence;
@@ -12,10 +13,12 @@ import reactor.core.publisher.Mono;
 public class UserService {
 
     private final UserPersistence userPersistence;
+    private final JWTUtil jwtUtil;
 
     @Autowired
-    public UserService(UserPersistence userPersistence) {
+    public UserService(UserPersistence userPersistence, JWTUtil jwtUtil) {
         this.userPersistence = userPersistence;
+        this.jwtUtil = jwtUtil;
     }
 
     public Mono<UserRegisterDto> create(UserRegisterDto userRegisterDto) {
@@ -23,6 +26,8 @@ public class UserService {
     }
 
     public Mono<TokenDto> login(UserLoginDto userLoginDto) {
-        return this.userPersistence.login(userLoginDto);
+        return this.userPersistence.login(userLoginDto)
+                .flatMap(user -> Mono.just(new TokenDto(this.jwtUtil.generateToken(user)))
+        );
     }
 }

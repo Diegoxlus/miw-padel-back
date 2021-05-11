@@ -20,13 +20,11 @@ import reactor.core.publisher.Mono;
 public class UserPersistenceMDB implements UserPersistence {
     private final UserReactive userReactive;
     private final PBKDF2Encoder passwordEncoder;
-    private final JWTUtil jwtUtil;
 
     @Autowired
-    public UserPersistenceMDB(UserReactive userReactive, PBKDF2Encoder passwordEncoder, JWTUtil jwtUtil) {
+    public UserPersistenceMDB(UserReactive userReactive, PBKDF2Encoder passwordEncoder) {
         this.userReactive = userReactive;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -53,11 +51,11 @@ public class UserPersistenceMDB implements UserPersistence {
     }
 
     @Override
-    public Mono<TokenDto> login(UserLoginDto userLoginDto) {
+    public Mono<User> login(UserLoginDto userLoginDto) {
         return this.findByEmail(userLoginDto.getEmail())
                 .flatMap(userDetails -> {
                     if (this.passwordEncoder.encode(userLoginDto.getPassword()).equals(userDetails.getPassword())) {
-                        return Mono.just(new TokenDto(this.jwtUtil.generateToken(userDetails)));
+                        return Mono.just(userDetails);
                     } else {
                         return Mono.error(new ConflictException("Incorrect password"));
                     }

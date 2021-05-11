@@ -39,7 +39,7 @@ public class ApiExceptionHandler {
     })
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
-        return new ErrorMessage(exception, HttpStatus.BAD_REQUEST.value());
+        return new ErrorMessage(exception.getLocalizedMessage(), exception, HttpStatus.BAD_REQUEST.value());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -78,5 +78,6 @@ public class ApiExceptionHandler {
     public ErrorMessage exception(Exception exception) { // The error must be corrected
         return new ErrorMessage(exception, HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
+
 
 }

@@ -13,5 +13,5 @@ public interface UserPersistence {
 
     Mono<User> findByEmail(String email);
 
-    Mono<TokenDto> login(UserLoginDto userLoginDto);
+    Mono<User> login(UserLoginDto userLoginDto);
 }

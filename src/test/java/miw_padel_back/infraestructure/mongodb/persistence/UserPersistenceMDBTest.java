@@ -31,9 +31,6 @@ public class UserPersistenceMDBTest {
     @Autowired
     private UserPersistenceMDB userPersistenceMDB;
 
-    @Autowired
-    private JWTUtil jwtUtil;
-
     @BeforeAll
     public static void setUp(){
         LocalDateTime localDateTime = LocalDateTime.of(1996,11,11,0,0,0);
@@ -77,16 +74,15 @@ public class UserPersistenceMDBTest {
 
     @Test
     @Order(2)
-    void testGivenEmailAndPasswordWhenLoginThenReturnCorrectJWT() {
+    void testGivenEmailAndPasswordWhenLoginThenReturnUser() {
         StepVerifier
                 .create(this.userPersistenceMDB.login(new UserLoginDto(EMAIL,PASSWORD)))
-                .expectNextMatches(tokenDto -> {
-                    var roleStringList = this.jwtUtil.getAllClaimsFromToken(tokenDto.getToken()).get("role", List.class);
-                    String jwtToken = tokenDto.getToken();
-
-                    assertEquals(EMAIL, this.jwtUtil.getUsernameFromToken(jwtToken));
-                    assertTrue(roleStringList.contains(Role.ROLE_ADMIN.name()));
-                    assertFalse(jwtUtil.isTokenExpired(jwtToken));
+                .expectNextMatches(user -> {
+                    assertEquals(FIRST_NAME,user.getFirstName());
+                    assertEquals(FAMILY_NAME,user.getFamilyName());
+                    assertEquals(EMAIL,user.getEmail());
+                    assertEquals(Gender.MALE,user.getGender());
+                    assertTrue(user.getRoles().contains(Role.ROLE_ADMIN));
                     return true;
                 })
                 .expectComplete()
