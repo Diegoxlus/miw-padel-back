@@ -15,6 +15,9 @@ import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +37,7 @@ class UserPersistenceMDBTest {
 
     @BeforeAll
     public static void setUp(){
-        LocalDate localDate = LocalDate.of(1996,11,11);
+        Date date = new GregorianCalendar(1996, Calendar.NOVEMBER, 11).getTime();
          user = UserRegisterDto.builder()
                  .firstName(FIRST_NAME)
                  .familyName(FAMILY_NAME)
@@ -42,7 +45,7 @@ class UserPersistenceMDBTest {
                  .password(PASSWORD)
                  .gender(Gender.MALE)
                  .roles(new RoleBuilder().addAdminRole().addPlayerRole().build())
-                 .birthDate(localDate).build();
+                 .birthDate(date).build();
     }
 
     @Test

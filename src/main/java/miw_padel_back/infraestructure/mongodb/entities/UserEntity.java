@@ -1,6 +1,5 @@
 package miw_padel_back.infraestructure.mongodb.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
@@ -13,8 +12,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -44,8 +42,7 @@ public class UserEntity {
     @NonNull
     private Boolean enabled;
     @NonNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
+    private Date birthDate;
 
     public User toUser() {
         var user = new User();

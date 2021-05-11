@@ -9,12 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.time.Instant;
+import java.util.*;
 
 @Service
 public class DatabaseSeederDev {
@@ -33,9 +29,9 @@ public class DatabaseSeederDev {
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         var userEntities = new UserEntity[] {
                 UserEntity.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
-                        .password("11111").matchingPassword("11111").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.now()).build(),
+                        .password("11111").matchingPassword("11111").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(Date.from(Instant.now())).build(),
                 UserEntity.builder().firstName("Andrea").familyName("Álvarez").email("aamarinho@gmail.com")
-                        .password("22222").matchingPassword("22222").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.now()).build()
+                        .password("22222").matchingPassword("22222").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(Date.from(Instant.now())).build()
         };
         for (UserEntity userEntity : userEntities) {
             userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
