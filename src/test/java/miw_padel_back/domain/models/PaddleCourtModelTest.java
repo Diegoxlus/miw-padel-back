@@ -41,4 +41,15 @@ class PaddleCourtModelTest {
                 .build();
         assertFalse(paddleCourt.checkTimes());
     }
+
+    @Test
+    void testGivenStartTimeMinorEndTimeWhenCheckThenReturnFalse(){
+        var paddleCourt  = PaddleCourt.builder()
+                .name("INCORRECT PADDLE COURT")
+                .disabled(false)
+                .startTime("09:00").startTime("10:10").startTime("12:00").startTime("13:30").startTime("15:00").startTime("16:30")
+                .endTime("10:30").endTime("12:00").endTime("13:30").endTime("15:00").endTime("16:30").endTime("18:00")
+                .build();
+        assertFalse(paddleCourt.checkTimes());
+    }
 }

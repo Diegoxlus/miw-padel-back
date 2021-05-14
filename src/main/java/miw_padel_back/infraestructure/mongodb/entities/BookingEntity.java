@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import miw_padel_back.domain.models.PaddleCourt;
 import miw_padel_back.domain.models.User;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Document(collection = "bookings")
 public class BookingEntity {
+    @DBRef
     private User user;
     private PaddleCourt paddleCourt;
     private Date date;
