@@ -3,6 +3,7 @@ package miw_padel_back.domain.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import miw_padel_back.domain.utils.StreamsUtils;
+import miw_padel_back.infraestructure.api.dtos.PaddleCourtAvailabilityDto;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -72,5 +73,16 @@ public class PaddleCourt {
 
         return checkFirstMinorOrEqualsSecondSequence(mergeTimes);
 
+    }
+
+    public PaddleCourtAvailabilityDto createPaddleCourtAvailabilityDtoWithHours(){
+        var paddleCourtAvailabilityDto = new PaddleCourtAvailabilityDto();
+        paddleCourtAvailabilityDto.setName(this.getName());
+        StreamsUtils.zip(startTimes.stream(),endTimes.stream(), (a,b) ->Stream.of(a+" - "+b)
+        )
+                .flatMap(Function.identity())
+                .collect(Collectors.toList())
+                .forEach(mergeTime -> paddleCourtAvailabilityDto.getAvailabilityHours().put(mergeTime,true));
+        return paddleCourtAvailabilityDto;
     }
 }

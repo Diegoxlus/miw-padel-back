@@ -12,6 +12,9 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
+import java.sql.Date;
+import java.time.Instant;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -102,6 +105,19 @@ class PaddleCourtMDBTest {
                 .create(this.paddleCourtPersistenceMDB.readByName(invalidName))
                 .expectErrorMatches(throwable -> throwable instanceof BadRequestException &&
                         throwable.getMessage().equals("BadRequest Exception: Incorrect name: "+ invalidName))
+                .verify();
+    }
+
+    @Test
+    void testGivenPaddleCourtNameAndDateWhenReadAvailabilityThenReturnPaddleCourtAvailabilityDto(){
+        StepVerifier
+                .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate("PC 1", Date.from(Instant.EPOCH)))
+                .expectNextMatches(paddleCourtAvailabilityDto -> {
+                    assertEquals("PC 1",paddleCourtAvailabilityDto.getName());
+                    assertEquals(false,paddleCourtAvailabilityDto.getAvailabilityHours().get("10:00 - 12:00"));
+                    return true;
+                })
+                .expectComplete()
                 .verify();
     }
 
