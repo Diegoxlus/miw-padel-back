@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(PaddleCourtResource.PADDLE_COURT)
@@ -36,10 +37,9 @@ public class PaddleCourtResource {
        return this.paddleCourtService.readAll();
     }
 
-    @GetMapping(PADDLE_COURT+NAME_REF+DATE_REF)
+    @GetMapping(NAME_REF+DATE_REF)
     public Mono<PaddleCourtAvailabilityDto> readAvailabilityByNameAndDate(@RequestParam() String nameReference, @RequestParam String dateReference) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat();
-        var date = dateFormat.parse(dateReference);
+        LocalDate date = LocalDate.parse(dateReference);
         return this.paddleCourtService.readAvailabilityByNameAndDate(nameReference,date);
     }
 }

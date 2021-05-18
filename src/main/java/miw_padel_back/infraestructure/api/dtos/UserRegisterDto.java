@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -26,5 +28,5 @@ public class UserRegisterDto  {
     private boolean enabled;
     @NonNull
     @JsonFormat(pattern = "yyyy-MM-dd",locale = "es_ES")
-    private Date birthDate;
+    private LocalDate birthDate;
 }

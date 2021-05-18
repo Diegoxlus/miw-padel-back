@@ -37,7 +37,7 @@ class UserPersistenceMDBTest {
 
     @BeforeAll
     public static void setUp(){
-        Date date = new GregorianCalendar(1996, Calendar.NOVEMBER, 11).getTime();
+        LocalDate date = LocalDate.of(1996,Calendar.NOVEMBER,11);
          user = UserRegisterDto.builder()
                  .firstName(FIRST_NAME)
                  .familyName(FAMILY_NAME)

@@ -3,10 +3,12 @@ package miw_padel_back.infraestructure.mongodb.persistence;
 import miw_padel_back.TestConfig;
 import miw_padel_back.domain.exceptions.BadRequestException;
 import miw_padel_back.domain.exceptions.ConflictException;
+import miw_padel_back.domain.exceptions.NotFoundException;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.PaddleCourt;
 import miw_padel_back.domain.models.PaddleCourtType;
 import miw_padel_back.domain.models.Role;
+import miw_padel_back.infraestructure.api.dtos.PaddleCourtAvailabilityDto;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,11 @@ import reactor.test.StepVerifier;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestConfig
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -57,7 +61,7 @@ class PaddleCourtMDBTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     void testGivenExistentPaddleCourtWhenCreateThenReturnConflictException(){
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.create(paddleCourt))
@@ -83,7 +87,7 @@ class PaddleCourtMDBTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     void testGivenPaddleCourtNameWhenReadByNameThenReturnPaddleCourt(){
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readByName(NAME))
@@ -111,13 +115,49 @@ class PaddleCourtMDBTest {
     @Test
     void testGivenPaddleCourtNameAndDateWhenReadAvailabilityThenReturnPaddleCourtAvailabilityDto(){
         StepVerifier
-                .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate("PC 1", Date.from(Instant.EPOCH)))
+                .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate("PC 1", LocalDate.EPOCH))
                 .expectNextMatches(paddleCourtAvailabilityDto -> {
                     assertEquals("PC 1",paddleCourtAvailabilityDto.getName());
                     assertEquals(false,paddleCourtAvailabilityDto.getAvailabilityHours().get("10:00 - 12:00"));
+                    assertEquals(true,paddleCourtAvailabilityDto.getAvailabilityHours().get("12:00 - 14:00"));
+                    assertEquals(LocalDate.EPOCH, paddleCourtAvailabilityDto.getDate());
                     return true;
                 })
                 .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void testGivenDateWhenReadAvailabilityByDateThenReturnListPaddleCourtAvailabilityDto(){
+        StepVerifier
+                .create(this.paddleCourtPersistenceMDB.readAvailabilityByDate(LocalDate.EPOCH))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(x -> true)
+                .expectRecordedMatches(paddleCourtAvailabilityDtos -> {
+                    var paddleCourtAvailabilityDtoList = new ArrayList<>(paddleCourtAvailabilityDtos);
+                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList,"PC 1");
+                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList,"PC 2");
+                    return true;
+
+                })
+        .verifyComplete();
+    }
+
+    private void verifyContainsPaddleCourtNameInList(List<PaddleCourtAvailabilityDto> paddleCourtAvailabilityDtoList, String reference){
+        assertNotNull(paddleCourtAvailabilityDtoList
+                .stream()
+                .filter(paddleCourtAvailabilityDto -> paddleCourtAvailabilityDto.getName().equals(reference))
+                .findAny()
+                .orElse(null));
+    }
+
+    @Test
+    void testGivenIncorrectPaddleCourtNameAndDateWhenReadAvailabilityThenReturnNotFound(){
+        var invalidName = "INVALID_NAME";
+        StepVerifier
+                .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate(invalidName,LocalDate.EPOCH))
+                .expectErrorMatches(throwable -> throwable instanceof NotFoundException &&
+                        throwable.getMessage().equals("Not Found Exception: Non existent paddle court with name: " + invalidName))
                 .verify();
     }
 

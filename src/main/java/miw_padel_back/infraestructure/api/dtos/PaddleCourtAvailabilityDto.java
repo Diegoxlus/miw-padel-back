@@ -2,6 +2,7 @@ package miw_padel_back.infraestructure.api.dtos;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -12,7 +13,6 @@ import java.util.HashMap;
 @ToString
 public class PaddleCourtAvailabilityDto {
     private String name;
-    private Date date;
+    private LocalDate date;
     private HashMap<String,Boolean> availabilityHours = new HashMap<>();
-
 }

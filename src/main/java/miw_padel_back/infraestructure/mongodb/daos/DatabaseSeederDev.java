@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -34,15 +35,15 @@ public class DatabaseSeederDev {
     }
 
     private void seedDataBase() {
-        this.userDao.deleteAll();
         this.paddleCourtDao.deleteAll();
         this.bookingDao.deleteAll();
+        this.userDao.deleteAll();
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         var userEntities = new UserEntity[] {
                 UserEntity.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
-                        .password("11111").matchingPassword("11111").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(Date.from(Instant.now())).build(),
+                        .password("11111").matchingPassword("11111").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Andrea").familyName("Álvarez").email("aamarinho@gmail.com")
-                        .password("22222").matchingPassword("22222").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(Date.from(Instant.now())).build()
+                        .password("22222").matchingPassword("22222").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build()
         };
 
         var paddleCourtEntities = new PaddleCourtEntity [] {
@@ -66,8 +67,15 @@ public class DatabaseSeederDev {
 
 
         var bookings = new BookingEntity[]{
-                BookingEntity.builder().user(userEntities[0]).paddleCourt(paddleCourtEntities[0]).date(Date.from(Instant.EPOCH)).timeRange("10:00 - 12:00").build(),
-                BookingEntity.builder().user(userEntities[1]).paddleCourt(paddleCourtEntities[1]).date(Date.from(Instant.EPOCH)).timeRange("12:00 - 14:00").build()
+                BookingEntity.builder().user(userEntities[0])
+                        .paddleCourt(paddleCourtEntities[0])
+                        .date(LocalDate.EPOCH)
+                        .timeRange("10:00 - 12:00").build(),
+                BookingEntity.builder()
+                        .user(userEntities[1])
+                        .paddleCourt(paddleCourtEntities[1])
+                        .date(LocalDate.EPOCH)
+                        .timeRange("12:00 - 14:00").build()
 
         };
         this.bookingDao.saveAll(Arrays.asList(bookings));

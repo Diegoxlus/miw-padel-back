@@ -15,7 +15,10 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
@@ -47,8 +50,8 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
     }
 
     @Override
-    public Mono<PaddleCourtAvailabilityDto> readAvailabilityByNameAndDate(String name, Date date) {
-        return this.paddleCourtReactive.readFirstByName(name)
+    public Mono<PaddleCourtAvailabilityDto> readAvailabilityByNameAndDate(String name, LocalDate date) {
+        return this.assertNameExists(name)
                 .map(paddleCourtEntity -> {
                     var paddleCourtAvailabilityDto = paddleCourtEntity
                             .toPaddleCourt()
@@ -65,27 +68,34 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
                         })
                         .then(Mono.just(paddleCourtAvailabilityDto))
                 );
-/*
-        return this.bookingReactive.findAllByDate(date)
-                .filter(x -> x.getPaddleCourt().getName().equals(name))
-                .doOnNext(y -> {
-                    if (paddleCourtAvailabilityDtoF.getAvailabilityHours().containsKey(y.getTimeRange())) {
-                        paddleCourtAvailabilityDtoF.getAvailabilityHours().put(y.getTimeRange(), false);
-                    }
-                })
-                .then(Mono.just(paddleCourtAvailabilityDtoF));*/
+    }
+
+    public Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date) {
+        List<PaddleCourtAvailabilityDto> paddleCourtAvailabilityDtoFlux = new ArrayList<>();
+      return this.bookingReactive.findAllByDate(date)
+                .flatMap(bookingEntity -> this.paddleCourtReactive.readFirstByNameOrderByName(bookingEntity.getPaddleCourt().getName())
+                    .map(paddleCourtEntity -> {
+                        var paddleCourtAvailabilityDto = paddleCourtEntity
+                                .toPaddleCourt()
+                                .createPaddleCourtAvailabilityDtoWithHours();
+
+                        paddleCourtAvailabilityDto.setDate(date);
+                        paddleCourtAvailabilityDtoFlux.add(paddleCourtAvailabilityDto);
+                        return paddleCourtAvailabilityDtoFlux;
+                    })
+                    .flatMapMany(Flux::fromIterable));
     }
 
 
     public Mono<Void> assertNameNotExists(String name) {
-        return this.paddleCourtReactive.readFirstByName(name)
+        return this.paddleCourtReactive.readFirstByNameOrderByName(name)
                 .flatMap(userEntity -> Mono.error(
                         new ConflictException("Name "+name+ "already exists")
                 ));
     }
 
     Mono<PaddleCourtEntity> assertNameExists(String name) {
-        return this.paddleCourtReactive.readFirstByName(name)
+        return this.paddleCourtReactive.readFirstByNameOrderByName(name)
                 .switchIfEmpty(Mono.error(
                         new NotFoundException("Non existent paddle court with name: " + name))
                 );

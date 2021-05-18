@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class UserEntity {
     @NonNull
     private Boolean enabled;
     @NonNull
-    private Date birthDate;
+    private LocalDate birthDate;
 
     public User toUser() {
         var user = new User();

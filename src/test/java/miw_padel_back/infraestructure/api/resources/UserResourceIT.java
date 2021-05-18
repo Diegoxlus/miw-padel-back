@@ -62,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
     @Test
     void testGivenUserWhenRegisterThenReturnUser(){
-        Date date = new GregorianCalendar(1996, Calendar.NOVEMBER, 11).getGregorianChange() ;
+        LocalDate date = LocalDate.of(1996,Calendar.NOVEMBER,11);
         UserRegisterDto user = UserRegisterDto.builder()
                 .firstName(FIRST_NAME)
                 .familyName(FAMILY_NAME)
