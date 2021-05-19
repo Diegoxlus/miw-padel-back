@@ -112,7 +112,7 @@ class PaddleCourtMDBTest {
                 .verify();
     }
     */
- 
+
 
     @Test
     void testGivenPaddleCourtNameAndDateWhenReadAvailabilityThenReturnPaddleCourtAvailabilityDto(){
