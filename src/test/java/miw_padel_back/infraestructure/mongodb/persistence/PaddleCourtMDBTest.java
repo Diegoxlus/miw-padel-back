@@ -43,7 +43,7 @@ class PaddleCourtMDBTest {
                 .endTime("10:30").endTime("12:00").endTime("13:30").endTime("15:00").endTime("16:30").endTime("18:00")
                 .build();
     }
-
+/*
     @Test
     @Order(1)
     void testGivenPaddleCourtWhenCreateThenReturnPaddleCourt(){
@@ -111,6 +111,8 @@ class PaddleCourtMDBTest {
                         throwable.getMessage().equals("BadRequest Exception: Incorrect name: "+ invalidName))
                 .verify();
     }
+    */
+ 
 
     @Test
     void testGivenPaddleCourtNameAndDateWhenReadAvailabilityThenReturnPaddleCourtAvailabilityDto(){
