@@ -14,8 +14,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
@@ -40,9 +38,8 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
         return null;
     }
 
-    @Override
-    public Flux<PaddleCourt> readAll() {
-        return paddleCourtReactive.findAll()
+    public Flux<PaddleCourt> readAllOrderByName() {
+        return paddleCourtReactive.findAllByOrderByName()
                 .map(PaddleCourtEntity::toPaddleCourt);
     }
 
@@ -51,7 +48,7 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
                 .map(paddleCourtEntity -> {
                     var paddleCourtAvailabilityDto = paddleCourtEntity
                             .toPaddleCourt()
-                            .createPaddleCourtAvailabilityDtoWithHours();
+                            .createPaddleCourtAvailabilityDtoWithHours(date);
                     paddleCourtAvailabilityDto.setDate(date);
                     return paddleCourtAvailabilityDto;
                 })
@@ -68,17 +65,18 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
 
     @Override
     public Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date) {
-            return this.readAll()
-                    .map(PaddleCourt::createPaddleCourtAvailabilityDtoWithHours)
-                    .flatMap(paddleCourtAvailabilityDto -> {
-                        return this.bookingReactive.findAllByDate(date)
-                        .doOnNext(bookingEntity -> {
-                            if(paddleCourtAvailabilityDto.getAvailabilityHours().containsKey(bookingEntity.getTimeRange()) && bookingEntity.getPaddleCourt().getName().equals(paddleCourtAvailabilityDto.getName())){
-                                paddleCourtAvailabilityDto.getAvailabilityHours().put(bookingEntity.getTimeRange(),false);
-                            }
-                        }).map(x -> paddleCourtAvailabilityDto);
-                    })
-                    .distinct(PaddleCourtAvailabilityDto::getName);
+        return this.readAllOrderByName()
+                .map(paddleCourt -> paddleCourt.createPaddleCourtAvailabilityDtoWithHours(date))
+                .flatMap(paddleCourtAvailabilityDto -> {
+                    return this.bookingReactive
+                            .findAllByDate(date)
+                            .doOnNext(bookingEntity -> {
+                                if (paddleCourtAvailabilityDto.getAvailabilityHours().containsKey(bookingEntity.getTimeRange()) && bookingEntity.getPaddleCourt().getName().equals(paddleCourtAvailabilityDto.getName())) {
+                                    paddleCourtAvailabilityDto.getAvailabilityHours().put(bookingEntity.getTimeRange(), false);
+                                }
+                            }).thenMany(Flux.just(paddleCourtAvailabilityDto));
+                })
+                .distinct(PaddleCourtAvailabilityDto::getName);
 
     }
 

@@ -20,7 +20,7 @@ public class PaddleCourtService {
     }
 
     public Flux<PaddleCourt> readAll() {
-        return this.paddleCourtPersistence.readAll();
+        return this.paddleCourtPersistence.readAllOrderByName();
     }
 
     public Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date) {

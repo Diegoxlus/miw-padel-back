@@ -5,6 +5,7 @@ import lombok.*;
 import miw_padel_back.domain.utils.StreamsUtils;
 import miw_padel_back.infraestructure.api.dtos.PaddleCourtAvailabilityDto;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,9 +76,10 @@ public class PaddleCourt {
 
     }
 
-    public PaddleCourtAvailabilityDto createPaddleCourtAvailabilityDtoWithHours() {
+    public PaddleCourtAvailabilityDto createPaddleCourtAvailabilityDtoWithHours(LocalDate date) {
         var paddleCourtAvailabilityDto = new PaddleCourtAvailabilityDto();
         paddleCourtAvailabilityDto.setName(this.getName());
+        paddleCourtAvailabilityDto.setDate(date);
         StreamsUtils.zip(startTimes.stream(), endTimes.stream(), (a, b) -> Stream.of(a + " - " + b)
         )
                 .flatMap(Function.identity())

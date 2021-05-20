@@ -14,7 +14,7 @@ public interface PaddleCourtPersistence {
 
     Mono<PaddleCourt> readByName(String name);
 
-    Flux<PaddleCourt> readAll();
+    Flux<PaddleCourt> readAllOrderByName();
 
     Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date);
 }

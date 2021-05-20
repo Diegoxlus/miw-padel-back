@@ -1,5 +1,6 @@
 package miw_padel_back.infraestructure.api.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.TreeMap;
 @ToString
 public class PaddleCourtAvailabilityDto {
     private String name;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private Map<String, Boolean> availabilityHours = new TreeMap<>();
 }
