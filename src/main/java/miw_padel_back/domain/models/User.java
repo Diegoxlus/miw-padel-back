@@ -1,5 +1,6 @@
 package miw_padel_back.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +28,7 @@ public class User implements UserDetails {
     private String password;
     private Gender gender;
     private boolean enabled;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
 

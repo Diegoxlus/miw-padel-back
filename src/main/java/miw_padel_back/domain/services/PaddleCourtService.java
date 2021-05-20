@@ -9,7 +9,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Service
 public class PaddleCourtService {
@@ -24,7 +23,7 @@ public class PaddleCourtService {
         return this.paddleCourtPersistence.readAll();
     }
 
-    public Mono<PaddleCourtAvailabilityDto> readAvailabilityByNameAndDate(String nameReference, LocalDate date) {
-        return this.paddleCourtPersistence.readAvailabilityByNameAndDate(nameReference,date);
+    public Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date) {
+        return this.paddleCourtPersistence.readAvailabilityByDate(date);
     }
 }

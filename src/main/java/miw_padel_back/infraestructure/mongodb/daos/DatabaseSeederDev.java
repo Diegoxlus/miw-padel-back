@@ -14,9 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class DatabaseSeederDev {
@@ -39,22 +40,22 @@ public class DatabaseSeederDev {
         this.bookingDao.deleteAll();
         this.userDao.deleteAll();
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
-        var userEntities = new UserEntity[] {
+        var userEntities = new UserEntity[]{
                 UserEntity.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
                         .password("11111").matchingPassword("11111").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Andrea").familyName("Álvarez").email("aamarinho@gmail.com")
                         .password("22222").matchingPassword("22222").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build()
         };
 
-        var paddleCourtEntities = new PaddleCourtEntity [] {
+        var paddleCourtEntities = new PaddleCourtEntity[]{
                 PaddleCourtEntity.builder().name("PC 1").paddleCourtType(PaddleCourtType.INDOOR)
-                        .startTimes(Arrays.asList("10:00","12:00"))
-                        .endTimes(Arrays.asList("12:00","14:00"))
+                        .startTimes(Arrays.asList("10:00", "12:00"))
+                        .endTimes(Arrays.asList("12:00", "14:00"))
                         .disabled(false)
                         .build(),
                 PaddleCourtEntity.builder().name("PC 2").paddleCourtType(PaddleCourtType.INDOOR)
-                        .startTimes(Arrays.asList("10:00","12:00","14:00"))
-                        .endTimes(Arrays.asList("12:00","14:00","16:00"))
+                        .startTimes(Arrays.asList("10:00", "12:00", "14:00"))
+                        .endTimes(Arrays.asList("12:00", "14:00", "16:00"))
                         .disabled(false)
                         .build()
         };

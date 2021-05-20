@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,19 +16,19 @@ public class BookingPersistenceMDBTest {
     private BookingPersistenceMDB bookingPersistenceMDB;
 
     @Test
-    void testGivenDateWhenReadByDateThenReturnBookings(){
+    void testGivenDateWhenReadByDateThenReturnBookings() {
         StepVerifier
                 .create(this.bookingPersistenceMDB.readByDate(LocalDate.EPOCH))
                 .expectNextMatches(bookingDto -> {
-                    assertEquals(LocalDate.EPOCH,bookingDto.getDate());
-                    assertEquals("lusky1996@gmail.com",bookingDto.getEmail());
-                    assertEquals("10:00 - 12:00",bookingDto.getTimeRange());
+                    assertEquals(LocalDate.EPOCH, bookingDto.getDate());
+                    assertEquals("lusky1996@gmail.com", bookingDto.getEmail());
+                    assertEquals("10:00 - 12:00", bookingDto.getTimeRange());
                     return true;
                 })
                 .expectNextMatches(bookingDto -> {
-                    assertEquals(LocalDate.EPOCH,bookingDto.getDate());
+                    assertEquals(LocalDate.EPOCH, bookingDto.getDate());
                     //assertEquals("lusky1996@gmail.com",booking.getUser().getEmail());
-                    assertEquals("12:00 - 14:00",bookingDto.getTimeRange());
+                    assertEquals("12:00 - 14:00", bookingDto.getTimeRange());
                     return true;
                 })
                 .expectComplete()

@@ -2,7 +2,6 @@ package miw_padel_back.infraestructure.api;
 
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.annotation.ElementType;

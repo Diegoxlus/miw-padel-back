@@ -26,17 +26,19 @@ public class BookingResource {
     public BookingResource(BookingService bookingService) {
         this.bookingService = bookingService;
     }
+
     @GetMapping()
-    public Flux<BookingDto> readBookingByDate(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+    public Flux<BookingDto> readBookingsByOptionalDate(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMapMany(authentication -> {
-                    System.out.println(authentication.getAuthorities().toString());
-                    if (date != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-                        return this.bookingService.readBookingByDate(date);
+                    if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                        if(date==null) return this.bookingService.readAll();
+                        else return this.bookingService.readBookingsByDate(date);
                     }
-                    if (date != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PLAYER"))) {
-                        String email = authentication.getPrincipal().toString();
-                        return this.bookingService.readBookingsByEmail(email);
+                    if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PLAYER"))) {
+                        var email = authentication.getPrincipal().toString();
+                        if(date == null) return this.bookingService.readBookingsByEmail(email);
+                        else return this.bookingService.readBookingsByEmailAndDate(email,date);
                     } else {
                         return Flux.error(new ForbiddenException("Forbidden"));
                     }

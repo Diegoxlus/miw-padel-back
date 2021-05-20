@@ -3,8 +3,8 @@ package miw_padel_back.infraestructure.api.dtos;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Data
 @NoArgsConstructor
@@ -14,5 +14,5 @@ import java.util.HashMap;
 public class PaddleCourtAvailabilityDto {
     private String name;
     private LocalDate date;
-    private HashMap<String,Boolean> availabilityHours = new HashMap<>();
+    private Map<String, Boolean> availabilityHours = new TreeMap<>();
 }

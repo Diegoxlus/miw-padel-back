@@ -1,9 +1,9 @@
 package miw_padel_back.domain.services;
 
 import miw_padel_back.configuration.security.JWTUtil;
-import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
-import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.persistence.UserPersistence;
+import miw_padel_back.infraestructure.api.dtos.TokenDto;
+import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +28,6 @@ public class UserService {
     public Mono<TokenDto> login(UserLoginDto userLoginDto) {
         return this.userPersistence.login(userLoginDto)
                 .flatMap(user -> Mono.just(new TokenDto(this.jwtUtil.generateToken(user)))
-        );
+                );
     }
 }

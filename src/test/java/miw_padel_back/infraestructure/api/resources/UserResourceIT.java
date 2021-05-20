@@ -5,29 +5,23 @@ import miw_padel_back.RoleBuilder;
 import miw_padel_back.configuration.security.JWTUtil;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
-import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
+import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static miw_padel_back.infraestructure.api.resources.UserResource.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RestTestConfig
- class UserResourceIT {
+class UserResourceIT {
 
     private static final String FIRST_NAME = "testNameIT";
     private static final String FAMILY_NAME = "testFamilyNameIT";
@@ -42,11 +36,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
     @Test
-    void testGivenEmailAndPasswordWhenLoginThenReturnCorrectJWT(){
+    void testGivenEmailAndPasswordWhenLoginThenReturnCorrectJWT() {
         this.webTestClient
                 .post()
-                .uri(USER+AUTH)
-                .body(Mono.just(new UserLoginDto("lusky1996@gmail.com","11111")), UserLoginDto.class)
+                .uri(USER + AUTH)
+                .body(Mono.just(new UserLoginDto("lusky1996@gmail.com", "11111")), UserLoginDto.class)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(TokenDto.class)
@@ -61,8 +55,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     }
 
     @Test
-    void testGivenUserWhenRegisterThenReturnUser(){
-        LocalDate date = LocalDate.of(1996,Calendar.NOVEMBER,11);
+    void testGivenUserWhenRegisterThenReturnUser() {
+        LocalDate date = LocalDate.of(1996, Calendar.NOVEMBER, 11);
         UserRegisterDto user = UserRegisterDto.builder()
                 .firstName(FIRST_NAME)
                 .familyName(FAMILY_NAME)
@@ -75,18 +69,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
         this.webTestClient
                 .post()
-                .uri(USER+REGISTER)
+                .uri(USER + REGISTER)
                 .body(Mono.just(user), UserRegisterDto.class)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserRegisterDto.class)
                 .value(saveUser -> {
-                    assertEquals(FIRST_NAME,saveUser.getFirstName());
-                    assertEquals(FAMILY_NAME,saveUser.getFamilyName());
-                    assertEquals(EMAIL,saveUser.getEmail());
-                    assertEquals("",saveUser.getPassword());
-                    assertEquals(Gender.MALE,saveUser.getGender());
-                    assertEquals(date,saveUser.getBirthDate());
+                    assertEquals(FIRST_NAME, saveUser.getFirstName());
+                    assertEquals(FAMILY_NAME, saveUser.getFamilyName());
+                    assertEquals(EMAIL, saveUser.getEmail());
+                    assertEquals("", saveUser.getPassword());
+                    assertEquals(Gender.MALE, saveUser.getGender());
+                    assertEquals(date, saveUser.getBirthDate());
                     assertTrue(saveUser.getRoles().contains(Role.ROLE_ADMIN));
                     assertTrue(saveUser.getRoles().contains(Role.ROLE_PLAYER));
                 });

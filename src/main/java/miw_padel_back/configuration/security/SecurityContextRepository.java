@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 public class SecurityContextRepository implements ServerSecurityContextRepository {
     private static final int NUMBER_CHARS_BEARER = 7;
     private static final String BEARER = "Bearer ";
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
     public SecurityContextRepository(AuthenticationManager authenticationManager) {

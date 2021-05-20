@@ -1,26 +1,23 @@
 package miw_padel_back.infraestructure.mongodb.persistence;
 
 import miw_padel_back.TestConfig;
-import miw_padel_back.domain.exceptions.BadRequestException;
-import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.exceptions.NotFoundException;
-import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.PaddleCourt;
 import miw_padel_back.domain.models.PaddleCourtType;
-import miw_padel_back.domain.models.Role;
 import miw_padel_back.infraestructure.api.dtos.PaddleCourtAvailabilityDto;
-import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestConfig
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -35,7 +32,7 @@ class PaddleCourtMDBTest {
     private PaddleCourtPersistenceMDB paddleCourtPersistenceMDB;
 
     @BeforeAll
-    public static void setUp(){
+    public static void setUp() {
         paddleCourt = PaddleCourt.builder()
                 .name(NAME)
                 .disabled(DISABLED)
@@ -115,13 +112,13 @@ class PaddleCourtMDBTest {
 
 
     @Test
-    void testGivenPaddleCourtNameAndDateWhenReadAvailabilityThenReturnPaddleCourtAvailabilityDto(){
+    void testGivenPaddleCourtNameAndDateWhenReadAvailabilityThenReturnPaddleCourtAvailabilityDto() {
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate("PC 1", LocalDate.EPOCH))
                 .expectNextMatches(paddleCourtAvailabilityDto -> {
-                    assertEquals("PC 1",paddleCourtAvailabilityDto.getName());
-                    assertEquals(false,paddleCourtAvailabilityDto.getAvailabilityHours().get("10:00 - 12:00"));
-                    assertEquals(true,paddleCourtAvailabilityDto.getAvailabilityHours().get("12:00 - 14:00"));
+                    assertEquals("PC 1", paddleCourtAvailabilityDto.getName());
+                    assertEquals(false, paddleCourtAvailabilityDto.getAvailabilityHours().get("10:00 - 12:00"));
+                    assertEquals(true, paddleCourtAvailabilityDto.getAvailabilityHours().get("12:00 - 14:00"));
                     assertEquals(LocalDate.EPOCH, paddleCourtAvailabilityDto.getDate());
                     return true;
                 })
@@ -130,22 +127,22 @@ class PaddleCourtMDBTest {
     }
 
     @Test
-    void testGivenDateWhenReadAvailabilityByDateThenReturnListPaddleCourtAvailabilityDto(){
+    void testGivenDateWhenReadAvailabilityByDateThenReturnListPaddleCourtAvailabilityDto() {
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readAvailabilityByDate(LocalDate.EPOCH))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(x -> true)
                 .expectRecordedMatches(paddleCourtAvailabilityDtos -> {
                     var paddleCourtAvailabilityDtoList = new ArrayList<>(paddleCourtAvailabilityDtos);
-                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList,"PC 1");
-                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList,"PC 2");
+                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList, "PC 1");
+                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList, "PC 2");
                     return true;
 
                 })
-        .verifyComplete();
+                .verifyComplete();
     }
 
-    private void verifyContainsPaddleCourtNameInList(List<PaddleCourtAvailabilityDto> paddleCourtAvailabilityDtoList, String reference){
+    private void verifyContainsPaddleCourtNameInList(List<PaddleCourtAvailabilityDto> paddleCourtAvailabilityDtoList, String reference) {
         assertNotNull(paddleCourtAvailabilityDtoList
                 .stream()
                 .filter(paddleCourtAvailabilityDto -> paddleCourtAvailabilityDto.getName().equals(reference))
@@ -154,10 +151,10 @@ class PaddleCourtMDBTest {
     }
 
     @Test
-    void testGivenIncorrectPaddleCourtNameAndDateWhenReadAvailabilityThenReturnNotFound(){
+    void testGivenIncorrectPaddleCourtNameAndDateWhenReadAvailabilityThenReturnNotFound() {
         var invalidName = "INVALID_NAME";
         StepVerifier
-                .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate(invalidName,LocalDate.EPOCH))
+                .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate(invalidName, LocalDate.EPOCH))
                 .expectErrorMatches(throwable -> throwable instanceof NotFoundException &&
                         throwable.getMessage().equals("Not Found Exception: Non existent paddle court with name: " + invalidName))
                 .verify();

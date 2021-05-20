@@ -15,9 +15,9 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableReactiveMethodSecurity()
 public class WebSecurityConfig {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    private SecurityContextRepository securityContextRepository;
+    private final SecurityContextRepository securityContextRepository;
 
     @Autowired
     public WebSecurityConfig(AuthenticationManager authenticationManager, SecurityContextRepository securityContextRepository) {
@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                .pathMatchers("/user/login","/user/register","/booking*").permitAll()
+                .pathMatchers("/user/login", "/user/register", "/booking*","/paddle-court*").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }

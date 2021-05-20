@@ -27,7 +27,7 @@ public class PaddleCourt {
     private List<String> endTimes;
     private boolean disabled;
 
-    Boolean checkTimes(){
+    Boolean checkTimes() {
         return checkFirstMinorSecondSequence(startTimes)
                 && checkFirstMinorSecondSequence(endTimes)
                 && checkStartEndTime();
@@ -39,7 +39,7 @@ public class PaddleCourt {
         if (!times.isEmpty()) {
             times.forEach(startTime -> localTimes.add(LocalTime.parse(startTime)));
             localTimes.stream().reduce((first, second) -> {
-                if (first.compareTo(second)>=0) {
+                if (first.compareTo(second) >= 0) {
                     correctTime.set(false);
                 }
                 return second;
@@ -54,7 +54,7 @@ public class PaddleCourt {
         if (!times.isEmpty()) {
             times.forEach(startTime -> localTimes.add(LocalTime.parse(startTime)));
             localTimes.stream().reduce((first, second) -> {
-                if (first.compareTo(second)>0) {
+                if (first.compareTo(second) > 0) {
                     correctTime.set(false);
                 }
                 return second;
@@ -63,11 +63,11 @@ public class PaddleCourt {
         return correctTime.get();
     }
 
-    private Boolean checkStartEndTime(){
-        if(this.startTimes.size()!=this.endTimes.size()){
+    private Boolean checkStartEndTime() {
+        if (this.startTimes.size() != this.endTimes.size()) {
             return false;
         }
-        var mergeTimes =  StreamsUtils.zip(startTimes.stream(),endTimes.stream(), Stream::of)
+        var mergeTimes = StreamsUtils.zip(startTimes.stream(), endTimes.stream(), Stream::of)
                 .flatMap(Function.identity())
                 .collect(Collectors.toList());
 
@@ -75,14 +75,14 @@ public class PaddleCourt {
 
     }
 
-    public PaddleCourtAvailabilityDto createPaddleCourtAvailabilityDtoWithHours(){
+    public PaddleCourtAvailabilityDto createPaddleCourtAvailabilityDtoWithHours() {
         var paddleCourtAvailabilityDto = new PaddleCourtAvailabilityDto();
         paddleCourtAvailabilityDto.setName(this.getName());
-        StreamsUtils.zip(startTimes.stream(),endTimes.stream(), (a,b) ->Stream.of(a+" - "+b)
+        StreamsUtils.zip(startTimes.stream(), endTimes.stream(), (a, b) -> Stream.of(a + " - " + b)
         )
                 .flatMap(Function.identity())
                 .collect(Collectors.toList())
-                .forEach(mergeTime -> paddleCourtAvailabilityDto.getAvailabilityHours().put(mergeTime,true));
+                .forEach(mergeTime -> paddleCourtAvailabilityDto.getAvailabilityHours().put(mergeTime, true));
         return paddleCourtAvailabilityDto;
     }
 }

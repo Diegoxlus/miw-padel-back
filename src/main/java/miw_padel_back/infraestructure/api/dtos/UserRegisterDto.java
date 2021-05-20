@@ -6,14 +6,13 @@ import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.Role;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class UserRegisterDto  {
+public class UserRegisterDto {
     @NonNull
     private String firstName;
     @NonNull
@@ -27,6 +26,6 @@ public class UserRegisterDto  {
     private Gender gender;
     private boolean enabled;
     @NonNull
-    @JsonFormat(pattern = "yyyy-MM-dd",locale = "es_ES")
+    @JsonFormat(pattern = "yyyy-MM-dd", locale = "es_ES")
     private LocalDate birthDate;
 }

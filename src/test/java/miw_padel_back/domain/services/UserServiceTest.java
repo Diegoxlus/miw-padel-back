@@ -25,7 +25,7 @@ public class UserServiceTest {
     @Test
     void testGivenEmailAndPasswordWhenLoginThenReturnCorrectJWT() {
         StepVerifier
-                .create(this.userService.login(new UserLoginDto(EMAIL,"11111")))
+                .create(this.userService.login(new UserLoginDto(EMAIL, "11111")))
                 .expectNextMatches(tokenDto -> {
                     var roleStringList = this.jwtUtil.getAllClaimsFromToken(tokenDto.getToken()).get("role", List.class);
                     String jwtToken = tokenDto.getToken();

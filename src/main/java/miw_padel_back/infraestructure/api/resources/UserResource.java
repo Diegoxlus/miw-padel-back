@@ -1,8 +1,8 @@
 package miw_padel_back.infraestructure.api.resources;
 
-import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
-import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.domain.services.UserService;
+import miw_padel_back.infraestructure.api.dtos.TokenDto;
+import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,7 +38,7 @@ public class UserResource {
 
     @GetMapping(value = "/prueba")
     @PreAuthorize("hasRole('ADMIN')")
-    public Mono<TokenDto> test(){
+    public Mono<TokenDto> test() {
         return Mono.just(new TokenDto("PRUEBA"));
     }
 

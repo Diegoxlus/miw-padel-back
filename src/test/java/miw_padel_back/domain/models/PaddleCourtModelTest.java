@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PaddleCourtModelTest {
 
     @Test
-    void testGivenCorrectHoursWhenCheckThenReturnTrue(){
-        var paddleCourt  = PaddleCourt.builder()
+    void testGivenCorrectHoursWhenCheckThenReturnTrue() {
+        var paddleCourt = PaddleCourt.builder()
                 .name("CORRECT PADDLE COURT")
                 .disabled(false)
                 .startTime("09:00").startTime("10:30").startTime("12:00").startTime("13:30").startTime("15:00").startTime("16:30")
@@ -21,8 +21,8 @@ class PaddleCourtModelTest {
     }
 
     @Test
-    void testGivenEqualsStartTimeWhenCheckThenReturnFalse(){
-        var paddleCourt  = PaddleCourt.builder()
+    void testGivenEqualsStartTimeWhenCheckThenReturnFalse() {
+        var paddleCourt = PaddleCourt.builder()
                 .name("INCORRECT PADDLE COURT")
                 .disabled(false)
                 .startTime("09:00").startTime("09:00").startTime("12:00").startTime("13:30").startTime("15:00").startTime("16:30")
@@ -32,8 +32,8 @@ class PaddleCourtModelTest {
     }
 
     @Test
-    void testGivenIncorrectSequenceStartTimeWhenCheckThenReturnFalse(){
-        var paddleCourt  = PaddleCourt.builder()
+    void testGivenIncorrectSequenceStartTimeWhenCheckThenReturnFalse() {
+        var paddleCourt = PaddleCourt.builder()
                 .name("INCORRECT PADDLE COURT")
                 .disabled(false)
                 .startTime("09:00").startTime("08:00").startTime("12:00").startTime("13:30").startTime("15:00").startTime("16:30")
@@ -43,8 +43,8 @@ class PaddleCourtModelTest {
     }
 
     @Test
-    void testGivenStartTimeMinorEndTimeWhenCheckThenReturnFalse(){
-        var paddleCourt  = PaddleCourt.builder()
+    void testGivenStartTimeMinorEndTimeWhenCheckThenReturnFalse() {
+        var paddleCourt = PaddleCourt.builder()
                 .name("INCORRECT PADDLE COURT")
                 .disabled(false)
                 .startTime("09:00").startTime("10:10").startTime("12:00").startTime("13:30").startTime("15:00").startTime("16:30")
