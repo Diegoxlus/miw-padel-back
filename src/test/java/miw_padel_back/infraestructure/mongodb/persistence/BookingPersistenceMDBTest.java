@@ -39,7 +39,7 @@ public class BookingPersistenceMDBTest {
     @Test
     void test(){
         BookingDto bookingDto = BookingDto.builder()
-                .date(LocalDate.EPOCH)
+                .date(LocalDate.EPOCH.plusDays(2))
                 .email("aamarinho@gmail.com")
                 .paddleCourtName("PC 2")
                 .timeRange("10:00 - 12:00")
