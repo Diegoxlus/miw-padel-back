@@ -29,6 +29,11 @@ public class BookingEntity {
     private LocalDate date;
     private String timeRange;
 
+    public BookingEntity(BookingDto bookingDto){
+        this.date = bookingDto.getDate();
+        this.timeRange = bookingDto.getTimeRange();
+    }
+
 
     public Booking toBooking() {
         Booking booking = new Booking();

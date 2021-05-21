@@ -16,5 +16,6 @@ public class PaddleCourtAvailabilityDto {
     private String name;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
+    @Singular("availabilityHour")
     private Map<String, Boolean> availabilityHours = new TreeMap<>();
 }

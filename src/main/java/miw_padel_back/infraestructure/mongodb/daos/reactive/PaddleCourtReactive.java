@@ -6,7 +6,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface PaddleCourtReactive extends ReactiveSortingRepository<PaddleCourtEntity, String> {
+    Mono<PaddleCourtEntity> findFirstByName(String name);
     Mono<PaddleCourtEntity> readFirstByNameOrderByName(String name);
-
     Flux<PaddleCourtEntity> findAllByOrderByName();
 }

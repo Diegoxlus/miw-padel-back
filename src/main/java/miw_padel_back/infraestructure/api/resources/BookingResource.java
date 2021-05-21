@@ -1,6 +1,8 @@
 package miw_padel_back.infraestructure.api.resources;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import miw_padel_back.domain.exceptions.ForbiddenException;
+import miw_padel_back.domain.models.Booking;
 import miw_padel_back.domain.services.BookingService;
 import miw_padel_back.infraestructure.api.Rest;
 import miw_padel_back.infraestructure.api.dtos.BookingDto;
@@ -8,11 +10,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @Rest
@@ -42,6 +44,25 @@ public class BookingResource {
                     } else {
                         return Flux.error(new ForbiddenException("Forbidden"));
                     }
+                });
+    }
+
+    @PostMapping()
+    public Mono<Booking> create(@RequestBody @Valid BookingDto bookingDto){
+        return this.bookingService.create(bookingDto);
+    }
+
+    @DeleteMapping
+    public Mono<Void> delete(@RequestParam String id){
+        return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
+                .flatMap(authentication -> {
+                    if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
+                        return this.bookingService.delete(id);
+                    }
+                    if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PLAYER"))){
+                        return this.bookingService.deleteMyBooking(id,authentication.getPrincipal().toString());
+                    }
+                    else return Mono.error(new ForbiddenException("Forbidden"));
                 });
     }
 }

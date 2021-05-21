@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -27,6 +30,17 @@ class PaddleCourtMDBTest {
     private static final Boolean DISABLED = false;
 
     private static PaddleCourt paddleCourt;
+
+    PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC1 = PaddleCourtAvailabilityDto.builder().name("PC 1").date(LocalDate.EPOCH)
+            .availabilityHour("10:00 - 12:00",false)
+            .availabilityHour("12:00 - 14:00",true)
+            .build();
+
+    PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC2 = PaddleCourtAvailabilityDto.builder().name("PC 2").date(LocalDate.EPOCH)
+            .availabilityHour("10:00 - 12:00",true)
+            .availabilityHour("12:00 - 14:00",false)
+            .availabilityHour("14:00 - 16:00",true)
+            .build();
 
     @Autowired
     private PaddleCourtPersistenceMDB paddleCourtPersistenceMDB;
@@ -113,13 +127,11 @@ class PaddleCourtMDBTest {
 
     @Test
     void testGivenPaddleCourtNameAndDateWhenReadAvailabilityThenReturnPaddleCourtAvailabilityDto() {
+
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate("PC 1", LocalDate.EPOCH))
                 .expectNextMatches(paddleCourtAvailabilityDto -> {
-                    assertEquals("PC 1", paddleCourtAvailabilityDto.getName());
-                    assertEquals(false, paddleCourtAvailabilityDto.getAvailabilityHours().get("10:00 - 12:00"));
-                    assertEquals(true, paddleCourtAvailabilityDto.getAvailabilityHours().get("12:00 - 14:00"));
-                    assertEquals(LocalDate.EPOCH, paddleCourtAvailabilityDto.getDate());
+                    assertEquals(paddleCourtAvailabilityDto,this.paddleCourtAvailabilityDtoPC1);
                     return true;
                 })
                 .expectComplete()
@@ -128,27 +140,47 @@ class PaddleCourtMDBTest {
 
     @Test
     void testGivenDateWhenReadAvailabilityByDateThenReturnListPaddleCourtAvailabilityDto() {
+
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readAvailabilityByDate(LocalDate.EPOCH))
-                .recordWith(ArrayList::new)
-                .thenConsumeWhile(x -> true)
-                .expectRecordedMatches(paddleCourtAvailabilityDtos -> {
-                    var paddleCourtAvailabilityDtoList = new ArrayList<>(paddleCourtAvailabilityDtos);
-                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList, "PC 1");
-                    this.verifyContainsPaddleCourtNameInList(paddleCourtAvailabilityDtoList, "PC 2");
+                .expectNextMatches(paddleCourtAvailabilityDto -> {
+                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
                     return true;
-
+                })
+                .expectNextMatches(paddleCourtAvailabilityDto -> {
+                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
+                    return true;
                 })
                 .verifyComplete();
     }
 
-    private void verifyContainsPaddleCourtNameInList(List<PaddleCourtAvailabilityDto> paddleCourtAvailabilityDtoList, String reference) {
-        assertNotNull(paddleCourtAvailabilityDtoList
-                .stream()
-                .filter(paddleCourtAvailabilityDto -> paddleCourtAvailabilityDto.getName().equals(reference))
-                .findAny()
-                .orElse(null));
+    @Test
+    void testGivenDateWhenReadAvailabilityByDateThenReturnListPaddleCourtAvailabilityDtoWithAvailableHours() {
+
+        PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC1 = PaddleCourtAvailabilityDto.builder().name("PC 1").date(LocalDate.EPOCH.plusDays(1))
+                .availabilityHour("10:00 - 12:00",true)
+                .availabilityHour("12:00 - 14:00",true)
+                .build();
+
+        PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC2 = PaddleCourtAvailabilityDto.builder().name("PC 2").date(LocalDate.EPOCH.plusDays(1))
+                .availabilityHour("10:00 - 12:00",true)
+                .availabilityHour("12:00 - 14:00",true)
+                .availabilityHour("14:00 - 16:00",true)
+                .build();
+
+        StepVerifier
+                .create(this.paddleCourtPersistenceMDB.readAvailabilityByDate(LocalDate.EPOCH.plusDays(1)))
+                .expectNextMatches(paddleCourtAvailabilityDto -> {
+                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
+                    return true;
+                })
+                .expectNextMatches(paddleCourtAvailabilityDto -> {
+                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
+                    return true;
+                })
+                .verifyComplete();
     }
+
 
     @Test
     void testGivenIncorrectPaddleCourtNameAndDateWhenReadAvailabilityThenReturnNotFound() {
