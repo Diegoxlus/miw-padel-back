@@ -43,7 +43,7 @@ public class BookingService {
         return this.bookingPersistence.deleteMyBooking(id,playerEmail);
     }
 
-    public Mono<Booking> create(BookingDto bookingDto) {
+    public Mono<BookingDto> create(BookingDto bookingDto) {
         return this.bookingPersistence.create(bookingDto);
     }
 }

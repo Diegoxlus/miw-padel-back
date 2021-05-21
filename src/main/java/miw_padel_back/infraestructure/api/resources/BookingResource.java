@@ -1,6 +1,5 @@
 package miw_padel_back.infraestructure.api.resources;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import miw_padel_back.domain.exceptions.ForbiddenException;
 import miw_padel_back.domain.models.Booking;
 import miw_padel_back.domain.services.BookingService;
@@ -17,7 +16,7 @@ import reactor.core.publisher.Mono;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
-@Rest
+@RestController
 @RequestMapping(BookingResource.BOOKING)
 public class BookingResource {
     public static final String BOOKING = "booking";
@@ -48,7 +47,8 @@ public class BookingResource {
     }
 
     @PostMapping()
-    public Mono<Booking> create(@RequestBody @Valid BookingDto bookingDto){
+    public Mono<BookingDto> create(@RequestBody BookingDto bookingDto){
+        System.out.println(bookingDto);
         return this.bookingService.create(bookingDto);
     }
 

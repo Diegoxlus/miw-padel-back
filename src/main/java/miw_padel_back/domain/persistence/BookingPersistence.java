@@ -16,5 +16,5 @@ public interface BookingPersistence {
     Flux<BookingDto> readBookingsByEmailAndDate(String email, LocalDate date);
     Mono<Void> delete(String id);
     Mono<Void> deleteMyBooking(String id,String playerEmail);
-    Mono<Booking> create(BookingDto bookingDto);
+    Mono<BookingDto> create(BookingDto bookingDto);
 }

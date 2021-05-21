@@ -48,7 +48,7 @@ public class BookingPersistenceMDBTest {
         StepVerifier
                 .create(this.bookingPersistenceMDB.create(bookingDto))
                 .expectNextMatches(booking -> {
-                    assertEquals("aamarinho@gmail.com",booking.getUser().getEmail());
+                    assertEquals("aamarinho@gmail.com",booking.getEmail());
                     return true;
                 })
                 .verifyComplete();

@@ -76,7 +76,7 @@ public class BookingPersistenceMDB implements BookingPersistence {
     }
 
     @Override
-    public Mono<Booking> create(BookingDto bookingDto) {
+    public Mono<BookingDto> create(BookingDto bookingDto) {
         return this.bookingReactive.findAllByDate(bookingDto.getDate())
                 .filter(bookingEntity -> bookingEntity.getTimeRange().equals(bookingDto.getTimeRange()) && bookingEntity.getPaddleCourt().getName().equals(bookingDto.getPaddleCourtName()))
                 .flatMap(bookingEntity -> Mono.error(new ConflictException("Booking already exists in this range: "+ bookingDto.getTimeRange())))
@@ -93,6 +93,6 @@ public class BookingPersistenceMDB implements BookingPersistence {
                             });
 
                 })
-                .map(BookingEntity::toBooking);
+                .map(BookingEntity::toBookingDto);
     }
 }
