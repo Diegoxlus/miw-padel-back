@@ -1,6 +1,7 @@
 package miw_padel_back.infraestructure.mongodb.persistence;
 
 import miw_padel_back.TestConfig;
+import miw_padel_back.infraestructure.api.dtos.BookingDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
@@ -33,6 +34,24 @@ public class BookingPersistenceMDBTest {
                 })
                 .expectComplete()
                 .verify();
+    }
+
+    @Test
+    void test(){
+        BookingDto bookingDto = BookingDto.builder()
+                .date(LocalDate.EPOCH)
+                .email("aamarinho@gmail.com")
+                .paddleCourtName("PC 2")
+                .timeRange("10:00 - 12:00")
+                .build();
+
+        StepVerifier
+                .create(this.bookingPersistenceMDB.create(bookingDto))
+                .expectNextMatches(booking -> {
+                    assertEquals("aamarinho@gmail.com",booking.getUser().getEmail());
+                    return true;
+                })
+                .verifyComplete();
     }
 
 }

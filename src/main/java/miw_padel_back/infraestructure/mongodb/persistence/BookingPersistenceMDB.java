@@ -69,7 +69,7 @@ public class BookingPersistenceMDB implements BookingPersistence {
     public Mono<Void> deleteMyBooking(String id,String email) {
         return this.bookingReactive.findById(id)
                 .switchIfEmpty(Mono.error(new NotFoundException("Booking with id:" + id + " not exist")))
-                .filter(bookingEntity -> bookingEntity.getUser().getEmail().equals(id))
+                .filter(bookingEntity -> bookingEntity.getUser().getEmail().equals(email))
                 .switchIfEmpty(Mono.error(new ForbiddenException("Booking with id:" + id+ "is not yours")))
                 .flatMap(this.bookingReactive::delete);
 
@@ -78,7 +78,7 @@ public class BookingPersistenceMDB implements BookingPersistence {
     @Override
     public Mono<Booking> create(BookingDto bookingDto) {
         return this.bookingReactive.findAllByDate(bookingDto.getDate())
-                .filter(bookingEntity -> bookingEntity.getTimeRange().equals(bookingDto.getTimeRange()))
+                .filter(bookingEntity -> bookingEntity.getTimeRange().equals(bookingDto.getTimeRange()) && bookingEntity.getPaddleCourt().getName().equals(bookingDto.getPaddleCourtName()))
                 .flatMap(bookingEntity -> Mono.error(new ConflictException("Booking already exists in this range: "+ bookingDto.getTimeRange())))
                 .then(this.userReactive.findFirstByEmail(bookingDto.getEmail()))
                 .switchIfEmpty(Mono.error(new NotFoundException("User with email: "+bookingDto.getEmail()+ "not exists")))
