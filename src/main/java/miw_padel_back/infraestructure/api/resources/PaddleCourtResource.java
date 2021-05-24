@@ -7,18 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.text.ParseException;
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping(PaddleCourtResource.PADDLE_COURT)
 public class PaddleCourtResource {
-    public static final String PADDLE_COURT = "paddle-court";
+    public static final String PADDLE_COURT = "/paddle-court";
     public static final String NAME_REF = "/{nameRef}";
     public static final String AVAILABLE = "/available";
 

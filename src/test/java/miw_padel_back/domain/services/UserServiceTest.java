@@ -13,8 +13,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestConfig
-public class UserServiceTest {
-    private static final String EMAIL = "lusky1996@gmail.com";
+class UserServiceTest {
+    private static final String EMAIL = "admin@admin.com";
 
     @Autowired
     private UserService userService;

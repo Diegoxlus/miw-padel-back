@@ -1,4 +1,4 @@
-package miw_padel_back;
+package miw_padel_back.infraestructure.api.resources;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;

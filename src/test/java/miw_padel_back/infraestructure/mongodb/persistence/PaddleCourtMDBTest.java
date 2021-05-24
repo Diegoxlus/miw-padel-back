@@ -42,6 +42,18 @@ class PaddleCourtMDBTest {
             .availabilityHour("14:00 - 16:00",true)
             .build();
 
+    PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC3 = PaddleCourtAvailabilityDto.builder().name("PC 3").date(LocalDate.EPOCH)
+            .availabilityHour("10:00 - 12:00",true)
+            .availabilityHour("12:00 - 14:00",true)
+            .availabilityHour("14:00 - 16:00",true)
+            .build();
+
+    PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC4 = PaddleCourtAvailabilityDto.builder().name("PC 4").date(LocalDate.EPOCH)
+            .availabilityHour("10:00 - 12:00",true)
+            .availabilityHour("12:00 - 14:00",true)
+            .availabilityHour("14:00 - 16:00",true)
+            .build();
+
     @Autowired
     private PaddleCourtPersistenceMDB paddleCourtPersistenceMDB;
 
@@ -144,43 +156,30 @@ class PaddleCourtMDBTest {
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readAvailabilityByDate(LocalDate.EPOCH))
                 .expectNextMatches(paddleCourtAvailabilityDto -> {
-                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
+                    assertEqualsAny(paddleCourtAvailabilityDto);
                     return true;
                 })
                 .expectNextMatches(paddleCourtAvailabilityDto -> {
-                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
+                    assertEqualsAny(paddleCourtAvailabilityDto);
+                    return true;
+                })
+                .expectNextMatches(paddleCourtAvailabilityDto -> {
+                    assertEqualsAny(paddleCourtAvailabilityDto);
+                    return true;
+                })
+                .expectNextMatches(paddleCourtAvailabilityDto -> {
+                    assertEqualsAny(paddleCourtAvailabilityDto);
                     return true;
                 })
                 .verifyComplete();
     }
 
-    @Test
-    void testGivenDateWhenReadAvailabilityByDateThenReturnListPaddleCourtAvailabilityDtoWithAvailableHours() {
-
-        PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC1 = PaddleCourtAvailabilityDto.builder().name("PC 1").date(LocalDate.EPOCH.plusDays(1))
-                .availabilityHour("10:00 - 12:00",true)
-                .availabilityHour("12:00 - 14:00",true)
-                .build();
-
-        PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC2 = PaddleCourtAvailabilityDto.builder().name("PC 2").date(LocalDate.EPOCH.plusDays(1))
-                .availabilityHour("10:00 - 12:00",true)
-                .availabilityHour("12:00 - 14:00",true)
-                .availabilityHour("14:00 - 16:00",true)
-                .build();
-
-        StepVerifier
-                .create(this.paddleCourtPersistenceMDB.readAvailabilityByDate(LocalDate.EPOCH.plusDays(1)))
-                .expectNextMatches(paddleCourtAvailabilityDto -> {
-                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
-                    return true;
-                })
-                .expectNextMatches(paddleCourtAvailabilityDto -> {
-                    assertThat(paddleCourtAvailabilityDto,anyOf(is(paddleCourtAvailabilityDtoPC1),is(paddleCourtAvailabilityDtoPC2)));
-                    return true;
-                })
-                .verifyComplete();
+    private void assertEqualsAny(PaddleCourtAvailabilityDto paddleCourtAvailabilityDto) {
+        assertThat(paddleCourtAvailabilityDto, anyOf(is(paddleCourtAvailabilityDtoPC1)
+                , is(paddleCourtAvailabilityDtoPC2)
+                , is(paddleCourtAvailabilityDtoPC3)
+                , is(paddleCourtAvailabilityDtoPC4)));
     }
-
 
     @Test
     void testGivenIncorrectPaddleCourtNameAndDateWhenReadAvailabilityThenReturnNotFound() {

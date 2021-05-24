@@ -21,6 +21,10 @@ import java.util.List;
 
 @Service
 public class DatabaseSeederDev {
+    public static final String HOUR_10 = "10:00";
+    public static final String HOUR_12 = "12:00";
+    public static final String HOUR_14 = "14:00";
+    public static final String HOUR_16 = "16:00";
     private final UserDao userDao;
     private final PaddleCourtDao paddleCourtDao;
     private final BookingDao bookingDao;
@@ -41,21 +45,31 @@ public class DatabaseSeederDev {
         this.userDao.deleteAll();
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         var userEntities = new UserEntity[]{
-                UserEntity.builder().firstName("Diego").familyName("Lusqui").email("lusky1996@gmail.com")
+                UserEntity.builder().firstName("Admin").familyName("Admin").email("admin@admin.com")
                         .password("11111").matchingPassword("11111").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
-                UserEntity.builder().firstName("Andrea").familyName("Álvarez").email("aamarinho@gmail.com")
+                UserEntity.builder().firstName("Player").familyName("Player").email("player@player.com")
                         .password("22222").matchingPassword("22222").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build()
         };
 
         var paddleCourtEntities = new PaddleCourtEntity[]{
                 PaddleCourtEntity.builder().name("PC 1").paddleCourtType(PaddleCourtType.INDOOR)
-                        .startTimes(Arrays.asList("10:00", "12:00"))
-                        .endTimes(Arrays.asList("12:00", "14:00"))
+                        .startTimes(Arrays.asList(HOUR_10, HOUR_12))
+                        .endTimes(Arrays.asList(HOUR_12, HOUR_14))
                         .disabled(false)
                         .build(),
                 PaddleCourtEntity.builder().name("PC 2").paddleCourtType(PaddleCourtType.INDOOR)
-                        .startTimes(Arrays.asList("10:00", "12:00", "14:00"))
-                        .endTimes(Arrays.asList("12:00", "14:00", "16:00"))
+                        .startTimes(Arrays.asList(HOUR_10, HOUR_12, HOUR_14))
+                        .endTimes(Arrays.asList(HOUR_12, HOUR_14, HOUR_16))
+                        .disabled(false)
+                        .build(),
+                PaddleCourtEntity.builder().name("PC 3").paddleCourtType(PaddleCourtType.INDOOR)
+                        .startTimes(Arrays.asList(HOUR_10, HOUR_12, HOUR_14))
+                        .endTimes(Arrays.asList(HOUR_12, HOUR_14, HOUR_16))
+                        .disabled(false)
+                        .build(),
+                PaddleCourtEntity.builder().name("PC 4").paddleCourtType(PaddleCourtType.INDOOR)
+                        .startTimes(Arrays.asList(HOUR_10, HOUR_12, HOUR_14))
+                        .endTimes(Arrays.asList(HOUR_12, HOUR_14, HOUR_16))
                         .disabled(false)
                         .build()
         };

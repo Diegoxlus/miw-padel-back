@@ -1,11 +1,11 @@
 package miw_padel_back.infraestructure.api.resources;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import miw_padel_back.domain.exceptions.ForbiddenException;
-import miw_padel_back.domain.models.Booking;
 import miw_padel_back.domain.services.BookingService;
-import miw_padel_back.infraestructure.api.Rest;
 import miw_padel_back.infraestructure.api.dtos.BookingDto;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 
+@SecurityRequirement(name = "bearerAuth")
+@PreAuthorize("hasRole('ADMIN') or hasRole('PLAYER')")
 @RestController
 @RequestMapping(BookingResource.BOOKING)
 public class BookingResource {
-    public static final String BOOKING = "booking";
+    public static final String BOOKING = "/booking";
     public static final String DATE_REF = "/{dateRef}";
 
     private final BookingService bookingService;
@@ -48,7 +49,6 @@ public class BookingResource {
 
     @PostMapping()
     public Mono<BookingDto> create(@RequestBody BookingDto bookingDto){
-        System.out.println(bookingDto);
         return this.bookingService.create(bookingDto);
     }
 

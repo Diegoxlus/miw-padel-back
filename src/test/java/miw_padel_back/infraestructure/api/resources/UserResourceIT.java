@@ -1,6 +1,5 @@
 package miw_padel_back.infraestructure.api.resources;
 
-import miw_padel_back.RestTestConfig;
 import miw_padel_back.RoleBuilder;
 import miw_padel_back.configuration.security.JWTUtil;
 import miw_padel_back.domain.models.Gender;
@@ -40,7 +39,7 @@ class UserResourceIT {
         this.webTestClient
                 .post()
                 .uri(USER + AUTH)
-                .body(Mono.just(new UserLoginDto("lusky1996@gmail.com", "11111")), UserLoginDto.class)
+                .body(Mono.just(new UserLoginDto("admin@admin.com", "11111")), UserLoginDto.class)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(TokenDto.class)
@@ -48,7 +47,7 @@ class UserResourceIT {
                     var roleStringList = this.jwtUtil.getAllClaimsFromToken(tokenDto.getToken()).get("role", List.class);
                     String jwtToken = tokenDto.getToken();
 
-                    assertEquals("lusky1996@gmail.com", this.jwtUtil.getUsernameFromToken(jwtToken));
+                    assertEquals("admin@admin.com", this.jwtUtil.getUsernameFromToken(jwtToken));
                     assertTrue(roleStringList.contains(Role.ROLE_ADMIN.name()));
                     assertFalse(jwtUtil.isTokenExpired(jwtToken));
                 });
