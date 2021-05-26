@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaddleCourt {
+    private String id;
     private String name;
     private PaddleCourtType paddleCourtType;
     @Singular("startTime")
@@ -28,7 +29,7 @@ public class PaddleCourt {
     private List<String> endTimes;
     private boolean disabled;
 
-    Boolean checkTimes() {
+    public Boolean checkTimes() {
         return checkFirstMinorSecondSequence(startTimes)
                 && checkFirstMinorSecondSequence(endTimes)
                 && checkStartEndTime();

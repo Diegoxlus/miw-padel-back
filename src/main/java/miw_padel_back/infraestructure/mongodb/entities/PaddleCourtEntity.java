@@ -28,6 +28,11 @@ public class PaddleCourtEntity {
     private List<String> endTimes;
     private boolean disabled;
 
+
+    public PaddleCourtEntity(PaddleCourt paddleCourt) {
+        BeanUtils.copyProperties(paddleCourt,this);
+    }
+
     public PaddleCourt toPaddleCourt() {
         var paddleCourt = new PaddleCourt();
         BeanUtils.copyProperties(this, paddleCourt);

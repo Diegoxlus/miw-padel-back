@@ -26,4 +26,8 @@ public class RestClientTestService {
                 .defaultHeader("Authorization", "Bearer " + this.token).build();
     }
 
+    public WebTestClient loginAdmin(WebTestClient webTestClient){
+        return login("admin@admin.com", webTestClient,Role.ROLE_ADMIN);
+    }
+
 }

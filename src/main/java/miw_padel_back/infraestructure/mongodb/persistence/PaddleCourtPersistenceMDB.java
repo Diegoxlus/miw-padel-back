@@ -1,5 +1,6 @@
 package miw_padel_back.infraestructure.mongodb.persistence;
 
+import miw_padel_back.domain.exceptions.BadRequestException;
 import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.exceptions.NotFoundException;
 import miw_padel_back.domain.models.PaddleCourt;
@@ -28,14 +29,18 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
     }
 
     public Mono<PaddleCourt> create(PaddleCourt paddleCourt) {
-        /*return this.assertNameNotExists(paddleCourt.getName())
-                .then(this.paddleCourtReactive.readFirstByName(paddleCourt.getName()))*/
-        return null;
+        if(Boolean.FALSE.equals(paddleCourt.checkTimes())){
+            return Mono.error(new BadRequestException("Check hours for this paddle court"));
+        }
+       return this.assertNameNotExists(paddleCourt.getName())
+                .then(this.paddleCourtReactive.save(new PaddleCourtEntity(paddleCourt)))
+               .map(PaddleCourtEntity::toPaddleCourt);
     }
 
     @Override
     public Mono<PaddleCourt> readByName(String name) {
-        return null;
+        return this.assertNameExists(name)
+                .map(PaddleCourtEntity::toPaddleCourt);
     }
 
     public Flux<PaddleCourt> readAllOrderByName() {
@@ -89,7 +94,29 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
     Mono<PaddleCourtEntity> assertNameExists(String name) {
         return this.paddleCourtReactive.readFirstByNameOrderByName(name)
                 .switchIfEmpty(Mono.error(
-                        new NotFoundException("Non existent paddle court with name: " + name))
+                        new NotFoundException("Non exists paddle court with name " + name))
                 );
+    }
+
+    Mono<PaddleCourtEntity> assertIdExists(String id) {
+        return this.paddleCourtReactive.findById(id)
+                .switchIfEmpty(Mono.error(
+                        new NotFoundException("Non exists paddle court with this id"))
+                );
+    }
+
+    public Mono<Void> deleteByName(String name) {
+        return this.assertNameExists(name)
+                .flatMap(this.paddleCourtReactive::delete);
+    }
+
+    @Override
+    public Mono<PaddleCourt> edit(PaddleCourt paddleCourt) {
+        return this.assertIdExists(paddleCourt.getId())
+                .flatMap(paddleCourtEntity -> {
+                    paddleCourtEntity = new PaddleCourtEntity(paddleCourt);
+                   return paddleCourtReactive.save(paddleCourtEntity);
+                })
+                .map(PaddleCourtEntity::toPaddleCourt);
     }
 }

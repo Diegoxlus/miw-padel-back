@@ -17,4 +17,8 @@ public interface PaddleCourtPersistence {
     Flux<PaddleCourt> readAllOrderByName();
 
     Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date);
+
+    Mono<Void> deleteByName(String name);
+
+    Mono<PaddleCourt> edit(PaddleCourt paddleCourt);
 }

@@ -63,7 +63,7 @@ class BookingResourceIT {
     @Test
     void testGivenAdminWhenGetBookingsThenReturnOK(){
 
-        this.restClientTestService.login("admin@admin.com",webTestClient, Role.ROLE_ADMIN)
+        this.restClientTestService.loginAdmin(webTestClient)
                 .get()
                 .uri(BOOKING)
                 .exchange()

@@ -19,11 +19,23 @@ public class PaddleCourtService {
         this.paddleCourtPersistence = paddleCourtPersistence;
     }
 
-    public Flux<PaddleCourt> readAll() {
+    public Mono<PaddleCourt> create(PaddleCourt paddleCourt){
+        return this.paddleCourtPersistence.create(paddleCourt);
+    }
+
+    public Flux<PaddleCourt> readAllOrderByName() {
         return this.paddleCourtPersistence.readAllOrderByName();
     }
 
     public Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date) {
         return this.paddleCourtPersistence.readAvailabilityByDate(date);
+    }
+
+    public Mono<Void> delete(String name) {
+        return this.paddleCourtPersistence.deleteByName(name);
+    }
+
+    public Mono<PaddleCourt> edit(PaddleCourt paddleCourt) {
+        return this.paddleCourtPersistence.edit(paddleCourt);
     }
 }
