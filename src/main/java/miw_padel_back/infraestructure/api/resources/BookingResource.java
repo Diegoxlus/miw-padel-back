@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import miw_padel_back.domain.exceptions.ForbiddenException;
 import miw_padel_back.domain.services.BookingService;
 import miw_padel_back.infraestructure.api.dtos.BookingDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +26,7 @@ public class BookingResource {
 
     private final BookingService bookingService;
 
+    @Autowired
     public BookingResource(BookingService bookingService) {
         this.bookingService = bookingService;
     }

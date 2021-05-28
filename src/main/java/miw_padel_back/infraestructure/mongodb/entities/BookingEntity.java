@@ -1,6 +1,5 @@
 package miw_padel_back.infraestructure.mongodb.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ public class BookingEntity {
 
 
     public Booking toBooking() {
-        Booking booking = new Booking();
+        var booking = new Booking();
         BeanUtils.copyProperties(this, booking);
         booking.setUser(this.user.toUser());
         booking.setPaddleCourt(this.paddleCourt.toPaddleCourt());
@@ -44,7 +43,7 @@ public class BookingEntity {
     }
 
     public BookingDto toBookingDto() {
-        BookingDto bookingDto = new BookingDto();
+        var bookingDto = new BookingDto();
         bookingDto.setId(this.getId());
         bookingDto.setDate(this.getDate());
         bookingDto.setPaddleCourtName(this.paddleCourt.getName());

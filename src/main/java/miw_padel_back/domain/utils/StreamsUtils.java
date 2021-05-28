@@ -10,6 +10,10 @@ import java.util.stream.StreamSupport;
 
 public class StreamsUtils {
 
+    private StreamsUtils(){
+        throw new IllegalStateException("Utility class");
+    }
+
     public static <A, B, C> Stream<C> zip(Stream<? extends A> a,
                                           Stream<? extends B> b,
                                           BiFunction<? super A, ? super B, ? extends C> zipper) {
