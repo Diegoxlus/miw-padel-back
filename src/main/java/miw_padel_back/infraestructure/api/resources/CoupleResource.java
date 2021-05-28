@@ -8,14 +8,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @SecurityRequirement(name = "bearerAuth")
-@PreAuthorize("hasRole('PLAYER')")
+@PreAuthorize("hasRole('PLAYER') or hasRole('ADMIN')")
 @RestController
+@RequestMapping(CoupleResource.COUPLE)
 public class CoupleResource {
-    public static String COUPLE = "/couple";
+    public static final String COUPLE = "/couple";
 
     private final CoupleService coupleService;
 

@@ -5,7 +5,6 @@ import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -34,12 +33,6 @@ public class UserResource {
     @PostMapping(value = REGISTER)
     public Mono<UserRegisterDto> create(@RequestBody @Valid UserRegisterDto userRegisterDto) {
         return userService.create(userRegisterDto);
-    }
-
-    @GetMapping(value = "/prueba")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Mono<TokenDto> test() {
-        return Mono.just(new TokenDto("PRUEBA"));
     }
 
 }
