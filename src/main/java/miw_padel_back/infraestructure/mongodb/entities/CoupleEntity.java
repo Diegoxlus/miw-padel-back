@@ -50,6 +50,7 @@ public class CoupleEntity {
         couple.setPlayerName(this.player.getFirstName());
         couple.setCoupleState(this.coupleState);
         couple.setGender(this.gender);
+        couple.setCreationDate(this.creationDate);
         return couple;
     }
 }
