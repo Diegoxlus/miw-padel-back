@@ -28,4 +28,5 @@ public class UserRegisterDto {
     @NonNull
     @JsonFormat(pattern = "yyyy-MM-dd", locale = "es_ES")
     private LocalDate birthDate;
+    private String photo;
 }

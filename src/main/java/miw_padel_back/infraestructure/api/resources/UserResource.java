@@ -6,6 +6,7 @@ import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -31,8 +32,8 @@ public class UserResource {
     }
 
     @PostMapping(value = REGISTER)
-    public Mono<UserRegisterDto> create(@RequestBody @Valid UserRegisterDto userRegisterDto) {
-        return userService.create(userRegisterDto);
+    public Mono<UserRegisterDto> create(@RequestBody @Valid UserRegisterDto userRegisterDto, @RequestParam("image") MultipartFile multipartFile) {
+        return userService.create(userRegisterDto,multipartFile);
     }
 
 }

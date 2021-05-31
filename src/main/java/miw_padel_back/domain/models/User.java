@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private boolean enabled;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
+    private String photo;
 
 
     @Override

@@ -29,6 +29,7 @@ public class UserPersistenceMDB implements UserPersistence {
     public Mono<UserRegisterDto> create(UserRegisterDto userRegisterDto) {
         var userEntity = new UserEntity();
         BeanUtils.copyProperties(userRegisterDto, userEntity);
+        userEntity.setPhoto("/user-photos/"+userEntity.getEmail());
         userEntity.setPassword(this.passwordEncoder.encode(userEntity.getPassword()));
         return this.assertEmailNotExists(userRegisterDto.getEmail())
                 .then(this.userReactive.save(userEntity))

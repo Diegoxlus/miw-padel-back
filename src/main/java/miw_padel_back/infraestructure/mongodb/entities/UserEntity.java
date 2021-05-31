@@ -43,6 +43,7 @@ public class UserEntity {
     private Boolean enabled;
     @NonNull
     private LocalDate birthDate;
+    private String photo;
 
     public User toUser() {
         var user = new User();
