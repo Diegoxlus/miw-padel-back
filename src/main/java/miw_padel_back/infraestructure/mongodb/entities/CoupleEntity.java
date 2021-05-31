@@ -8,9 +8,12 @@ import lombok.NoArgsConstructor;
 import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.models.CoupleState;
 import miw_padel_back.domain.models.Gender;
+import miw_padel_back.infraestructure.api.dtos.CoupleDto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +29,7 @@ public class CoupleEntity {
     private UserEntity player;
     private CoupleState coupleState;
     private Gender gender;
+    private LocalDate creationDate;
 
     public Couple toCouple() {
         var couple = new Couple();
@@ -34,7 +38,18 @@ public class CoupleEntity {
         couple.setPlayer(this.player.toUser());
         couple.setCoupleState(this.coupleState);
         couple.setGender(this.gender);
+        return couple;
+    }
 
+    public CoupleDto toCoupleDto() {
+        var couple = new CoupleDto();
+        couple.setId(this.id);
+        couple.setCaptainEmail(this.captain.getEmail());
+        couple.setCaptainName(this.captain.getFirstName());
+        couple.setPlayerEmail(this.player.getEmail());
+        couple.setPlayerName(this.player.getFirstName());
+        couple.setCoupleState(this.coupleState);
+        couple.setGender(this.gender);
         return couple;
     }
 }

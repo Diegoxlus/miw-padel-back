@@ -1,5 +1,7 @@
 package miw_padel_back.infraestructure.api.resources;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import miw_padel_back.domain.services.UserService;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
@@ -32,7 +34,8 @@ public class UserResource {
     }
 
     @PostMapping(value = REGISTER)
-    public Mono<UserRegisterDto> create(@RequestBody @Valid UserRegisterDto userRegisterDto, @RequestParam("image") MultipartFile multipartFile) {
+    public Mono<UserRegisterDto> create(@RequestPart("user") String userString, @RequestPart("image") MultipartFile multipartFile) throws JsonProcessingException {
+        UserRegisterDto userRegisterDto = new ObjectMapper().readValue(userString,UserRegisterDto.class);
         return userService.create(userRegisterDto,multipartFile);
     }
 

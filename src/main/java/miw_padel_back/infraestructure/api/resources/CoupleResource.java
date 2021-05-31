@@ -3,6 +3,7 @@ package miw_padel_back.infraestructure.api.resources;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.services.CoupleService;
+import miw_padel_back.infraestructure.api.dtos.CoupleDto;
 import miw_padel_back.infraestructure.api.dtos.EmailDto;
 import miw_padel_back.infraestructure.api.dtos.IdDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +29,19 @@ public class CoupleResource {
     }
 
     @GetMapping()
-    public Flux<Couple> readPlayerCouples(){
+    public Flux<CoupleDto> readPlayerCouples(){
         return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMapMany(authentication -> this.coupleService.readPlayerCouples(authentication.getPrincipal().toString()));
     }
 
     @PostMapping
-    public Mono<Couple> createCouplePetition(@RequestBody EmailDto emailDto){
+    public Mono<CoupleDto> createCouplePetition(@RequestBody EmailDto emailDto){
         return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMap(authentication -> this.coupleService.createCouplePetition(authentication.getPrincipal().toString(),emailDto));
     }
 
     @PostMapping(value = "/acceptance")
-    public Mono<Couple> acceptCouplePetition(@RequestBody IdDto idDto){
+    public Mono<CoupleDto> acceptCouplePetition(@RequestBody IdDto idDto){
         return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMap(authentication -> this.coupleService.acceptCouplePetition(authentication.getPrincipal().toString(),idDto));
     }

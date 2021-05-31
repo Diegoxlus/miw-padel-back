@@ -32,8 +32,8 @@ class CouplePersistenceMDBTest {
         StepVerifier
                 .create(this.couplePersistenceMDB.readPlayerCouples("captain@player.com"))
                 .expectNextMatches(couple -> {
-                    assertEquals("captain@player.com", couple.getCaptain().getEmail());
-                    assertEquals("notcaptain@player.com", couple.getPlayer().getEmail());
+                    assertEquals("captain@player.com", couple.getCaptainEmail());
+                    assertEquals("notcaptain@player.com", couple.getPlayerEmail());
                     return true;
                 })
                 .verifyComplete();
@@ -46,8 +46,8 @@ class CouplePersistenceMDBTest {
                 .create(this.couplePersistenceMDB.createCouplePetition("captain@player.com", EmailDto.builder().email("player@player.com").build()))
                 .expectNextMatches(couple -> {
                     atomicReference.set(couple.getId());
-                    assertEquals("captain@player.com", couple.getCaptain().getEmail());
-                    assertEquals("player@player.com", couple.getPlayer().getEmail());
+                    assertEquals("captain@player.com", couple.getCaptainEmail());
+                    assertEquals("player@player.com", couple.getPlayerEmail());
                     assertEquals(Gender.MIXED,couple.getGender());
                     assertEquals(CoupleState.PENDING,couple.getCoupleState());
                     return true;
@@ -61,8 +61,8 @@ class CouplePersistenceMDBTest {
         StepVerifier
                 .create(this.couplePersistenceMDB.acceptCouplePetition("player@player.com", IdDto.builder().id(atomicReference.get()).build()))
                 .expectNextMatches(couple -> {
-                    assertEquals("captain@player.com", couple.getCaptain().getEmail());
-                    assertEquals("player@player.com", couple.getPlayer().getEmail());
+                    assertEquals("captain@player.com", couple.getCaptainEmail());
+                    assertEquals("player@player.com", couple.getPlayerEmail());
                     assertEquals(Gender.MIXED,couple.getGender());
                     assertEquals(CoupleState.CONSOLIDATED,couple.getCoupleState());
                     return true;

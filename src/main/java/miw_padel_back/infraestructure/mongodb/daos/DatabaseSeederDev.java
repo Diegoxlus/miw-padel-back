@@ -110,6 +110,7 @@ public class DatabaseSeederDev {
                         .player(userEntities[3])
                         .coupleState(CoupleState.PENDING)
                         .gender(Gender.MIXED)
+                        .creationDate(LocalDate.EPOCH)
                         .build()
 
         };
