@@ -2,9 +2,12 @@ package miw_padel_back.domain.services;
 
 import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.persistence.CouplePersistence;
+import miw_padel_back.infraestructure.api.dtos.EmailDto;
+import miw_padel_back.infraestructure.api.dtos.IdDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CoupleService {
@@ -17,5 +20,13 @@ public class CoupleService {
 
     public Flux<Couple> readPlayerCouples(String email){
         return this.couplePersistence.readPlayerCouples(email);
+    }
+
+    public Mono<Couple> createCouplePetition(String emailCaptain, EmailDto emailDto) {
+        return this.couplePersistence.createCouplePetition(emailCaptain,emailDto);
+    }
+
+    public Mono<Couple> acceptCouplePetition(String playerEmail, IdDto idDto) {
+        return this.couplePersistence.acceptCouplePetition(playerEmail,idDto);
     }
 }
