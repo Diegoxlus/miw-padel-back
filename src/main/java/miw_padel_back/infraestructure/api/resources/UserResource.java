@@ -45,6 +45,10 @@ public class UserResource {
         return userService.login(userLoginDto);
     }
 
+    @PostMapping(value = REGISTER)
+    public Mono<UserRegisterDto> create(@RequestBody @Valid UserRegisterDto userRegisterDto) {
+        return userService.create(userRegisterDto);
+    }
 
     @PostMapping(value = REGISTER+PHOTO,consumes = {"multipart/form-data"})
     public Mono<Void> create(@RequestPart(value="file") FilePart file) throws IOException {

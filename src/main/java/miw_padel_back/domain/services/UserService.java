@@ -18,7 +18,6 @@ public class UserService {
 
     private final UserPersistence userPersistence;
     private final JWTUtil jwtUtil;
-    private final String PHOTO_FOLDER = "user-photos/";
 
     @Autowired
     public UserService(UserPersistence userPersistence, JWTUtil jwtUtil) {
@@ -26,15 +25,8 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
-    public Mono<UserRegisterDto> create(UserRegisterDto userRegisterDto, MultipartFile multipartFile) {
-        return this.userPersistence.create(userRegisterDto)
-                .doOnSuccess(userRegisterDtoFromRepository ->{
-                    try {
-                        FileUploadUtils.saveFile(PHOTO_FOLDER,userRegisterDto.getEmail(),multipartFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+    public Mono<UserRegisterDto> create(UserRegisterDto userRegisterDto) {
+        return this.userPersistence.create(userRegisterDto);
     }
 
     public Mono<TokenDto> login(UserLoginDto userLoginDto) {
