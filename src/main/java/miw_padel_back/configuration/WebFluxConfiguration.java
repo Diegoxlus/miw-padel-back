@@ -22,19 +22,4 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
                 .allowedHeaders("*")
                 .maxAge(3600);
     }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        exposeDirectory("user-photos", registry);
-    }
-
-    private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get(dirName);
-        String uploadPath = uploadDir.toFile().getAbsolutePath();
-
-        if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
-
-        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
-    }
-
 }
