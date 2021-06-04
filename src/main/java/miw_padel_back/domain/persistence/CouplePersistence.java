@@ -13,4 +13,5 @@ public interface CouplePersistence {
     Flux<CoupleDto> readPlayerCouples(String email);
     Mono<CoupleDto> createCouplePetition(String emailCaptain, EmailDto emailDto);
     Mono<CoupleDto> acceptCouplePetition(String playerEmail, IdDto idDto);
+    Mono<Void> deleteCouplePetition(String playerEmail, String id);
 }

@@ -74,8 +74,6 @@ class BookingPersistenceMDBTest {
     @Test
     @Order(3)
     void testGivenIdAndEmailWhenDeleteThenReturnForbidden(){
-        System.out.println(3);
-        System.out.println("->"+ atomicReference.get());
         StepVerifier
                 .create(this.bookingPersistenceMDB.deleteMyBooking(atomicReference.get(),"forbidden@forbidden"))
                 .expectErrorMatches(throwable -> throwable instanceof ForbiddenException &&

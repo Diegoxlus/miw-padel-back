@@ -5,14 +5,9 @@ import miw_padel_back.domain.models.CoupleState;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.PaddleCourtType;
 import miw_padel_back.domain.models.Role;
-import miw_padel_back.infraestructure.mongodb.daos.synchronous.BookingDao;
-import miw_padel_back.infraestructure.mongodb.daos.synchronous.CoupleDao;
-import miw_padel_back.infraestructure.mongodb.daos.synchronous.PaddleCourtDao;
-import miw_padel_back.infraestructure.mongodb.daos.synchronous.UserDao;
-import miw_padel_back.infraestructure.mongodb.entities.BookingEntity;
-import miw_padel_back.infraestructure.mongodb.entities.CoupleEntity;
-import miw_padel_back.infraestructure.mongodb.entities.PaddleCourtEntity;
-import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
+import miw_padel_back.domain.persistence.LeaguePersistence;
+import miw_padel_back.infraestructure.mongodb.daos.synchronous.*;
+import miw_padel_back.infraestructure.mongodb.entities.*;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,14 +27,16 @@ public class DatabaseSeederDev {
     private final PaddleCourtDao paddleCourtDao;
     private final BookingDao bookingDao;
     private final CoupleDao coupleDao;
+    private final LeagueDao leagueDao;
     private final PBKDF2Encoder passwordEncoder;
 
     @Autowired
-    public DatabaseSeederDev(UserDao userDao, PaddleCourtDao paddleCourtDao, BookingDao bookingDao, CoupleDao coupleDao, PBKDF2Encoder passwordEncoder) {
+    public DatabaseSeederDev(UserDao userDao, PaddleCourtDao paddleCourtDao, BookingDao bookingDao, CoupleDao coupleDao, LeagueDao leagueDao, PBKDF2Encoder passwordEncoder) {
         this.userDao = userDao;
         this.paddleCourtDao = paddleCourtDao;
         this.bookingDao = bookingDao;
         this.coupleDao = coupleDao;
+        this.leagueDao = leagueDao;
         this.passwordEncoder = passwordEncoder;
         this.seedDataBase();
     }
@@ -114,7 +111,34 @@ public class DatabaseSeederDev {
                         .build()
 
         };
+
         this.coupleDao.saveAll(Arrays.asList(couples));
+        var leagues = new LeagueEntity[]{
+                LeagueEntity.builder()
+                        .name("Mixed League")
+                        .gender(Gender.MIXED)
+                        .maxCouples(12)
+                        .startDate(LocalDate.EPOCH.plusDays(1))
+                        .endDate(LocalDate.EPOCH.plusDays(10))
+                        .build(),
+
+                LeagueEntity.builder()
+                        .name("Men's League")
+                        .gender(Gender.MIXED)
+                        .maxCouples(12)
+                        .startDate(LocalDate.EPOCH.plusDays(1))
+                        .endDate(LocalDate.EPOCH.plusDays(10))
+                        .build()
+                ,
+                LeagueEntity.builder()
+                        .name("Women's League")
+                        .gender(Gender.MIXED)
+                        .maxCouples(12)
+                        .startDate(LocalDate.EPOCH.plusDays(1))
+                        .endDate(LocalDate.EPOCH.plusDays(10))
+                        .build()
+        };
+        this.leagueDao.saveAll(Arrays.asList(leagues));
         LogManager.getLogger(this.getClass()).warn("------- Finish Load from JAVA -----------");
 
     }

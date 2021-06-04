@@ -45,4 +45,10 @@ public class CoupleResource {
         return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMap(authentication -> this.coupleService.acceptCouplePetition(authentication.getPrincipal().toString(),idDto));
     }
+
+    @DeleteMapping()
+    public Mono<Void> deleteCouplePetition(@RequestParam String id){
+        return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
+                .flatMap(authentication -> this.coupleService.deleteCouplePetition(authentication.getPrincipal().toString(),id));
+    }
 }

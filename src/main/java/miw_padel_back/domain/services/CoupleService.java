@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class CoupleService {
+
     @Autowired
     private final CouplePersistence couplePersistence;
 
@@ -29,5 +30,9 @@ public class CoupleService {
 
     public Mono<CoupleDto> acceptCouplePetition(String playerEmail, IdDto idDto) {
         return this.couplePersistence.acceptCouplePetition(playerEmail,idDto);
+    }
+
+    public Mono<Void> deleteCouplePetition(String playerEmail, String id) {
+        return this.couplePersistence.deleteCouplePetition(playerEmail,id);
     }
 }

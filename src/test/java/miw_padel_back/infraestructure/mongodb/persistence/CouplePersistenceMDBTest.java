@@ -1,6 +1,7 @@
 package miw_padel_back.infraestructure.mongodb.persistence;
 
 import miw_padel_back.TestConfig;
+import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.models.CoupleState;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.infraestructure.api.dtos.EmailDto;
@@ -57,6 +58,16 @@ class CouplePersistenceMDBTest {
 
     @Test
     @Order(3)
+    void testGivenEmailAndIdWhenDeleteThenReturnMonoVoid(){
+        StepVerifier
+                .create(this.couplePersistenceMDB.deleteCouplePetition("player@player.com", atomicReference.get()))
+                .verifyComplete();
+
+        this.testGivenEmailDtoAndPlayerEmailWhenCreateThenReturnCouple();
+    }
+
+    @Test
+    @Order(4)
     void testGivenEmailDtoAndPlayerEmailWhenAcceptCouplePetitionThenReturnCouple(){
         StepVerifier
                 .create(this.couplePersistenceMDB.acceptCouplePetition("player@player.com", IdDto.builder().id(atomicReference.get()).build()))
@@ -68,5 +79,25 @@ class CouplePersistenceMDBTest {
                     return true;
                 })
                 .verifyComplete();
+    }
+
+    @Test
+    @Order(5)
+    void testGivenIncorrectEmailAndIdWhenDeleteThenReturnConflictException(){
+        StepVerifier
+                .create(this.couplePersistenceMDB.deleteCouplePetition("invalid@player.com",atomicReference.get()))
+                .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
+                        throwable.getMessage().equals("Conflict Exception: This couple petition isn´t yours"))
+                .verify();
+    }
+
+    @Test
+    @Order(6)
+    void testGivenEmailAndIdWithConsolidatedStateWhenDeleteThenReturnConflictException(){
+        StepVerifier
+                .create(this.couplePersistenceMDB.deleteCouplePetition("player@player.com",atomicReference.get()))
+                .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
+                        throwable.getMessage().equals("Conflict Exception: This couple state isn´t pending"))
+                .verify();
     }
 }

@@ -70,6 +70,22 @@ public class CouplePersistenceMDB implements CouplePersistence {
 
     }
 
+    @Override
+    public Mono<Void> deleteCouplePetition(String playerEmail, String id) {
+        return this.findById(id)
+                .flatMap(coupleEntity -> {
+                    if(!coupleEntity.getPlayer().getEmail().equals(playerEmail)){
+                        return Mono.error(new ConflictException("This couple petition isn´t yours"));
+                    }
+                    else if(!coupleEntity.getCoupleState().equals(CoupleState.PENDING)){
+                        return Mono.error(new ConflictException("This couple state isn´t pending"));
+                    }
+                    else{
+                        return this.coupleReactive.delete(coupleEntity);
+                    }
+                });
+    }
+
     public Mono<CoupleEntity> findById(String id) {
         return this.coupleReactive.findById(id)
                 .switchIfEmpty(Mono.error(
