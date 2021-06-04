@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping(PaddleCourtResource.PADDLE_COURT)
@@ -29,7 +30,7 @@ public class PaddleCourtResource {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
-    public Mono<PaddleCourt> create(@RequestBody PaddleCourt paddleCourt){
+    public Mono<PaddleCourt> create(@RequestBody PaddleCourt paddleCourt) {
         return this.paddleCourtService.create(paddleCourt);
     }
 
@@ -47,13 +48,13 @@ public class PaddleCourtResource {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
-    public Mono<PaddleCourt> edit(@RequestBody PaddleCourt paddleCourt){
+    public Mono<PaddleCourt> edit(@RequestBody PaddleCourt paddleCourt) {
         return this.paddleCourtService.edit(paddleCourt);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
-    public Mono<Void> delete(@RequestParam String name){
+    public Mono<Void> delete(@RequestParam String name) {
         return this.paddleCourtService.delete(name);
     }
 }

@@ -10,10 +10,16 @@ import java.time.LocalDate;
 @Repository
 public interface BookingPersistence {
     Flux<BookingDto> readByDate(LocalDate date);
+
     Flux<BookingDto> readBookingsByEmail(String email);
+
     Flux<BookingDto> readAll();
+
     Flux<BookingDto> readBookingsByEmailAndDate(String email, LocalDate date);
+
     Mono<Void> delete(String id);
-    Mono<Void> deleteMyBooking(String id,String playerEmail);
+
+    Mono<Void> deleteMyBooking(String id, String playerEmail);
+
     Mono<BookingDto> create(BookingDto bookingDto);
 }

@@ -2,7 +2,6 @@ package miw_padel_back.infraestructure.api.resources;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import miw_padel_back.domain.models.League;
-import miw_padel_back.domain.services.CoupleService;
 import miw_padel_back.domain.services.LeagueService;
 import miw_padel_back.infraestructure.api.dtos.LeagueDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class LeagueResource {
 
     @GetMapping
     @PreAuthorize("hasRole('PLAYER') or hasRole('ADMIN')")
-    public Flux<LeagueDto> readAll(){
+    public Flux<LeagueDto> readAll() {
         return this.leagueService.readAll();
     }
 

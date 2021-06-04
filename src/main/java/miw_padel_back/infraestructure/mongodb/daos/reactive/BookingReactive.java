@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public interface BookingReactive extends ReactiveSortingRepository<BookingEntity, String> {
     Flux<BookingEntity> findAllByDate(LocalDate date);
+
     Flux<BookingEntity> findAllByOrderByDateAsc();
 
 }

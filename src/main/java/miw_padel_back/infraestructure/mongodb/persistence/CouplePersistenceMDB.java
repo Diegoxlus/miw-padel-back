@@ -2,7 +2,6 @@ package miw_padel_back.infraestructure.mongodb.persistence;
 
 import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.exceptions.NotFoundException;
-import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.models.CoupleState;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.persistence.CouplePersistence;
@@ -32,7 +31,7 @@ public class CouplePersistenceMDB implements CouplePersistence {
     @Override
     public Flux<CoupleDto> readPlayerCouples(String email) {
         return this.userReactive.findFirstByEmail(email)
-                .switchIfEmpty(Mono.error(new NotFoundException("User with email: "+email+ "not exists")))
+                .switchIfEmpty(Mono.error(new NotFoundException("User with email: " + email + "not exists")))
                 .thenMany(this.coupleReactive.findAll())
                 .filter(coupleEntity -> coupleEntity.getCaptain().getEmail().equals(email) || coupleEntity.getPlayer().getEmail().equals(email))
                 .map(CoupleEntity::toCoupleDto);
@@ -41,17 +40,17 @@ public class CouplePersistenceMDB implements CouplePersistence {
     @Override
     public Mono<CoupleDto> createCouplePetition(String emailCaptain, EmailDto emailDto) {
         return this.userReactive.findFirstByEmail(emailCaptain)
-                .flatMap(captainEntity ->{
+                .flatMap(captainEntity -> {
                     var coupleEntity = CoupleEntity.builder().captain(captainEntity).gender(captainEntity.getGender()).coupleState(CoupleState.PENDING).build();
                     return this.userReactive.findFirstByEmail(emailDto.getEmail())
                             .flatMap(playerEntity -> {
                                 coupleEntity.setPlayer(playerEntity);
                                 coupleEntity.setCreationDate(LocalDate.now());
-                                if(playerEntity.getGender()!=coupleEntity.getGender()){
+                                if (playerEntity.getGender() != coupleEntity.getGender()) {
                                     coupleEntity.setGender(Gender.MIXED);
                                 }
                                 return this.coupleReactive.save(coupleEntity).map(CoupleEntity::toCoupleDto);
-                    });
+                            });
                 });
     }
 
@@ -59,10 +58,9 @@ public class CouplePersistenceMDB implements CouplePersistence {
     public Mono<CoupleDto> acceptCouplePetition(String playerEmail, IdDto idDto) {
         return this.findById(idDto.getId())
                 .flatMap(coupleEntity -> {
-                    if(coupleEntity.getPlayer().getEmail().equals(playerEmail)){
+                    if (coupleEntity.getPlayer().getEmail().equals(playerEmail)) {
                         coupleEntity.setCoupleState(CoupleState.CONSOLIDATED);
-                    }
-                    else{
+                    } else {
                         return Mono.error(new ConflictException("This couple petition isn´t yours"));
                     }
                     return this.coupleReactive.save(coupleEntity).map(CoupleEntity::toCoupleDto);
@@ -74,13 +72,11 @@ public class CouplePersistenceMDB implements CouplePersistence {
     public Mono<Void> deleteCouplePetition(String playerEmail, String id) {
         return this.findById(id)
                 .flatMap(coupleEntity -> {
-                    if(!coupleEntity.getPlayer().getEmail().equals(playerEmail)){
+                    if (!coupleEntity.getPlayer().getEmail().equals(playerEmail)) {
                         return Mono.error(new ConflictException("This couple petition isn´t yours"));
-                    }
-                    else if(!coupleEntity.getCoupleState().equals(CoupleState.PENDING)){
+                    } else if (!coupleEntity.getCoupleState().equals(CoupleState.PENDING)) {
                         return Mono.error(new ConflictException("This couple state isn´t pending"));
-                    }
-                    else{
+                    } else {
                         return this.coupleReactive.delete(coupleEntity);
                     }
                 });
@@ -89,7 +85,7 @@ public class CouplePersistenceMDB implements CouplePersistence {
     public Mono<CoupleEntity> findById(String id) {
         return this.coupleReactive.findById(id)
                 .switchIfEmpty(Mono.error(
-                        new NotFoundException("Not exists couple with this id" )
+                        new NotFoundException("Not exists couple with this id")
                 ));
     }
 }

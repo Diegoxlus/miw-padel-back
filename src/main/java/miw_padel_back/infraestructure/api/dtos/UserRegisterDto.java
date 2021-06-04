@@ -1,6 +1,5 @@
 package miw_padel_back.infraestructure.api.dtos;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import miw_padel_back.domain.models.Gender;

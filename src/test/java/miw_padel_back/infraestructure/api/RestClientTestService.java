@@ -6,11 +6,12 @@ import miw_padel_back.domain.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
 import java.util.Arrays;
 
 @Service
 public class RestClientTestService {
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
     private String token;
 
     @Autowired
@@ -18,7 +19,7 @@ public class RestClientTestService {
         this.jwtUtil = jwtUtil;
     }
 
-     public WebTestClient login(String email, WebTestClient webTestClient, Role ... roles) {
+    public WebTestClient login(String email, WebTestClient webTestClient, Role... roles) {
         User user = User.builder().email(email).roles(Arrays.asList(roles)).build();
         this.token = this.jwtUtil.generateToken(user);
         return webTestClient
@@ -26,8 +27,8 @@ public class RestClientTestService {
                 .defaultHeader("Authorization", "Bearer " + this.token).build();
     }
 
-    public WebTestClient loginAdmin(WebTestClient webTestClient){
-        return login("admin@admin.com", webTestClient,Role.ROLE_ADMIN);
+    public WebTestClient loginAdmin(WebTestClient webTestClient) {
+        return login("admin@admin.com", webTestClient, Role.ROLE_ADMIN);
     }
 
 }

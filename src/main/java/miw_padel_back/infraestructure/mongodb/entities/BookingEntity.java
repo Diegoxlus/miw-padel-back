@@ -28,7 +28,7 @@ public class BookingEntity {
     private LocalDate date;
     private String timeRange;
 
-    public BookingEntity(BookingDto bookingDto){
+    public BookingEntity(BookingDto bookingDto) {
         this.date = bookingDto.getDate();
         this.timeRange = bookingDto.getTimeRange();
     }

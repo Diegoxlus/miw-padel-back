@@ -22,8 +22,8 @@ class BookingPersistenceMDBTest {
     static AtomicReference<String> atomicReference;
 
     @BeforeAll
-    static void setUp(){
-      atomicReference = new AtomicReference<>("NULL");
+    static void setUp() {
+        atomicReference = new AtomicReference<>("NULL");
     }
 
     @Test
@@ -50,7 +50,7 @@ class BookingPersistenceMDBTest {
 
     @Test
     @Order(2)
-    void testGivenBookingDtoWhenCreateThenReturnBookingDto(){
+    void testGivenBookingDtoWhenCreateThenReturnBookingDto() {
         System.out.println(2);
         BookingDto bookingDto = BookingDto.builder()
                 .date(LocalDate.EPOCH)
@@ -65,7 +65,7 @@ class BookingPersistenceMDBTest {
                     System.out.println(booking);
                     atomicReference.set(booking.getId());
                     System.out.println(atomicReference.get());
-                    assertEquals("player@player.com",booking.getEmail());
+                    assertEquals("player@player.com", booking.getEmail());
                     return true;
                 })
                 .verifyComplete();
@@ -73,11 +73,11 @@ class BookingPersistenceMDBTest {
 
     @Test
     @Order(3)
-    void testGivenIdAndEmailWhenDeleteThenReturnForbidden(){
+    void testGivenIdAndEmailWhenDeleteThenReturnForbidden() {
         StepVerifier
-                .create(this.bookingPersistenceMDB.deleteMyBooking(atomicReference.get(),"forbidden@forbidden"))
+                .create(this.bookingPersistenceMDB.deleteMyBooking(atomicReference.get(), "forbidden@forbidden"))
                 .expectErrorMatches(throwable -> throwable instanceof ForbiddenException &&
-                        throwable.getMessage().equals("Forbidden Exception. Booking with id:" + atomicReference+ "is not yours"))
+                        throwable.getMessage().equals("Forbidden Exception. Booking with id:" + atomicReference + "is not yours"))
                 .verify();
     }
 

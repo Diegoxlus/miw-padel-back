@@ -29,12 +29,12 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
     }
 
     public Mono<PaddleCourt> create(PaddleCourt paddleCourt) {
-        if(Boolean.FALSE.equals(paddleCourt.checkTimes())){
+        if (Boolean.FALSE.equals(paddleCourt.checkTimes())) {
             return Mono.error(new BadRequestException("Check hours for this paddle court"));
         }
-       return this.assertNameNotExists(paddleCourt.getName())
+        return this.assertNameNotExists(paddleCourt.getName())
                 .then(this.paddleCourtReactive.save(new PaddleCourtEntity(paddleCourt)))
-               .map(PaddleCourtEntity::toPaddleCourt);
+                .map(PaddleCourtEntity::toPaddleCourt);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
         return this.assertIdExists(paddleCourt.getId())
                 .flatMap(paddleCourtEntity -> {
                     paddleCourtEntity = new PaddleCourtEntity(paddleCourt);
-                   return paddleCourtReactive.save(paddleCourtEntity);
+                    return paddleCourtReactive.save(paddleCourtEntity);
                 })
                 .map(PaddleCourtEntity::toPaddleCourt);
     }

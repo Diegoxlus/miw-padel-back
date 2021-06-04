@@ -23,13 +23,13 @@ class CouplePersistenceMDBTest {
     static AtomicReference<String> atomicReference;
 
     @BeforeAll
-    static void setUp(){
+    static void setUp() {
         atomicReference = new AtomicReference<>("NULL");
     }
 
     @Test
     @Order(1)
-    void testGivenEmailWhenReadAllThenReturnPlayerCouples(){
+    void testGivenEmailWhenReadAllThenReturnPlayerCouples() {
         StepVerifier
                 .create(this.couplePersistenceMDB.readPlayerCouples("captain@player.com"))
                 .expectNextMatches(couple -> {
@@ -42,15 +42,15 @@ class CouplePersistenceMDBTest {
 
     @Test
     @Order(2)
-    void testGivenEmailDtoAndPlayerEmailWhenCreateThenReturnCouple(){
+    void testGivenEmailDtoAndPlayerEmailWhenCreateThenReturnCouple() {
         StepVerifier
                 .create(this.couplePersistenceMDB.createCouplePetition("captain@player.com", EmailDto.builder().email("player@player.com").build()))
                 .expectNextMatches(couple -> {
                     atomicReference.set(couple.getId());
                     assertEquals("captain@player.com", couple.getCaptainEmail());
                     assertEquals("player@player.com", couple.getPlayerEmail());
-                    assertEquals(Gender.MIXED,couple.getGender());
-                    assertEquals(CoupleState.PENDING,couple.getCoupleState());
+                    assertEquals(Gender.MIXED, couple.getGender());
+                    assertEquals(CoupleState.PENDING, couple.getCoupleState());
                     return true;
                 })
                 .verifyComplete();
@@ -58,7 +58,7 @@ class CouplePersistenceMDBTest {
 
     @Test
     @Order(3)
-    void testGivenEmailAndIdWhenDeleteThenReturnMonoVoid(){
+    void testGivenEmailAndIdWhenDeleteThenReturnMonoVoid() {
         StepVerifier
                 .create(this.couplePersistenceMDB.deleteCouplePetition("player@player.com", atomicReference.get()))
                 .verifyComplete();
@@ -68,14 +68,14 @@ class CouplePersistenceMDBTest {
 
     @Test
     @Order(4)
-    void testGivenEmailDtoAndPlayerEmailWhenAcceptCouplePetitionThenReturnCouple(){
+    void testGivenEmailDtoAndPlayerEmailWhenAcceptCouplePetitionThenReturnCouple() {
         StepVerifier
                 .create(this.couplePersistenceMDB.acceptCouplePetition("player@player.com", IdDto.builder().id(atomicReference.get()).build()))
                 .expectNextMatches(couple -> {
                     assertEquals("captain@player.com", couple.getCaptainEmail());
                     assertEquals("player@player.com", couple.getPlayerEmail());
-                    assertEquals(Gender.MIXED,couple.getGender());
-                    assertEquals(CoupleState.CONSOLIDATED,couple.getCoupleState());
+                    assertEquals(Gender.MIXED, couple.getGender());
+                    assertEquals(CoupleState.CONSOLIDATED, couple.getCoupleState());
                     return true;
                 })
                 .verifyComplete();
@@ -83,9 +83,9 @@ class CouplePersistenceMDBTest {
 
     @Test
     @Order(5)
-    void testGivenIncorrectEmailAndIdWhenDeleteThenReturnConflictException(){
+    void testGivenIncorrectEmailAndIdWhenDeleteThenReturnConflictException() {
         StepVerifier
-                .create(this.couplePersistenceMDB.deleteCouplePetition("invalid@player.com",atomicReference.get()))
+                .create(this.couplePersistenceMDB.deleteCouplePetition("invalid@player.com", atomicReference.get()))
                 .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
                         throwable.getMessage().equals("Conflict Exception: This couple petition isn´t yours"))
                 .verify();
@@ -93,9 +93,9 @@ class CouplePersistenceMDBTest {
 
     @Test
     @Order(6)
-    void testGivenEmailAndIdWithConsolidatedStateWhenDeleteThenReturnConflictException(){
+    void testGivenEmailAndIdWithConsolidatedStateWhenDeleteThenReturnConflictException() {
         StepVerifier
-                .create(this.couplePersistenceMDB.deleteCouplePetition("player@player.com",atomicReference.get()))
+                .create(this.couplePersistenceMDB.deleteCouplePetition("player@player.com", atomicReference.get()))
                 .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
                         throwable.getMessage().equals("Conflict Exception: This couple state isn´t pending"))
                 .verify();

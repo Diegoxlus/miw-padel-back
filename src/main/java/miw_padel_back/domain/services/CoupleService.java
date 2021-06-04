@@ -1,6 +1,5 @@
 package miw_padel_back.domain.services;
 
-import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.persistence.CouplePersistence;
 import miw_padel_back.infraestructure.api.dtos.CoupleDto;
 import miw_padel_back.infraestructure.api.dtos.EmailDto;
@@ -20,19 +19,19 @@ public class CoupleService {
         this.couplePersistence = couplePersistence;
     }
 
-    public Flux<CoupleDto> readPlayerCouples(String email){
+    public Flux<CoupleDto> readPlayerCouples(String email) {
         return this.couplePersistence.readPlayerCouples(email);
     }
 
     public Mono<CoupleDto> createCouplePetition(String emailCaptain, EmailDto emailDto) {
-        return this.couplePersistence.createCouplePetition(emailCaptain,emailDto);
+        return this.couplePersistence.createCouplePetition(emailCaptain, emailDto);
     }
 
     public Mono<CoupleDto> acceptCouplePetition(String playerEmail, IdDto idDto) {
-        return this.couplePersistence.acceptCouplePetition(playerEmail,idDto);
+        return this.couplePersistence.acceptCouplePetition(playerEmail, idDto);
     }
 
     public Mono<Void> deleteCouplePetition(String playerEmail, String id) {
-        return this.couplePersistence.deleteCouplePetition(playerEmail,id);
+        return this.couplePersistence.deleteCouplePetition(playerEmail, id);
     }
 }

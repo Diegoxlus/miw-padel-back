@@ -7,14 +7,20 @@ import miw_padel_back.domain.exceptions.NotFoundException;
 import miw_padel_back.domain.models.PaddleCourt;
 import miw_padel_back.domain.models.PaddleCourtType;
 import miw_padel_back.infraestructure.api.dtos.PaddleCourtAvailabilityDto;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
+
 import java.time.LocalDate;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @TestConfig
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -23,33 +29,33 @@ class PaddleCourtMDBTest {
 
     PaddleCourt paddleCourt = PaddleCourt.builder()
             .name(NAME)
-                .paddleCourtType(PaddleCourtType.INDOOR)
-                .disabled(false)
-                .startTime("09:00").startTime("10:30").startTime("12:00").startTime("13:30").startTime("15:00").startTime("16:30")
-                .endTime("10:30").endTime("12:00").endTime("13:30").endTime("15:00").endTime("16:30").endTime("18:00")
-                .build();
+            .paddleCourtType(PaddleCourtType.INDOOR)
+            .disabled(false)
+            .startTime("09:00").startTime("10:30").startTime("12:00").startTime("13:30").startTime("15:00").startTime("16:30")
+            .endTime("10:30").endTime("12:00").endTime("13:30").endTime("15:00").endTime("16:30").endTime("18:00")
+            .build();
 
     PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC1 = PaddleCourtAvailabilityDto.builder().name("PC 1").date(LocalDate.EPOCH)
-            .availabilityHour("10:00 - 12:00",false)
-            .availabilityHour("12:00 - 14:00",true)
+            .availabilityHour("10:00 - 12:00", false)
+            .availabilityHour("12:00 - 14:00", true)
             .build();
 
     PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC2 = PaddleCourtAvailabilityDto.builder().name("PC 2").date(LocalDate.EPOCH)
-            .availabilityHour("10:00 - 12:00",true)
-            .availabilityHour("12:00 - 14:00",false)
-            .availabilityHour("14:00 - 16:00",true)
+            .availabilityHour("10:00 - 12:00", true)
+            .availabilityHour("12:00 - 14:00", false)
+            .availabilityHour("14:00 - 16:00", true)
             .build();
 
     PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC3 = PaddleCourtAvailabilityDto.builder().name("PC 3").date(LocalDate.EPOCH)
-            .availabilityHour("10:00 - 12:00",true)
-            .availabilityHour("12:00 - 14:00",true)
-            .availabilityHour("14:00 - 16:00",true)
+            .availabilityHour("10:00 - 12:00", true)
+            .availabilityHour("12:00 - 14:00", true)
+            .availabilityHour("14:00 - 16:00", true)
             .build();
 
     PaddleCourtAvailabilityDto paddleCourtAvailabilityDtoPC4 = PaddleCourtAvailabilityDto.builder().name("PC 4").date(LocalDate.EPOCH)
-            .availabilityHour("10:00 - 12:00",true)
-            .availabilityHour("12:00 - 14:00",true)
-            .availabilityHour("14:00 - 16:00",true)
+            .availabilityHour("10:00 - 12:00", true)
+            .availabilityHour("12:00 - 14:00", true)
+            .availabilityHour("14:00 - 16:00", true)
             .build();
 
     @Autowired
@@ -58,12 +64,12 @@ class PaddleCourtMDBTest {
 
     @Test
     @Order(1)
-    void testGivenPaddleCourtWhenCreateThenReturnPaddleCourt(){
+    void testGivenPaddleCourtWhenCreateThenReturnPaddleCourt() {
 
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.create(paddleCourt))
                 .expectNextMatches(savePaddleCourt -> {
-                    assertEquals(NAME,savePaddleCourt.getName());
+                    assertEquals(NAME, savePaddleCourt.getName());
                     assertFalse(savePaddleCourt.isDisabled());
                     assertEquals(savePaddleCourt.getStartTimes(), paddleCourt.getStartTimes());
                     assertEquals(savePaddleCourt.getEndTimes(), paddleCourt.getEndTimes());
@@ -75,11 +81,11 @@ class PaddleCourtMDBTest {
 
     @Test
     @Order(2)
-    void testGivenPaddleCourtNameWhenReadByNameThenReturnPaddleCourt(){
+    void testGivenPaddleCourtNameWhenReadByNameThenReturnPaddleCourt() {
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readByName(NAME))
                 .expectNextMatches(savePaddleCourt -> {
-                    assertEquals(NAME,savePaddleCourt.getName());
+                    assertEquals(NAME, savePaddleCourt.getName());
                     assertFalse(savePaddleCourt.isDisabled());
                     assertEquals(savePaddleCourt.getStartTimes(), paddleCourt.getStartTimes());
                     assertEquals(savePaddleCourt.getEndTimes(), paddleCourt.getEndTimes());
@@ -91,17 +97,17 @@ class PaddleCourtMDBTest {
 
     @Test
     @Order(3)
-    void testGivenExistentPaddleCourtWhenCreateThenReturnConflictException(){
+    void testGivenExistentPaddleCourtWhenCreateThenReturnConflictException() {
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.create(paddleCourt))
                 .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
-                        throwable.getMessage().equals("Conflict Exception: Name "+ paddleCourt.getName()+ "already exists"))
+                        throwable.getMessage().equals("Conflict Exception: Name " + paddleCourt.getName() + "already exists"))
                 .verify();
     }
 
     @Test
     @Order(4)
-    void testGivenPaddleCourtNameWhenDeleteThenReturnVoid(){
+    void testGivenPaddleCourtNameWhenDeleteThenReturnVoid() {
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.deleteByName(NAME))
                 .expectNext()
@@ -128,15 +134,14 @@ class PaddleCourtMDBTest {
 
 
     @Test
-    void testGivenNotExistentPaddleCourtNameWhenReadByNameThenReturnBadRequest(){
+    void testGivenNotExistentPaddleCourtNameWhenReadByNameThenReturnBadRequest() {
         var invalidName = "INVALID_NAME";
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readByName(invalidName))
                 .expectErrorMatches(throwable -> throwable instanceof NotFoundException &&
-                        throwable.getMessage().equals("Not Found Exception: Non exists paddle court with name "+ invalidName))
+                        throwable.getMessage().equals("Not Found Exception: Non exists paddle court with name " + invalidName))
                 .verify();
     }
-
 
 
     @Test
@@ -145,7 +150,7 @@ class PaddleCourtMDBTest {
         StepVerifier
                 .create(this.paddleCourtPersistenceMDB.readAvailabilityByNameAndDate("PC 1", LocalDate.EPOCH))
                 .expectNextMatches(paddleCourtAvailabilityDto -> {
-                    assertEquals(paddleCourtAvailabilityDto,this.paddleCourtAvailabilityDtoPC1);
+                    assertEquals(paddleCourtAvailabilityDto, this.paddleCourtAvailabilityDtoPC1);
                     return true;
                 })
                 .expectComplete()

@@ -5,7 +5,6 @@ import miw_padel_back.domain.models.CoupleState;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.PaddleCourtType;
 import miw_padel_back.domain.models.Role;
-import miw_padel_back.domain.persistence.LeaguePersistence;
 import miw_padel_back.infraestructure.mongodb.daos.synchronous.*;
 import miw_padel_back.infraestructure.mongodb.entities.*;
 import org.apache.logging.log4j.LogManager;

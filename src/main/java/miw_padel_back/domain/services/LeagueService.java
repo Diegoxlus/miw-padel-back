@@ -22,10 +22,10 @@ public class LeagueService {
     }
 
     public Mono<LeagueDto> create(League league) {
-    return this.leaguePersistence.create(league);
+        return this.leaguePersistence.create(league);
     }
 
     public Mono<Void> delete(String id) {
-    return this.leaguePersistence.delete(id);
+        return this.leaguePersistence.delete(id);
     }
 }

@@ -1,6 +1,5 @@
 package miw_padel_back.infraestructure.mongodb.entities;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

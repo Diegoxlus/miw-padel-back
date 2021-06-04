@@ -29,15 +29,15 @@ public class BookingService {
     }
 
     public Flux<BookingDto> readBookingsByEmailAndDate(String email, LocalDate date) {
-        return this.bookingPersistence.readBookingsByEmailAndDate(email,date);
+        return this.bookingPersistence.readBookingsByEmailAndDate(email, date);
     }
 
     public Mono<Void> delete(String id) {
         return this.bookingPersistence.delete(id);
     }
 
-    public Mono<Void> deleteMyBooking(String id,String playerEmail) {
-        return this.bookingPersistence.deleteMyBooking(id,playerEmail);
+    public Mono<Void> deleteMyBooking(String id, String playerEmail) {
+        return this.bookingPersistence.deleteMyBooking(id, playerEmail);
     }
 
     public Mono<BookingDto> create(BookingDto bookingDto) {

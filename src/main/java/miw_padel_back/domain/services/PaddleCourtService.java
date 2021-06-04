@@ -19,7 +19,7 @@ public class PaddleCourtService {
         this.paddleCourtPersistence = paddleCourtPersistence;
     }
 
-    public Mono<PaddleCourt> create(PaddleCourt paddleCourt){
+    public Mono<PaddleCourt> create(PaddleCourt paddleCourt) {
         return this.paddleCourtPersistence.create(paddleCourt);
     }
 

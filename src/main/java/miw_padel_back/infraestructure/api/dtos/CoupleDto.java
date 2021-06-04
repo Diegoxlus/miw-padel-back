@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import miw_padel_back.domain.models.CoupleState;
 import miw_padel_back.domain.models.Gender;
-import miw_padel_back.domain.models.User;
 
 import java.time.LocalDate;
 

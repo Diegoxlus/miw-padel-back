@@ -3,7 +3,6 @@ package miw_padel_back.infraestructure.api.resources;
 import miw_padel_back.domain.models.Role;
 import miw_padel_back.infraestructure.api.RestClientTestService;
 import miw_padel_back.infraestructure.api.dtos.BookingDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +11,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import static miw_padel_back.infraestructure.api.resources.BookingResource.BOOKING;
-import static miw_padel_back.infraestructure.api.resources.BookingResource.DATE_REF;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @RestTestConfig
@@ -31,11 +27,10 @@ class BookingResourceIT {
     private RestClientTestService restClientTestService;
 
 
-
     @Test
-    void testGivenPlayerWhenGetBookingsThenReturnOK(){
+    void testGivenPlayerWhenGetBookingsThenReturnOK() {
 
-        this.restClientTestService.login("player@player.com",webTestClient, Role.ROLE_PLAYER)
+        this.restClientTestService.login("player@player.com", webTestClient, Role.ROLE_PLAYER)
                 .get()
                 .uri(BOOKING)
                 .exchange()
@@ -47,11 +42,11 @@ class BookingResourceIT {
     }
 
     @Test
-    void testGivenPlayerWhenGetBookingsByDateThenReturnOK(){
+    void testGivenPlayerWhenGetBookingsByDateThenReturnOK() {
 
-        this.restClientTestService.login("player@player.com",webTestClient, Role.ROLE_PLAYER)
+        this.restClientTestService.login("player@player.com", webTestClient, Role.ROLE_PLAYER)
                 .get()
-                .uri(BOOKING+DATE_PARAM, LocalDate.EPOCH)
+                .uri(BOOKING + DATE_PARAM, LocalDate.EPOCH)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -61,7 +56,7 @@ class BookingResourceIT {
     }
 
     @Test
-    void testGivenAdminWhenGetBookingsThenReturnOK(){
+    void testGivenAdminWhenGetBookingsThenReturnOK() {
 
         this.restClientTestService.loginAdmin(webTestClient)
                 .get()
@@ -75,11 +70,11 @@ class BookingResourceIT {
     }
 
     @Test
-    void testGivenAdminWhenGetBookingsByDateThenReturnOK(){
+    void testGivenAdminWhenGetBookingsByDateThenReturnOK() {
 
-        this.restClientTestService.login("admin@admin.com",webTestClient, Role.ROLE_ADMIN)
+        this.restClientTestService.login("admin@admin.com", webTestClient, Role.ROLE_ADMIN)
                 .get()
-                .uri(BOOKING+DATE_PARAM, LocalDate.EPOCH)
+                .uri(BOOKING + DATE_PARAM, LocalDate.EPOCH)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -89,9 +84,9 @@ class BookingResourceIT {
     }
 
     @Test
-    void testGivenUnauthorizedWhenGetBookingsThenReturn401(){
+    void testGivenUnauthorizedWhenGetBookingsThenReturn401() {
 
-        this.restClientTestService.login("unauthorized@unauthorized.com",webTestClient, Role.ROLE_NULL)
+        this.restClientTestService.login("unauthorized@unauthorized.com", webTestClient, Role.ROLE_NULL)
                 .get()
                 .uri(BOOKING)
                 .exchange()
@@ -100,7 +95,7 @@ class BookingResourceIT {
     }
 
     @Test
-    void testGivenBookingDtoWhenPostThenReturnCreated(){
+    void testGivenBookingDtoWhenPostThenReturnCreated() {
         BookingDto bookingDto = BookingDto.builder()
                 .date(LocalDate.EPOCH)
                 .email("player@player.com")
@@ -108,7 +103,7 @@ class BookingResourceIT {
                 .timeRange("10:00 - 12:00")
                 .build();
 
-        this.restClientTestService.login("player@player.com",webTestClient, Role.ROLE_PLAYER)
+        this.restClientTestService.login("player@player.com", webTestClient, Role.ROLE_PLAYER)
                 .post()
                 .uri(BOOKING)
                 .body(Mono.just(bookingDto), BookingDto.class)
@@ -118,7 +113,7 @@ class BookingResourceIT {
     }
 
     @Test
-    void testGivenExistentBookingDtoWhenPostThenReturnConflict(){
+    void testGivenExistentBookingDtoWhenPostThenReturnConflict() {
         BookingDto bookingDto = BookingDto.builder()
                 .date(LocalDate.EPOCH)
                 .email("player@player.com")
@@ -126,7 +121,7 @@ class BookingResourceIT {
                 .timeRange("10:00 - 12:00")
                 .build();
 
-        this.restClientTestService.login("player@player.com",webTestClient, Role.ROLE_PLAYER)
+        this.restClientTestService.login("player@player.com", webTestClient, Role.ROLE_PLAYER)
                 .post()
                 .uri(BOOKING)
                 .body(Mono.just(bookingDto), BookingDto.class)

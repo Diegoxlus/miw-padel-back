@@ -2,16 +2,12 @@ package miw_padel_back.domain.services;
 
 import miw_padel_back.configuration.security.JWTUtil;
 import miw_padel_back.domain.persistence.UserPersistence;
-import miw_padel_back.domain.utils.FileUploadUtils;
 import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
 
 @Service
 public class UserService {

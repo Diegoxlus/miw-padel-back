@@ -1,7 +1,6 @@
 package miw_padel_back.infraestructure.api.resources;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.services.CoupleService;
 import miw_padel_back.infraestructure.api.dtos.CoupleDto;
 import miw_padel_back.infraestructure.api.dtos.EmailDto;
@@ -29,26 +28,26 @@ public class CoupleResource {
     }
 
     @GetMapping()
-    public Flux<CoupleDto> readPlayerCouples(){
-        return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
+    public Flux<CoupleDto> readPlayerCouples() {
+        return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMapMany(authentication -> this.coupleService.readPlayerCouples(authentication.getPrincipal().toString()));
     }
 
     @PostMapping
-    public Mono<CoupleDto> createCouplePetition(@RequestBody EmailDto emailDto){
-        return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
-                .flatMap(authentication -> this.coupleService.createCouplePetition(authentication.getPrincipal().toString(),emailDto));
+    public Mono<CoupleDto> createCouplePetition(@RequestBody EmailDto emailDto) {
+        return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
+                .flatMap(authentication -> this.coupleService.createCouplePetition(authentication.getPrincipal().toString(), emailDto));
     }
 
     @PostMapping(value = "/acceptance")
-    public Mono<CoupleDto> acceptCouplePetition(@RequestBody IdDto idDto){
-        return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
-                .flatMap(authentication -> this.coupleService.acceptCouplePetition(authentication.getPrincipal().toString(),idDto));
+    public Mono<CoupleDto> acceptCouplePetition(@RequestBody IdDto idDto) {
+        return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
+                .flatMap(authentication -> this.coupleService.acceptCouplePetition(authentication.getPrincipal().toString(), idDto));
     }
 
     @DeleteMapping()
-    public Mono<Void> deleteCouplePetition(@RequestParam String id){
-        return  ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
-                .flatMap(authentication -> this.coupleService.deleteCouplePetition(authentication.getPrincipal().toString(),id));
+    public Mono<Void> deleteCouplePetition(@RequestParam String id) {
+        return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
+                .flatMap(authentication -> this.coupleService.deleteCouplePetition(authentication.getPrincipal().toString(), id));
     }
 }

@@ -9,6 +9,8 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface LeaguePersistence {
     Flux<LeagueDto> readAll();
+
     Mono<LeagueDto> create(League league);
+
     Mono<Void> delete(String id);
 }

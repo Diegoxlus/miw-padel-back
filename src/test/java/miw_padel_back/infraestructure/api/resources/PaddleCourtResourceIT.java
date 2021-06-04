@@ -44,11 +44,11 @@ class PaddleCourtResourceIT {
 
     @Test
     @Order(1)
-    void testGivenPaddleCourtWhenPostThenReturnOk(){
+    void testGivenPaddleCourtWhenPostThenReturnOk() {
         this.restClientTestService.loginAdmin(webTestClient)
                 .post()
                 .uri(PADDLE_COURT)
-                .body(Mono.just(paddleCourt),PaddleCourt.class)
+                .body(Mono.just(paddleCourt), PaddleCourt.class)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -58,12 +58,12 @@ class PaddleCourtResourceIT {
 
     @Test
     @Order(2)
-    void testGivenPaddleCourtWhenPutThenReturnOk(){
+    void testGivenPaddleCourtWhenPutThenReturnOk() {
         this.paddleCourt.setId(id.get());
         this.restClientTestService.loginAdmin(webTestClient)
                 .put()
                 .uri(PADDLE_COURT)
-                .body(Mono.just(paddleCourt),PaddleCourt.class)
+                .body(Mono.just(paddleCourt), PaddleCourt.class)
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -71,17 +71,17 @@ class PaddleCourtResourceIT {
 
     @Test
     @Order(3)
-    void testGivenPaddleCourtNameWhenDeleteThenReturnMonoVoid(){
+    void testGivenPaddleCourtNameWhenDeleteThenReturnMonoVoid() {
         this.restClientTestService.loginAdmin(webTestClient)
                 .delete()
-                .uri(PADDLE_COURT+ NAME_PARAM,paddleCourt.getName())
+                .uri(PADDLE_COURT + NAME_PARAM, paddleCourt.getName())
                 .exchange()
                 .expectStatus()
                 .isOk();
     }
 
     @Test
-    void testWhenGetThenReturnFluxOfPaddleCourt(){
+    void testWhenGetThenReturnFluxOfPaddleCourt() {
         this.restClientTestService.loginAdmin(webTestClient)
                 .get()
                 .uri(PADDLE_COURT)
@@ -90,10 +90,10 @@ class PaddleCourtResourceIT {
     }
 
     @Test
-    void testWhenGetAvailableThenReturnFluxOfPaddleCourtAvailabilityDto(){
+    void testWhenGetAvailableThenReturnFluxOfPaddleCourtAvailabilityDto() {
         this.restClientTestService.loginAdmin(webTestClient)
                 .get()
-                .uri(PADDLE_COURT+ AVAILABLE + DATE_PARAM, LocalDate.EPOCH)
+                .uri(PADDLE_COURT + AVAILABLE + DATE_PARAM, LocalDate.EPOCH)
                 .exchange()
                 .expectBodyList(PaddleCourtAvailabilityDto.class);
     }

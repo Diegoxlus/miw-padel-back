@@ -1,13 +1,9 @@
 package miw_padel_back.infraestructure.mongodb.entities;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.models.Gender;
 import miw_padel_back.domain.models.League;
 import miw_padel_back.infraestructure.api.dtos.LeagueDto;
-import miw_padel_back.infraestructure.mongodb.daos.synchronous.LeagueDao;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -32,7 +28,7 @@ public class LeagueEntity {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public LeagueEntity(League league){
+    public LeagueEntity(League league) {
         this.name = league.getName();
         this.gender = league.getGender();
         this.maxCouples = league.getMaxCouples();
@@ -40,7 +36,7 @@ public class LeagueEntity {
         this.endDate = league.getEndDate();
     }
 
-    public LeagueDto toLeagueDto(){
+    public LeagueDto toLeagueDto() {
         LeagueDto leagueDto = new LeagueDto();
         leagueDto.setId(this.id);
         leagueDto.setName(this.name);

@@ -23,27 +23,27 @@ class LeaguePersistenceMDBTest {
     static AtomicReference<String> atomicReference;
 
     @BeforeAll
-    static void setUp(){
+    static void setUp() {
         atomicReference = new AtomicReference<>("NULL");
     }
 
     @Test
     @Order(1)
-    void testWhenReadAllThenReturnLeaguesDto(){
+    void testWhenReadAllThenReturnLeaguesDto() {
         StepVerifier
                 .create(this.leaguePersistenceMDB.readAll())
                 .expectNextMatches(leagueDto -> {
-                    assertEquals(Gender.MIXED,leagueDto.getGender());
+                    assertEquals(Gender.MIXED, leagueDto.getGender());
                     assertFalse(leagueDto.getCouples().isEmpty());
                     return true;
                 })
                 .expectNextMatches(leagueDto -> {
-                    assertEquals(Gender.MALE,leagueDto.getGender());
+                    assertEquals(Gender.MALE, leagueDto.getGender());
                     assertTrue(leagueDto.getCouples().isEmpty());
                     return true;
                 })
                 .expectNextMatches(leagueDto -> {
-                    assertEquals(Gender.FEMALE,leagueDto.getGender());
+                    assertEquals(Gender.FEMALE, leagueDto.getGender());
                     assertTrue(leagueDto.getCouples().isEmpty());
                     return true;
                 })
@@ -52,7 +52,7 @@ class LeaguePersistenceMDBTest {
 
     @Test
     @Order(2)
-    void testWhenCreateThenReturnLeagueDto(){
+    void testWhenCreateThenReturnLeagueDto() {
         League league = League.builder()
                 .name("NEW LEAGUE")
                 .gender(Gender.MIXED)
@@ -65,10 +65,10 @@ class LeaguePersistenceMDBTest {
                 .create(this.leaguePersistenceMDB.create(league))
                 .expectNextMatches(leagueDto -> {
                     atomicReference.set(leagueDto.getId());
-                    assertEquals(league.getName(),leagueDto.getName());
-                    assertEquals(league.getGender(),leagueDto.getGender());
-                    assertEquals(league.getStartDate(),leagueDto.getStartDate());
-                    assertEquals(league.getEndDate(),leagueDto.getEndDate());
+                    assertEquals(league.getName(), leagueDto.getName());
+                    assertEquals(league.getGender(), leagueDto.getGender());
+                    assertEquals(league.getStartDate(), leagueDto.getStartDate());
+                    assertEquals(league.getEndDate(), leagueDto.getEndDate());
                     assertTrue(leagueDto.getCouples().isEmpty());
 
                     return true;
@@ -78,14 +78,14 @@ class LeaguePersistenceMDBTest {
 
     @Test
     @Order(3)
-    void testGivenIdWhenDeleteThenOkVoid(){
+    void testGivenIdWhenDeleteThenOkVoid() {
         StepVerifier
                 .create(this.leaguePersistenceMDB.delete(atomicReference.get()))
                 .verifyComplete();
     }
 
     @Test
-    void testGivenInvalidIdWhenDeleteThenReturnNotFound(){
+    void testGivenInvalidIdWhenDeleteThenReturnNotFound() {
         StepVerifier
                 .create(this.leaguePersistenceMDB.delete("invalidID"))
                 .expectErrorMatches(throwable -> throwable instanceof NotFoundException &&

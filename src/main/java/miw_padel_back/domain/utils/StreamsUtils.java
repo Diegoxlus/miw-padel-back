@@ -10,7 +10,7 @@ import java.util.stream.StreamSupport;
 
 public class StreamsUtils {
 
-    private StreamsUtils(){
+    private StreamsUtils() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -31,7 +31,7 @@ public class StreamsUtils {
 
         Iterator<A> aIterator = Spliterators.iterator(aSpliterator);
         Iterator<B> bIterator = Spliterators.iterator(bSpliterator);
-        Iterator<C> cIterator = new Iterator<C>() {
+        Iterator<C> cIterator = new Iterator<>() {
             @Override
             public boolean hasNext() {
                 return aIterator.hasNext() && bIterator.hasNext();

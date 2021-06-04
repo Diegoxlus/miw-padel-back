@@ -30,7 +30,7 @@ public class PaddleCourtEntity {
 
 
     public PaddleCourtEntity(PaddleCourt paddleCourt) {
-        BeanUtils.copyProperties(paddleCourt,this);
+        BeanUtils.copyProperties(paddleCourt, this);
     }
 
     public PaddleCourt toPaddleCourt() {

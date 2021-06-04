@@ -3,7 +3,6 @@ package miw_padel_back.infraestructure.mongodb.persistence;
 import miw_padel_back.domain.exceptions.ConflictException;
 import miw_padel_back.domain.exceptions.ForbiddenException;
 import miw_padel_back.domain.exceptions.NotFoundException;
-import miw_padel_back.domain.models.Booking;
 import miw_padel_back.domain.persistence.BookingPersistence;
 import miw_padel_back.infraestructure.api.dtos.BookingDto;
 import miw_padel_back.infraestructure.mongodb.daos.reactive.BookingReactive;
@@ -66,11 +65,11 @@ public class BookingPersistenceMDB implements BookingPersistence {
     }
 
     @Override
-    public Mono<Void> deleteMyBooking(String id,String email) {
+    public Mono<Void> deleteMyBooking(String id, String email) {
         return this.bookingReactive.findById(id)
                 .switchIfEmpty(Mono.error(new NotFoundException("Booking with id:" + id + " not exist")))
                 .filter(bookingEntity -> bookingEntity.getUser().getEmail().equals(email))
-                .switchIfEmpty(Mono.error(new ForbiddenException("Booking with id:" + id+ "is not yours")))
+                .switchIfEmpty(Mono.error(new ForbiddenException("Booking with id:" + id + "is not yours")))
                 .flatMap(this.bookingReactive::delete);
 
     }
@@ -79,14 +78,14 @@ public class BookingPersistenceMDB implements BookingPersistence {
     public Mono<BookingDto> create(BookingDto bookingDto) {
         return this.bookingReactive.findAllByDate(bookingDto.getDate())
                 .filter(bookingEntity -> bookingEntity.getTimeRange().equals(bookingDto.getTimeRange()) && bookingEntity.getPaddleCourt().getName().equals(bookingDto.getPaddleCourtName()))
-                .flatMap(bookingEntity -> Mono.error(new ConflictException("Booking already exists in this range: "+ bookingDto.getTimeRange())))
+                .flatMap(bookingEntity -> Mono.error(new ConflictException("Booking already exists in this range: " + bookingDto.getTimeRange())))
                 .then(this.userReactive.findFirstByEmail(bookingDto.getEmail()))
-                .switchIfEmpty(Mono.error(new NotFoundException("User with email: "+bookingDto.getEmail()+ "not exists")))
+                .switchIfEmpty(Mono.error(new NotFoundException("User with email: " + bookingDto.getEmail() + "not exists")))
                 .flatMap(userEntity -> {
                     var bookingEntity = new BookingEntity(bookingDto);
                     bookingEntity.setUser(userEntity);
                     return paddleCourtReactive.findFirstByName(bookingDto.getPaddleCourtName())
-                            .switchIfEmpty(Mono.error(new NotFoundException("Paddle court with name: "+bookingDto.getPaddleCourtName()+ "not exists")))
+                            .switchIfEmpty(Mono.error(new NotFoundException("Paddle court with name: " + bookingDto.getPaddleCourtName() + "not exists")))
                             .flatMap(paddleCourtEntity -> {
                                 bookingEntity.setPaddleCourt(paddleCourtEntity);
                                 return this.bookingReactive.save(bookingEntity);

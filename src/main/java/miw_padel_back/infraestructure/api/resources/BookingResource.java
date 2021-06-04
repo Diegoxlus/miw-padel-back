@@ -36,13 +36,13 @@ public class BookingResource {
         return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMapMany(authentication -> {
                     if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-                        if(date==null) return this.bookingService.readAll();
+                        if (date == null) return this.bookingService.readAll();
                         else return this.bookingService.readBookingsByDate(date);
                     }
                     if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PLAYER"))) {
                         var email = authentication.getPrincipal().toString();
-                        if(date == null) return this.bookingService.readBookingsByEmail(email);
-                        else return this.bookingService.readBookingsByEmailAndDate(email,date);
+                        if (date == null) return this.bookingService.readBookingsByEmail(email);
+                        else return this.bookingService.readBookingsByEmailAndDate(email, date);
                     } else {
                         return Flux.error(new ForbiddenException("Forbidden"));
                     }
@@ -50,21 +50,20 @@ public class BookingResource {
     }
 
     @PostMapping()
-    public Mono<BookingDto> create(@RequestBody BookingDto bookingDto){
+    public Mono<BookingDto> create(@RequestBody BookingDto bookingDto) {
         return this.bookingService.create(bookingDto);
     }
 
     @DeleteMapping
-    public Mono<Void> delete(@RequestParam String id){
+    public Mono<Void> delete(@RequestParam String id) {
         return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMap(authentication -> {
-                    if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
+                    if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
                         return this.bookingService.delete(id);
                     }
-                    if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PLAYER"))){
-                        return this.bookingService.deleteMyBooking(id,authentication.getPrincipal().toString());
-                    }
-                    else return Mono.error(new ForbiddenException("Forbidden"));
+                    if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PLAYER"))) {
+                        return this.bookingService.deleteMyBooking(id, authentication.getPrincipal().toString());
+                    } else return Mono.error(new ForbiddenException("Forbidden"));
                 });
     }
 }
