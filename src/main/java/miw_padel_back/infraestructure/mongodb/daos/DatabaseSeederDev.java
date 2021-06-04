@@ -42,6 +42,7 @@ public class DatabaseSeederDev {
     }
 
     private void seedDataBase() {
+        this.leagueDao.deleteAll();
         this.coupleDao.deleteAll();
         this.paddleCourtDao.deleteAll();
         this.bookingDao.deleteAll();
@@ -119,12 +120,13 @@ public class DatabaseSeederDev {
                         .gender(Gender.MIXED)
                         .maxCouples(12)
                         .startDate(LocalDate.EPOCH.plusDays(1))
+                        .couple(couples[0])
                         .endDate(LocalDate.EPOCH.plusDays(10))
                         .build(),
 
                 LeagueEntity.builder()
                         .name("Men's League")
-                        .gender(Gender.MIXED)
+                        .gender(Gender.MALE)
                         .maxCouples(12)
                         .startDate(LocalDate.EPOCH.plusDays(1))
                         .endDate(LocalDate.EPOCH.plusDays(10))
@@ -132,7 +134,7 @@ public class DatabaseSeederDev {
                 ,
                 LeagueEntity.builder()
                         .name("Women's League")
-                        .gender(Gender.MIXED)
+                        .gender(Gender.FEMALE)
                         .maxCouples(12)
                         .startDate(LocalDate.EPOCH.plusDays(1))
                         .endDate(LocalDate.EPOCH.plusDays(10))

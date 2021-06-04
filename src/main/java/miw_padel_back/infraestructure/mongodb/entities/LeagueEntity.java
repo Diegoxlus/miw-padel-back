@@ -1,18 +1,20 @@
 package miw_padel_back.infraestructure.mongodb.entities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import miw_padel_back.domain.models.Couple;
 import miw_padel_back.domain.models.Gender;
+import miw_padel_back.domain.models.League;
+import miw_padel_back.infraestructure.api.dtos.LeagueDto;
+import miw_padel_back.infraestructure.mongodb.daos.synchronous.LeagueDao;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -24,8 +26,32 @@ public class LeagueEntity {
     private String id;
     private String name;
     private Gender gender;
+    @Singular
     private List<CoupleEntity> couples = new ArrayList<>();
     private int maxCouples;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    public LeagueEntity(League league){
+        this.name = league.getName();
+        this.gender = league.getGender();
+        this.maxCouples = league.getMaxCouples();
+        this.startDate = league.getStartDate();
+        this.endDate = league.getEndDate();
+    }
+
+    public LeagueDto toLeagueDto(){
+        LeagueDto leagueDto = new LeagueDto();
+        leagueDto.setId(this.id);
+        leagueDto.setName(this.name);
+        leagueDto.setGender(this.gender);
+        leagueDto.setCouples(couples.stream().
+                map(CoupleEntity::toCoupleDto).
+                collect(Collectors.toList()));
+        leagueDto.setMaxCouples(maxCouples);
+        leagueDto.setStartDate(startDate);
+        leagueDto.setEndDate(endDate);
+
+        return leagueDto;
+    }
 }

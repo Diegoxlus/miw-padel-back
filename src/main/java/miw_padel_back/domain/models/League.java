@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,7 +19,7 @@ public class League {
     private String id;
     private String name;
     private Gender gender;
-    private List<Couple> couples;
+    private List<Couple> couples = new ArrayList<>();
     private int maxCouples;
     private LocalDate startDate;
     private LocalDate endDate;
