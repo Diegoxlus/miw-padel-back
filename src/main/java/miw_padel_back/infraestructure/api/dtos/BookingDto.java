@@ -16,7 +16,7 @@ public class BookingDto {
     private String id;
     private String email;
     private String paddleCourtName;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", locale = "es_ES")
     private LocalDate date;
     private String timeRange;
 }

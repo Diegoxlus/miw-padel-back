@@ -14,7 +14,7 @@ import java.util.TreeMap;
 @ToString
 public class PaddleCourtAvailabilityDto {
     private String name;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", locale = "es_ES")
     private LocalDate date;
     @Singular("availabilityHour")
     private Map<String, Boolean> availabilityHours = new TreeMap<>();

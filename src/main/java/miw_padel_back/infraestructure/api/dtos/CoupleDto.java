@@ -1,5 +1,6 @@
 package miw_padel_back.infraestructure.api.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +24,6 @@ public class CoupleDto {
     String playerName;
     CoupleState coupleState;
     Gender gender;
+    @JsonFormat(pattern = "yyyy-MM-dd", locale = "es_ES")
     LocalDate creationDate;
 }
