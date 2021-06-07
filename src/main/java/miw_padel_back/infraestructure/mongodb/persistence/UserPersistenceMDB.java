@@ -7,22 +7,29 @@ import miw_padel_back.domain.models.User;
 import miw_padel_back.domain.persistence.UserPersistence;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
+import miw_padel_back.infraestructure.mongodb.daos.reactive.ImageReactive;
 import miw_padel_back.infraestructure.mongodb.daos.reactive.UserReactive;
+import miw_padel_back.infraestructure.mongodb.entities.ImageEntity;
 import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ResourceUtils;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 
 @Repository
 public class UserPersistenceMDB implements UserPersistence {
     private final UserReactive userReactive;
     private final PBKDF2Encoder passwordEncoder;
+    private final ImageReactive imageReactive;
 
     @Autowired
-    public UserPersistenceMDB(UserReactive userReactive, PBKDF2Encoder passwordEncoder) {
+    public UserPersistenceMDB(UserReactive userReactive, PBKDF2Encoder passwordEncoder, ImageReactive imageReactive) {
         this.userReactive = userReactive;
         this.passwordEncoder = passwordEncoder;
+        this.imageReactive = imageReactive;
     }
 
     @Override
@@ -54,6 +61,29 @@ public class UserPersistenceMDB implements UserPersistence {
                         return Mono.error(new ConflictException("Incorrect password"));
                     }
                 });
+    }
+
+    @Override
+    public Mono<Void> saveImage(String email,byte[] bytes) {
+        return this.userReactive.findFirstByEmail(email)
+                .flatMap(userEntity -> {
+                    var imageEntity = ImageEntity.builder().userEntity(userEntity).imageBytes(bytes).build();
+                    return this.imageReactive.findAll().filter(imageEntity1 -> imageEntity1.getUserEntity().getEmail().equals(email))
+                            .switchIfEmpty(this.imageReactive.save(imageEntity))
+                            .flatMap(imageEntity2 -> {
+                                imageEntity2.setImageBytes(bytes);
+                                return this.imageReactive.save(imageEntity2);
+                            }).then();
+                });
+    }
+
+    @Override
+    public Mono<byte[]> loadImage(String email) throws IOException {
+        System.out.println(email);
+        return this.imageReactive.findAll().filter(imageEntity -> imageEntity.getUserEntity().getEmail().equals(email))
+                .switchIfEmpty(Mono.error(new NotFoundException("Not found image for "+ email)))
+                .map(ImageEntity::getImageBytes)
+                .single();
     }
 
     public Mono<Void> assertEmailNotExists(String email) {

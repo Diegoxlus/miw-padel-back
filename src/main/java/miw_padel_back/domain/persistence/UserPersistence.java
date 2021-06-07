@@ -6,6 +6,8 @@ import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+
 @Repository
 public interface UserPersistence {
     Mono<UserRegisterDto> create(UserRegisterDto userRegisterDto);
@@ -13,4 +15,8 @@ public interface UserPersistence {
     Mono<User> findByEmail(String email);
 
     Mono<User> login(UserLoginDto userLoginDto);
+
+    Mono<Void> saveImage(String email,byte[] bytes);
+
+    Mono<byte[]> loadImage(String email) throws IOException;
 }
