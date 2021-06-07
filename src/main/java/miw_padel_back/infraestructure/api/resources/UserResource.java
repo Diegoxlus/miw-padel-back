@@ -50,7 +50,7 @@ public class UserResource {
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('PLAYER') or hasRole('ADMIN')")
     @PostMapping(value = PHOTO, consumes = {"multipart/form-data"})
-    public Mono<Void> create(@RequestPart(value = "file") FilePart file) {
+    public Mono<byte[]> create(@RequestPart(value = "file") FilePart file) {
 
         return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMap(authentication -> file.content().flatMap(dataBuffer -> Flux.just(dataBuffer.asByteBuffer().array()))

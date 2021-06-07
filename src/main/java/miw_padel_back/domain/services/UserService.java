@@ -33,7 +33,7 @@ public class UserService {
                 );
     }
 
-    public Mono<Void> saveImage(String email, byte[] bytes) {
+    public Mono<byte[]> saveImage(String email, byte[] bytes) {
         return this.userPersistence.saveImage(email,bytes);
     }
 

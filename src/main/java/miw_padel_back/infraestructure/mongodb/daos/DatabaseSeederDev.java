@@ -27,20 +27,23 @@ public class DatabaseSeederDev {
     private final BookingDao bookingDao;
     private final CoupleDao coupleDao;
     private final LeagueDao leagueDao;
+    private final ImageDao imageDao;
     private final PBKDF2Encoder passwordEncoder;
 
     @Autowired
-    public DatabaseSeederDev(UserDao userDao, PaddleCourtDao paddleCourtDao, BookingDao bookingDao, CoupleDao coupleDao, LeagueDao leagueDao, PBKDF2Encoder passwordEncoder) {
+    public DatabaseSeederDev(UserDao userDao, PaddleCourtDao paddleCourtDao, BookingDao bookingDao, CoupleDao coupleDao, LeagueDao leagueDao, ImageDao imageDao, PBKDF2Encoder passwordEncoder) {
         this.userDao = userDao;
         this.paddleCourtDao = paddleCourtDao;
         this.bookingDao = bookingDao;
         this.coupleDao = coupleDao;
         this.leagueDao = leagueDao;
+        this.imageDao = imageDao;
         this.passwordEncoder = passwordEncoder;
         this.seedDataBase();
     }
 
     private void seedDataBase() {
+        this.imageDao.deleteAll();
         this.leagueDao.deleteAll();
         this.coupleDao.deleteAll();
         this.paddleCourtDao.deleteAll();
