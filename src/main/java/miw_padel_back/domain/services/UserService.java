@@ -37,7 +37,7 @@ public class UserService {
         return this.userPersistence.saveImage(email,bytes);
     }
 
-    public Mono<byte[]> loadImage(String email) throws IOException {
+    public Mono<byte[]> loadImage(String email){
         return this.userPersistence.loadImage(email);
     }
 }

@@ -18,5 +18,5 @@ public interface UserPersistence {
 
     Mono<Void> saveImage(String email,byte[] bytes);
 
-    Mono<byte[]> loadImage(String email) throws IOException;
+    Mono<byte[]> loadImage(String email);
 }

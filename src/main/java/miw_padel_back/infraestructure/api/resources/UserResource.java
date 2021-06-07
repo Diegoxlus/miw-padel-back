@@ -70,7 +70,7 @@ public class UserResource {
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('PLAYER') or hasRole('ADMIN')")
     @GetMapping(value = PHOTO, produces = MediaType.IMAGE_PNG_VALUE)
-    public Mono<byte[]> getImageAsByteArray(@RequestParam String email) throws IOException {
+    public Mono<byte[]> getImageAsByteArray(@RequestParam String email){
         return this.userService.loadImage(email);
     }
 }

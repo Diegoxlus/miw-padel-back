@@ -80,8 +80,7 @@ public class UserPersistenceMDB implements UserPersistence {
     }
 
     @Override
-    public Mono<byte[]> loadImage(String email) throws IOException {
-        System.out.println(email);
+    public Mono<byte[]> loadImage(String email) {
         return this.imageReactive.findAll().filter(imageEntity -> imageEntity.getUserEntity().getEmail().equals(email))
                 .switchIfEmpty(Mono.error(new NotFoundException("Not found image for "+ email)))
                 .map(ImageEntity::getImageBytes)
