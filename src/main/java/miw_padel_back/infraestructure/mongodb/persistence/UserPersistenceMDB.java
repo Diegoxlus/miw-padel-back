@@ -68,7 +68,9 @@ public class UserPersistenceMDB implements UserPersistence {
         return this.userReactive.findFirstByEmail(email)
                 .flatMap(userEntity -> {
                     var imageEntity = ImageEntity.builder().userEntity(userEntity).imageBytes(bytes).build();
-                    return this.imageReactive.findAll().filter(imageEntity1 -> imageEntity1.getUserEntity().getEmail().equals(email))
+                    return this.imageReactive.findAll()
+                            .switchIfEmpty(this.imageReactive.save(imageEntity))
+                            .filter(imageEntity1 -> imageEntity1.getUserEntity().getEmail().equals(email))
                             .switchIfEmpty(this.imageReactive.save(imageEntity))
                             .flatMap(imageEntity2 -> {
                                 imageEntity2.setImageBytes(bytes);
