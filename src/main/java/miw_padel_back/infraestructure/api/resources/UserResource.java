@@ -49,7 +49,7 @@ public class UserResource {
 
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('PLAYER') or hasRole('ADMIN')")
-    @PostMapping(value = PHOTO, consumes = {"multipart/form-data"}, produces = MediaType.IMAGE_PNG_VALUE)
+    @PostMapping(value = PHOTO, consumes = {"multipart/form-data"})
     public Mono<Void> create(@RequestPart(value = "file") FilePart file) {
 
         return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
