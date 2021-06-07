@@ -64,7 +64,7 @@ public class UserPersistenceMDB implements UserPersistence {
     }
 
     @Override
-    public Mono<byte[]> saveImage(String email,byte[] bytes) {
+    public Mono<Void> saveImage(String email,byte[] bytes) {
         return this.userReactive.findFirstByEmail(email)
                 .flatMap(userEntity -> {
                     var imageEntity = ImageEntity.builder().userEntity(userEntity).imageBytes(bytes).build();
@@ -75,7 +75,7 @@ public class UserPersistenceMDB implements UserPersistence {
                             .flatMap(imageEntity2 -> {
                                 imageEntity2.setImageBytes(bytes);
                                 return this.imageReactive.save(imageEntity2);
-                            }).then(Mono.just(imageEntity.getImageBytes()));
+                            }).then();
                 });
     }
 
