@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,8 +26,10 @@ class UserPersistenceMDBTest {
     private static final String FAMILY_NAME = "testFamilyName";
     private static final String EMAIL = "test@test.test";
     private static final String PASSWORD = "testPassword";
+    private static final byte[] BYTES = new byte[]{1, 0, 1, 0};
 
     private static UserRegisterDto user;
+
 
     @Autowired
     private UserPersistenceMDB userPersistenceMDB;
@@ -98,6 +101,28 @@ class UserPersistenceMDBTest {
                 .create(this.userPersistenceMDB.login(new UserLoginDto(EMAIL, "invalidPassword")))
                 .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
                         throwable.getMessage().equals("Conflict Exception: Incorrect password"))
+                .verify();
+    }
+
+    @Test
+    @Order(4)
+    void testGivenValidEmailAndByteArrayWhenSaveImageThenReturn() {
+        StepVerifier
+                .create(this.userPersistenceMDB.saveImage(EMAIL,BYTES ))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    @Order(5)
+    void testGivenValidEmailWhenLoadImageThenReturnByteArray() {
+        StepVerifier
+                .create(this.userPersistenceMDB.loadImage(EMAIL))
+                .expectNextMatches(bytes -> {
+                    assertTrue(Arrays.equals(bytes,BYTES));
+                    return true;
+                })
+                .expectComplete()
                 .verify();
     }
 }

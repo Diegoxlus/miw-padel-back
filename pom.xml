@@ -163,9 +163,9 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<!-- End Unit test coverage report-->
+			<!-- Integration test coverage report-->
 			<plugin>
-				<!-- End Unit test coverage report-->
-				<!-- Integration test coverage report-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.21.0</version>

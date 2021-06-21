@@ -71,23 +71,24 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
     @Override
     public Flux<PaddleCourtAvailabilityDto> readAvailabilityByDate(LocalDate date) {
         return this.readAllOrderByName()
+                .filter(paddleCourt -> !paddleCourt.isDisabled())
                 .map(paddleCourt -> paddleCourt.createPaddleCourtAvailabilityDtoWithHours(date))
                 .flatMap(paddleCourtAvailabilityDto -> this.bookingReactive
                         .findAllByDate(date)
                         .doOnNext(bookingEntity -> {
-                            if (paddleCourtAvailabilityDto.getAvailabilityHours().containsKey(bookingEntity.getTimeRange()) && bookingEntity.getPaddleCourt().getName().equals(paddleCourtAvailabilityDto.getName())) {
+                            if (paddleCourtAvailabilityDto.getAvailabilityHours().containsKey(bookingEntity.getTimeRange()) &&
+                                    bookingEntity.getPaddleCourt().getName().equals(paddleCourtAvailabilityDto.getName())) {
                                 paddleCourtAvailabilityDto.getAvailabilityHours().put(bookingEntity.getTimeRange(), false);
                             }
                         }).thenMany(Flux.just(paddleCourtAvailabilityDto)))
                 .distinct(PaddleCourtAvailabilityDto::getName);
-
     }
 
 
     public Mono<Void> assertNameNotExists(String name) {
         return this.paddleCourtReactive.readFirstByNameOrderByName(name)
                 .flatMap(userEntity -> Mono.error(
-                        new ConflictException("Name " + name + "already exists")
+                        new ConflictException("Name " + name + " already exists")
                 ));
     }
 

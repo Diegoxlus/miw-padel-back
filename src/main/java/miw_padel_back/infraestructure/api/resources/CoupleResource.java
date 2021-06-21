@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping(CoupleResource.COUPLE)
 public class CoupleResource {
     public static final String COUPLE = "/couple";
+    public static final String ACCEPTANCE = "/acceptance";
 
     private final CoupleService coupleService;
 
@@ -39,7 +40,7 @@ public class CoupleResource {
                 .flatMap(authentication -> this.coupleService.createCouplePetition(authentication.getPrincipal().toString(), emailDto));
     }
 
-    @PostMapping(value = "/acceptance")
+    @PostMapping(value = ACCEPTANCE)
     public Mono<CoupleDto> acceptCouplePetition(@RequestBody IdDto idDto) {
         return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMap(authentication -> this.coupleService.acceptCouplePetition(authentication.getPrincipal().toString(), idDto));
