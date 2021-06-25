@@ -108,7 +108,7 @@ class UserPersistenceMDBTest {
     @Order(4)
     void testGivenValidEmailAndByteArrayWhenSaveImageThenReturn() {
         StepVerifier
-                .create(this.userPersistenceMDB.saveImage(EMAIL,BYTES ))
+                .create(this.userPersistenceMDB.saveImage(EMAIL, BYTES))
                 .expectComplete()
                 .verify();
     }
@@ -119,7 +119,7 @@ class UserPersistenceMDBTest {
         StepVerifier
                 .create(this.userPersistenceMDB.loadImage(EMAIL))
                 .expectNextMatches(bytes -> {
-                    assertTrue(Arrays.equals(bytes,BYTES));
+                    assertTrue(Arrays.equals(bytes, BYTES));
                     return true;
                 })
                 .expectComplete()

@@ -14,10 +14,7 @@ import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ResourceUtils;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
 
 @Repository
 public class UserPersistenceMDB implements UserPersistence {
@@ -64,7 +61,7 @@ public class UserPersistenceMDB implements UserPersistence {
     }
 
     @Override
-    public Mono<Void> saveImage(String email,byte[] bytes) {
+    public Mono<Void> saveImage(String email, byte[] bytes) {
         return this.userReactive.findFirstByEmail(email)
                 .flatMap(userEntity -> {
                     var imageEntity = ImageEntity.builder().userEntity(userEntity).imageBytes(bytes).build();
@@ -82,7 +79,7 @@ public class UserPersistenceMDB implements UserPersistence {
     @Override
     public Mono<byte[]> loadImage(String email) {
         return this.imageReactive.findAll().filter(imageEntity -> imageEntity.getUserEntity().getEmail().equals(email))
-                .switchIfEmpty(Mono.error(new NotFoundException("Not found image for "+ email)))
+                .switchIfEmpty(Mono.error(new NotFoundException("Not found image for " + email)))
                 .map(ImageEntity::getImageBytes)
                 .single();
     }

@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.reactivestreams.Subscriber;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,7 +18,7 @@ public class ImageEntity {
     private String id;
     @DBRef
     private UserEntity userEntity;
-    @Lazy
+
     private byte[] imageBytes;
 
 }

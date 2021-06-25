@@ -6,7 +6,6 @@ import miw_padel_back.infraestructure.api.dtos.TokenDto;
 import miw_padel_back.infraestructure.api.dtos.UserLoginDto;
 import miw_padel_back.infraestructure.api.dtos.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,9 +17,7 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping(UserResource.USER)
@@ -60,17 +57,17 @@ public class UserResource {
                                 try {
                                     byteStream.write(bytes);
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    throw new miw_padel_back.domain.exceptions.IOException("Error to write file");
                                 }
                             });
-                            return this.userService.saveImage(authentication.getPrincipal().toString(),byteStream.toByteArray());
+                            return this.userService.saveImage(authentication.getPrincipal().toString(), byteStream.toByteArray());
                         }));
     }
 
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('PLAYER') or hasRole('ADMIN')")
     @GetMapping(value = PHOTO, produces = MediaType.IMAGE_PNG_VALUE)
-    public Mono<byte[]> getImageAsByteArray(@RequestParam String email){
+    public Mono<byte[]> getImageAsByteArray(@RequestParam String email) {
         return this.userService.loadImage(email);
     }
 }

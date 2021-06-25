@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-
 @Service
 public class UserService {
 
@@ -34,10 +32,10 @@ public class UserService {
     }
 
     public Mono<Void> saveImage(String email, byte[] bytes) {
-        return this.userPersistence.saveImage(email,bytes);
+        return this.userPersistence.saveImage(email, bytes);
     }
 
-    public Mono<byte[]> loadImage(String email){
+    public Mono<byte[]> loadImage(String email) {
         return this.userPersistence.loadImage(email);
     }
 }

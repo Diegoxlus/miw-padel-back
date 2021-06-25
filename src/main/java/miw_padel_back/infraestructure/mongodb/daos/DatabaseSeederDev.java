@@ -22,6 +22,12 @@ public class DatabaseSeederDev {
     public static final String HOUR_12 = "12:00";
     public static final String HOUR_14 = "14:00";
     public static final String HOUR_16 = "16:00";
+    public static final String ADMIN_PASSWORD = "11111";
+    public static final String PLAYER_PASSWORD = "22222";
+    public static final String COUPLE_PASSWORD = "33333";
+    public static final int MAX_COUPLES = 12;
+    public static final int ONE_DAY_TO_ADD = 1;
+    public static final int TEN_DAYS_TO_ADD = 10;
     private final UserDao userDao;
     private final PaddleCourtDao paddleCourtDao;
     private final BookingDao bookingDao;
@@ -52,13 +58,13 @@ public class DatabaseSeederDev {
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         var userEntities = new UserEntity[]{
                 UserEntity.builder().firstName("Admin").familyName("Admin").email("admin@admin.com")
-                        .password("11111").matchingPassword("11111").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                        .password(ADMIN_PASSWORD).matchingPassword(ADMIN_PASSWORD).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Player").familyName("Player").email("player@player.com")
-                        .password("22222").matchingPassword("22222").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                        .password(PLAYER_PASSWORD).matchingPassword(PLAYER_PASSWORD).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Captain").familyName("captain").email("captain@player.com")
-                        .password("33333").matchingPassword("33333").gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                        .password(COUPLE_PASSWORD).matchingPassword(COUPLE_PASSWORD).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("NotCaptain").familyName("notCaptain").email("notcaptain@player.com")
-                        .password("33333").matchingPassword("33333").gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build()
+                        .password(COUPLE_PASSWORD).matchingPassword(COUPLE_PASSWORD).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build()
         };
 
         var paddleCourtEntities = new PaddleCourtEntity[]{
@@ -94,12 +100,12 @@ public class DatabaseSeederDev {
                 BookingEntity.builder().user(userEntities[0])
                         .paddleCourt(paddleCourtEntities[0])
                         .date(LocalDate.EPOCH)
-                        .timeRange("10:00 - 12:00").build(),
+                        .timeRange(HOUR_10 + " - " + HOUR_12).build(),
                 BookingEntity.builder()
                         .user(userEntities[1])
                         .paddleCourt(paddleCourtEntities[1])
                         .date(LocalDate.EPOCH)
-                        .timeRange("12:00 - 14:00").build()
+                        .timeRange(HOUR_12 + " - " + HOUR_14).build()
 
         };
         this.bookingDao.saveAll(Arrays.asList(bookings));
@@ -120,26 +126,26 @@ public class DatabaseSeederDev {
                 LeagueEntity.builder()
                         .name("Mixed League")
                         .gender(Gender.MIXED)
-                        .maxCouples(12)
-                        .startDate(LocalDate.EPOCH.plusDays(1))
+                        .maxCouples(MAX_COUPLES)
+                        .startDate(LocalDate.EPOCH.plusDays(ONE_DAY_TO_ADD))
                         .couple(couples[0])
-                        .endDate(LocalDate.EPOCH.plusDays(10))
+                        .endDate(LocalDate.EPOCH.plusDays(TEN_DAYS_TO_ADD))
                         .build(),
 
                 LeagueEntity.builder()
                         .name("Men's League")
                         .gender(Gender.MALE)
-                        .maxCouples(12)
-                        .startDate(LocalDate.EPOCH.plusDays(1))
-                        .endDate(LocalDate.EPOCH.plusDays(10))
+                        .maxCouples(MAX_COUPLES)
+                        .startDate(LocalDate.EPOCH.plusDays(ONE_DAY_TO_ADD))
+                        .endDate(LocalDate.EPOCH.plusDays(TEN_DAYS_TO_ADD))
                         .build()
                 ,
                 LeagueEntity.builder()
                         .name("Women's League")
                         .gender(Gender.FEMALE)
-                        .maxCouples(12)
-                        .startDate(LocalDate.EPOCH.plusDays(1))
-                        .endDate(LocalDate.EPOCH.plusDays(10))
+                        .maxCouples(MAX_COUPLES)
+                        .startDate(LocalDate.EPOCH.plusDays(ONE_DAY_TO_ADD))
+                        .endDate(LocalDate.EPOCH.plusDays(TEN_DAYS_TO_ADD))
                         .build()
         };
         this.leagueDao.saveAll(Arrays.asList(leagues));

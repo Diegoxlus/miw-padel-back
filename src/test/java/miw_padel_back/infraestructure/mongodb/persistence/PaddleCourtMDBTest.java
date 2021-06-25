@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class PaddleCourtMDBTest {
     private static final String NAME = "NEW COURT";
 
-    private PaddleCourt paddleCourt = PaddleCourt.builder()
+    private final PaddleCourt paddleCourt = PaddleCourt.builder()
             .name(NAME)
             .paddleCourtType(PaddleCourtType.INDOOR)
             .disabled(false)
