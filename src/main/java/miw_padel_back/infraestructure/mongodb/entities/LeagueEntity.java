@@ -37,7 +37,7 @@ public class LeagueEntity {
     }
 
     public LeagueDto toLeagueDto() {
-        LeagueDto leagueDto = new LeagueDto();
+        var leagueDto = new LeagueDto();
         leagueDto.setId(this.id);
         leagueDto.setName(this.name);
         leagueDto.setGender(this.gender);
