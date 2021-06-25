@@ -102,8 +102,16 @@ public class CouplePersistenceMDB implements CouplePersistence {
     public Mono<Void> assertCoupleNotExists(String captainEmail, String playerEmail) {
         return this.coupleReactive.findAll()
                 .filter(coupleEntity -> coupleEntity.getCaptain().getEmail().equals(captainEmail) &&
-                        coupleEntity.getPlayer().getEmail().equals(playerEmail))
+                        coupleEntity.getPlayer().getEmail().equals(playerEmail) ||
+                        coupleEntity.getCaptain().getEmail().equals(playerEmail) &&
+                                coupleEntity.getPlayer().getEmail().equals(captainEmail)
+                )
                 .singleOrEmpty()
-                .flatMap(coupleEntity -> Mono.error(new ConflictException("Couple already exists")));
+                .flatMap(coupleEntity -> {
+                    if(coupleEntity.getCoupleState().equals(CoupleState.PENDING)){
+                       return Mono.error(new ConflictException("Couple request already exists"));
+                    }
+                    else return Mono.error(new ConflictException("Couple already exists"));
+                });
     }
 }
