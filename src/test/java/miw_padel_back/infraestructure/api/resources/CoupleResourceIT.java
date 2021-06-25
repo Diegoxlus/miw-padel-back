@@ -64,8 +64,8 @@ class CoupleResourceIT {
     @Order(3)
     void testGivenEmailWhenAcceptPetitionThenReturnOK() {
         this.restClientTestService.login("player@player.com", webTestClient, Role.ROLE_PLAYER)
-                .post()
-                .uri(COUPLE + ACCEPTANCE)
+                .put()
+                .uri(COUPLE)
                 .body(Mono.just(IdDto.builder().id(atomicReference.get()).build()), IdDto.class)
                 .exchange()
                 .expectStatus()

@@ -40,7 +40,7 @@ public class CoupleResource {
                 .flatMap(authentication -> this.coupleService.createCouplePetition(authentication.getPrincipal().toString(), emailDto));
     }
 
-    @PostMapping(value = ACCEPTANCE)
+    @PutMapping
     public Mono<CoupleDto> acceptCouplePetition(@RequestBody IdDto idDto) {
         return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication)
                 .flatMap(authentication -> this.coupleService.acceptCouplePetition(authentication.getPrincipal().toString(), idDto));

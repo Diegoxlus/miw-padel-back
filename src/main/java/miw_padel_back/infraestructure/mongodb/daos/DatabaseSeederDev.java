@@ -22,9 +22,9 @@ public class DatabaseSeederDev {
     public static final String HOUR_12 = "12:00";
     public static final String HOUR_14 = "14:00";
     public static final String HOUR_16 = "16:00";
-    public static final String ADM_PASSWORD = "11111";
-    public static final String PLAYER_PASSWORD = "22222";
-    public static final String COUPLE_PASSWORD = "33333";
+    public static final String ADMIN_PSW = "11111";
+    public static final String PLAYER_PSW = "22222";
+    public static final String COUPLE_PSW = "33333";
     public static final int MAX_COUPLES = 12;
     public static final int ONE_DAY_TO_ADD = 1;
     public static final int TEN_DAYS_TO_ADD = 10;
@@ -58,13 +58,17 @@ public class DatabaseSeederDev {
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         var userEntities = new UserEntity[]{
                 UserEntity.builder().firstName("Admin").familyName("Admin").email("admin@admin.com")
-                        .password(ADM_PASSWORD).matchingPassword(ADM_PASSWORD).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                        .password(ADMIN_PSW).matchingPassword(ADMIN_PSW).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Player").familyName("Player").email("player@player.com")
-                        .password(PLAYER_PASSWORD).matchingPassword(PLAYER_PASSWORD).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                        .password(PLAYER_PSW).matchingPassword(PLAYER_PSW).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                UserEntity.builder().firstName("Player2").familyName("Player2").email("player2@player.com")
+                        .password(PLAYER_PSW).matchingPassword(PLAYER_PSW).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Captain").familyName("captain").email("captain@player.com")
-                        .password(COUPLE_PASSWORD).matchingPassword(COUPLE_PASSWORD).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                        .password(COUPLE_PSW).matchingPassword(COUPLE_PSW).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("NotCaptain").familyName("notCaptain").email("notcaptain@player.com")
-                        .password(COUPLE_PASSWORD).matchingPassword(COUPLE_PASSWORD).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build()
+                        .password(COUPLE_PSW).matchingPassword(COUPLE_PSW).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                UserEntity.builder().firstName("Captain2").familyName("captain2").email("captain2@player.com")
+                        .password(COUPLE_PSW).matchingPassword(COUPLE_PSW).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
         };
 
         var paddleCourtEntities = new PaddleCourtEntity[]{
@@ -112,8 +116,8 @@ public class DatabaseSeederDev {
 
         var couples = new CoupleEntity[]{
                 CoupleEntity.builder()
-                        .captain(userEntities[2])
-                        .player(userEntities[3])
+                        .captain(userEntities[3])
+                        .player(userEntities[4])
                         .coupleState(CoupleState.PENDING)
                         .gender(Gender.MIXED)
                         .creationDate(LocalDate.EPOCH)
