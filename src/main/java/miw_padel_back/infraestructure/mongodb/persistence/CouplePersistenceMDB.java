@@ -11,6 +11,7 @@ import miw_padel_back.infraestructure.api.dtos.IdDto;
 import miw_padel_back.infraestructure.mongodb.daos.reactive.CoupleReactive;
 import miw_padel_back.infraestructure.mongodb.daos.reactive.UserReactive;
 import miw_padel_back.infraestructure.mongodb.entities.CoupleEntity;
+import miw_padel_back.infraestructure.mongodb.entities.UserEntity;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -39,10 +40,10 @@ public class CouplePersistenceMDB implements CouplePersistence {
 
     @Override
     public Mono<CoupleDto> createCouplePetition(String emailCaptain, EmailDto emailDto) {
-        return this.userReactive.findFirstByEmail(emailCaptain)
+        return this.findUserByEmail(emailCaptain)
                 .flatMap(captainEntity -> {
                     var coupleEntity = CoupleEntity.builder().captain(captainEntity).gender(captainEntity.getGender()).coupleState(CoupleState.PENDING).build();
-                    return this.userReactive.findFirstByEmail(emailDto.getEmail())
+                    return this.findUserByEmail(emailDto.getEmail())
                             .flatMap(playerEntity -> {
                                 coupleEntity.setPlayer(playerEntity);
                                 coupleEntity.setCreationDate(LocalDate.now());
@@ -87,6 +88,13 @@ public class CouplePersistenceMDB implements CouplePersistence {
         return this.coupleReactive.findById(id)
                 .switchIfEmpty(Mono.error(
                         new NotFoundException("Not exists couple with this id")
+                ));
+    }
+
+    public Mono<UserEntity> findUserByEmail(String email) {
+        return this.userReactive.findFirstByEmail(email)
+                .switchIfEmpty(Mono.error(
+                        new NotFoundException("Not existent email " + email)
                 ));
     }
 }

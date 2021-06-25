@@ -22,7 +22,7 @@ public class DatabaseSeederDev {
     public static final String HOUR_12 = "12:00";
     public static final String HOUR_14 = "14:00";
     public static final String HOUR_16 = "16:00";
-    public static final String ADMIN_PASSWORD = "11111";
+    public static final String ADM_PASSWORD = "11111";
     public static final String PLAYER_PASSWORD = "22222";
     public static final String COUPLE_PASSWORD = "33333";
     public static final int MAX_COUPLES = 12;
@@ -58,7 +58,7 @@ public class DatabaseSeederDev {
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         var userEntities = new UserEntity[]{
                 UserEntity.builder().firstName("Admin").familyName("Admin").email("admin@admin.com")
-                        .password(ADMIN_PASSWORD).matchingPassword(ADMIN_PASSWORD).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
+                        .password(ADM_PASSWORD).matchingPassword(ADM_PASSWORD).gender(Gender.MALE).roles(Collections.singletonList(Role.ROLE_ADMIN)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Player").familyName("Player").email("player@player.com")
                         .password(PLAYER_PASSWORD).matchingPassword(PLAYER_PASSWORD).gender(Gender.FEMALE).roles(Collections.singletonList(Role.ROLE_PLAYER)).enabled(true).birthDate(LocalDate.EPOCH).build(),
                 UserEntity.builder().firstName("Captain").familyName("captain").email("captain@player.com")
