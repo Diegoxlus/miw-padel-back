@@ -15,13 +15,19 @@ Proyecto desarrollado por Andrea Álvarez Mariño y Diego Lusquiños Otero, como
 Clonar repositorio, mediante consola:
 ```sh
 > cd <folder path>
-> git clone https://github.com/Diegoxlus/miw-padel-back
+> git clone https://github.com/Diegoxlus/miw-padel-back.git
+```
+Instalación con Maven embebido
+```sh
+> mvnw install
+> mvnw spring-boot:run
+```
+
+Instalación con Maven
+```sh
+> mvn install
+> mvn spring-boot:run
 ```
 
 
-## Integración continua
-
-
-
-## Arquitectura
 
