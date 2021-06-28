@@ -108,13 +108,11 @@ public class PaddleCourtPersistenceMDB implements PaddleCourtPersistence {
 
     public Mono<Void> deleteByName(String name) {
         return this.assertNameExists(name)
-                .flatMap(paddleCourtEntity -> {
-                    this.bookingReactive.findAll()
-                            .filter(bookingEntity -> bookingEntity.getPaddleCourt().getName().equals(name))
-                            .flatMap(this.bookingReactive::delete);
-                    return this.paddleCourtReactive.findFirstByName(name)
-                            .flatMap(this.paddleCourtReactive::delete);
-                });
+                .flatMap(paddleCourtEntity -> this.bookingReactive.findAll()
+                        .filter(bookingEntity -> bookingEntity.getPaddleCourt().getName().equals(name))
+                        .flatMap(this.bookingReactive::delete)
+                        .then(this.paddleCourtReactive.findFirstByName(name))
+                        .flatMap(this.paddleCourtReactive::delete));
     }
 
     @Override
