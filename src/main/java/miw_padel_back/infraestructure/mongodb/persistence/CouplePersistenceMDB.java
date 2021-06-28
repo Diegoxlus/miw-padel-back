@@ -40,6 +40,9 @@ public class CouplePersistenceMDB implements CouplePersistence {
 
     @Override
     public Mono<CoupleDto> createCouplePetition(String emailCaptain, EmailDto emailDto) {
+        if(emailCaptain.equals(emailDto.getEmail())){
+            return Mono.error(new ConflictException("This email is yours"));
+        }
         return this.assertCoupleNotExists(emailCaptain, emailDto.getEmail())
                 .then(this.findUserByEmail(emailCaptain))
                 .flatMap(captainEntity -> {

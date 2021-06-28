@@ -110,4 +110,14 @@ class CouplePersistenceMDBTest {
                         throwable.getMessage().equals("Conflict Exception: Couple already exists"))
                 .verify();
     }
+
+    @Test
+    void testGivenSamePlayerEmailsWhenCreateThenReturnConflictException() {
+        String email = "same@player.com";
+        StepVerifier
+                .create(this.couplePersistenceMDB.createCouplePetition(email, EmailDto.builder().email(email).build()))
+                .expectErrorMatches(throwable -> throwable instanceof ConflictException &&
+                        throwable.getMessage().equals("Conflict Exception: This email is yours"))
+                .verify();
+    }
 }
