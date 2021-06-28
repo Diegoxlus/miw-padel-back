@@ -118,7 +118,7 @@ public class DatabaseSeederDev {
                 CoupleEntity.builder()
                         .captain(userEntities[3])
                         .player(userEntities[4])
-                        .coupleState(CoupleState.PENDING)
+                        .coupleState(CoupleState.CONSOLIDATED)
                         .gender(Gender.MIXED)
                         .creationDate(LocalDate.EPOCH)
                         .build()

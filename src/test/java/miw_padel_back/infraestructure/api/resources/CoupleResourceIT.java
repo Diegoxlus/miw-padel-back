@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static miw_padel_back.infraestructure.api.resources.CoupleResource.ACCEPTANCE;
 import static miw_padel_back.infraestructure.api.resources.CoupleResource.COUPLE;
 
 @RestTestConfig

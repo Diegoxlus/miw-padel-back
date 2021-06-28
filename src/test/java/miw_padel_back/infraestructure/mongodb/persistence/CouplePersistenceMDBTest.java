@@ -56,6 +56,7 @@ class CouplePersistenceMDBTest {
                 })
                 .verifyComplete();
     }
+
     @Test
     @Order(3)
     void testGivenEmailAndIdWhenDeleteThenReturnMonoVoid() {
